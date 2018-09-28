@@ -14,10 +14,15 @@ let url = {
 }
 
 // 包装各种请求,返回请求数据,并处理请求错误.
+const LATENCY = 2000
+
 export default {
-  getBlogs: data => {
-    return blogData
+  getBlogs: cb => {
     // return axios.post(url.login, qs.stringify(data))
+    // cb(blogData)
+    setTimeout(function () {
+      cb(blogData)
+    }, LATENCY)
   },
   getNews: data => {
     return axios.get(url.newsList, {params: data})

@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="layout-body">
-          <router-view/> 
+          <router-view/>
         </div>
       </div>
     </div>
@@ -40,8 +40,8 @@ export default {
 </script>
 
 <style>
-@import './assets/tags-init.css';
-@import './assets/blog-home.css';
+@import './assets/css/tags-init.css';
+@import './assets/css/blog-common.css';
 .fa-icon {
   width: auto;
   height: 1em;
