@@ -24,27 +24,18 @@
   align-items: center;
   margin-right: 10px;
 }
-i.h-switch {
-  cursor: pointer;
-  font-size: 1.4em;
-  margin: 0 10px;
-  color: #555;
+.head-btn {
+  padding: 5px;
   margin-left: 8px;
-}
-i.h-message {
   cursor: pointer;
-  font-size: 1.25em;
-  margin: 10px;
-  color: #555;
-  margin-left: 8px;
 }
 .h-auth {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: #ff8b8b;
-  margin-left: 8px;
+  background-color: #9bd098;
+  margin-left: 13px;
 }
 .toolbar {
   height: 50px;
@@ -91,6 +82,10 @@ i.h-message {
   border-bottom: 1px solid #C6C6C6;
   opacity: 0.955;
   z-index: 999;
+  position: relative;
+}
+.head-container {
+  height: 43px;
   display: flex;
   align-items: center;
   justify-content: space-between;

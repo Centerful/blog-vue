@@ -3,29 +3,37 @@
     <!-- placeholder -->
     <!-- blog- -->
     <placeholder/>
+    <div class="search" v-if="search"></div>
     <div class="blog-items">
-      <BlogItem v-for="blog in blogs" :key="blog.blogID" v-bind="blog"></BlogItem>
-      <div class="loading" v-if="loading">
+      <!-- <div class="" v-if="loading">
         Loading...
-      </div>
+      </div> -->
+      <template v-if="loading">
+        <BlogItemLoad></BlogItemLoad>
+        <BlogItemLoad></BlogItemLoad>
+        <BlogItemLoad></BlogItemLoad>
+      </template>
+      <BlogItem v-for="blog in blogs" :key="blog.blogID" v-bind="blog"></BlogItem>
+      <div class="loading" v-if="!loading"><icon name="spinner" pulse/></div>
     </div>
   </div>
 </template>
 
 <script>
 import BlogItem from '@/components/BlogItem.vue'
+import BlogItemLoad from '@/components/BlogItemLoad.vue'
 
 export default {
   name: 'blog',
   data: function () {
     return {
-      blogs: [
-      ],
-      loading: true
+      blogs: [],
+      loading: true,
+      search: false
     }
   },
   components: {
-    BlogItem
+    BlogItem, BlogItemLoad
   },
   created () {
     // 组件创建完成后获取博客列表数据
@@ -43,6 +51,7 @@ export default {
       this.api.getBlogs((resp) => {
         this.loading = false
         this.blogs = resp
+        this.$progress.finish()
       })
     }
   }
@@ -63,10 +72,11 @@ export default {
   -ms-flex-align: center;
   align-items: center;
   width: 100%;
-
 }
 .blog-items {
-  height: auto;
-  transition: height 3.5s ease-out;
+  /*height: auto;
+  min-height: 500px;
+  transition: height 3.5s ease-out;*/
+  width: 100%;
 }
 </style>

@@ -13,6 +13,11 @@ export default {
   name: 'columns',
   components: {
     HelloWorld
+  },
+  created () {
+    setTimeout(() => {
+      this.$progress.finish()
+    }, 5000)
   }
 }
 </script>

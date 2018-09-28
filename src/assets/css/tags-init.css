@@ -1,6 +1,7 @@
 html {
   min-width: 520px;
   font-size: 16px;
+  overflow-x: hidden;
   /*使用js控制浏览器的最小宽度即可.*/
   /*width:expression_r(document.body.clientWidth < 523 ? "523px": "auto" );*/
 }

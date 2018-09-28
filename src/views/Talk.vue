@@ -13,6 +13,11 @@ export default {
   name: 'talk',
   components: {
     HelloWorld
+  },
+  created () {
+    setTimeout(() => {
+      this.$progress.finish()
+    }, 2000)
   }
 }
 </script>

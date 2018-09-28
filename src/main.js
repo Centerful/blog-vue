@@ -12,7 +12,10 @@ import Icon from 'vue-awesome/components/Icon'
 import api from './api/api.js'
 
 // 自定义components
+// 占位符
 import Placeholder from '@/components/Placeholder'
+// 加载 进度条插件
+import Progressbar from '@/plugin/progressbar'
 
 Vue.config.productionTip = false
 
@@ -23,11 +26,17 @@ Vue.prototype.api = api
 Vue.component('icon', Icon)
 Vue.component('placeholder', Placeholder)
 
+Vue.use(Progressbar)
+
 new Vue({
   el: '#app',
   router,
+  render: h => h(App)
+  /*
+  下面的代码与上面的代码显示效果一致.
   components: {
     'App': App
   },
   template: '<App/>'
+  */
 })

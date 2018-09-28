@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import qs from 'qs'
 // 引入data数据.其实应该通过axios发送ajax请求本地json文件,本地需要部署nginx进行反向代理或是提供服务器功能.
-import blogData from './blogs-data.js'
+import blogData from '../mock/blogs-data.js'
 
 axios.defaults.withCredentials = true
 

@@ -5,13 +5,16 @@
         <div class="layout-head">
           <div class="head-wapper">
             <div class="head-inner">
-              <header class="head-left"> </header>
-              <header class="head-center"> </header>
-              <header class="head-right">
-                <i class="h-switch fa fa-toggle-off"></i>
-                <i class="h-message fa fa-bell"></i>
-                <div class="h-auth"></div>
-              </header>
+              <div class="head-container">
+                <header class="head-left"> </header>
+                <header class="head-center"> </header>
+                <header class="head-right">
+                  <icon class="head-btn" name="toggle-off"/>
+                  <icon class="head-btn" name="bell"/>
+                  <div class="h-auth"></div>
+                </header>
+              </div>
+              <progress-bar></progress-bar>
             </div>
           </div>
         </div>
@@ -35,7 +38,15 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    this.$progress.start()
+
+    this.$router.beforeEach((to, from, next) => {
+      this.$progress.start()
+      next()
+    })
+  }
 }
 </script>
 
@@ -48,6 +59,6 @@ export default {
   max-width: 100%;
   max-height: 100%;
   font-size: 1.3em;
-  color: #444;
+  color: #777;
 }
 </style>
