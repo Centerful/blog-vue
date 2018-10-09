@@ -8,7 +8,7 @@
       </div>
       <div class="post-right-side flex-mid flex-small">
         <div class="post-title">
-          <a class="post-title-a" href="#">
+          <a class="post-title-a" @click="to()">
             <h2>{{ blogTitle }}</h2>
           </a>
         </div>
@@ -83,6 +83,11 @@ export default {
   data () {
     return {
       // msg: 'Welcome to Your Vue.js App!'
+    }
+  },
+  methods: {
+    to: function () {
+      this.$router.push({name: 'BlogContent', params: { id: this.blogID }})
     }
   }
 }
@@ -188,6 +193,7 @@ export default {
 }
 .post-title-a h2 {
   display: inline;
+  cursor: pointer;
 }
 .post-auth-date {
   color: #8d8d8d;
