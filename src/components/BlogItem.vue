@@ -35,7 +35,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     blogID: {
@@ -107,8 +106,8 @@ export default {
 }
 .post-container {
   display: flex;
+  padding: 0 10px;
 }
-
 .post-left-side {
   width: 30%;
 }

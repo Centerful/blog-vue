@@ -79,6 +79,7 @@ div.post-footer {
 }
 .post-container {
   display: flex;
+  padding: 0 10px;
 }
 
 .post-left-side {
