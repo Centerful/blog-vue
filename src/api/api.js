@@ -4,6 +4,10 @@ import axios from 'axios'
 import blogData from '@/mock/blogs-data.js'
 // 引入blog明细数据
 import blogDetailData from '@/mock/blogs-detail-data.js'
+// feed数据
+import feedData from '@/mock/feed-data.js'
+// feed的replie数据
+import feedReplieData from '@/mock/feed-replies-data.js'
 
 axios.defaults.withCredentials = true
 
@@ -35,6 +39,21 @@ export default {
     setTimeout(function () {
       cb(blogDetail)
     }, 500)
+  },
+  getFeeds: cb => {
+    setTimeout(function () {
+      cb(feedData)
+    }, 1200)
+  },
+  getFeedReplies: (feedId, cb) => {
+    let replieData = feedReplieData.find((e) => {
+      if (e.feedId === feedId) {
+        return e
+      }
+    })
+    setTimeout(function () {
+      cb(replieData.replies)
+    }, 800)
   },
   getNews: data => {
     return axios.get(url.newsList, {params: data})
