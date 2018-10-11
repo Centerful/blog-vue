@@ -21,7 +21,7 @@
         <template v-else>
           <div class="talk-footer-bar">
             <div class="talk-footer-zen">
-              <div class="talk-footer-icon" @click="toggleThumbs()"><icon class="thumbs" :class="{up: isThumbs}" name="thumbs-up"/></div>
+              <div class="talk-footer-icon" @click="toggleThumbs()"><icon class="thumbs" :class="{up: isThumbs}" name="regular/thumbs-up"/></div>
               <div class="talk-footer-number">{{ feed.thumbs }}</div>
             </div>
             <div class="talk-footer-btn" @click="toggleReplie()">回复</div>

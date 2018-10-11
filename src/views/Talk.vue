@@ -50,6 +50,9 @@ export default {
   created () {
     this.fetchData()
   },
+  watch: {
+    '$route': 'fetchData'
+  },
   methods: {
     fetchData () {
       this.loading = true

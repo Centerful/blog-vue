@@ -40,7 +40,7 @@ export default {
   bottom: -3px;
   border-radius: 3px;
   width: 100%;
-  z-index: 10;
+  z-index: 20;
   background-color: #ff0000;
   transform-origin: left;
   opacity: 0;

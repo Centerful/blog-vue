@@ -8,6 +8,10 @@ import blogDetailData from '@/mock/blogs-detail-data.js'
 import feedData from '@/mock/feed-data.js'
 // feed的replie数据
 import feedReplieData from '@/mock/feed-replies-data.js'
+// columns数据
+import columnData from '@/mock/columns-data.js'
+// columnDetail数据
+import columnDetailData from '@/mock/columns-detail-data.js'
 
 axios.defaults.withCredentials = true
 
@@ -32,7 +36,7 @@ export default {
   },
   getBlogDetails: (blogId, cb) => {
     let blogDetail = blogDetailData.find((e) => {
-      if (e.blogID === blogId) {
+      if (e.blogID === parseInt(blogId)) {
         return e
       }
     })
@@ -47,12 +51,27 @@ export default {
   },
   getFeedReplies: (feedId, cb) => {
     let replieData = feedReplieData.find((e) => {
-      if (e.feedId === feedId) {
+      if (e.feedId === parseInt(feedId)) {
         return e
       }
     })
     setTimeout(function () {
       cb(replieData.replies)
+    }, 800)
+  },
+  getColumns: (cb) => {
+    setTimeout(function () {
+      cb(columnData)
+    }, 1200)
+  },
+  getColumnDetail: (columnId, cb) => {
+    let detailData = columnDetailData.find((e) => {
+      if (e.id === parseInt(columnId)) {
+        return e
+      }
+    })
+    setTimeout(function () {
+      cb(detailData)
     }, 800)
   },
   getNews: data => {

@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     fetchData () {
-      console.log('fetchData')
       this.loading = true
       this.api.getBlogs((resp) => {
         this.loading = false

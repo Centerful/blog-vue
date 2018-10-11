@@ -6,6 +6,8 @@ import Talk from '@/views/Talk.vue'
 import Welcome from '@/views/Welcome.vue'
 
 import BlogContent from '@/components/BlogContent.vue'
+import ColumnContent from '@/components/ColumnContent'
+import ColumnOpen from '@/components/ColumnOpen'
 // import Edit from '@/views/Edit.vue'
 
 Vue.use(Router)
@@ -28,6 +30,22 @@ export default new Router({
       path: '/columns',
       name: 'Columns',
       component: Columns,
+      meta: {
+        title: 'Centerful'
+      }
+    },
+    {
+      path: '/columns/:id',
+      name: 'ColumnContent',
+      component: ColumnContent,
+      meta: {
+        title: 'Centerful'
+      }
+    },
+    {
+      path: '/columns/open/:id',
+      name: 'ColumnOpen',
+      component: ColumnOpen,
       meta: {
         title: 'Centerful'
       }
