@@ -34,7 +34,7 @@ export default {
     max-height: 100%;
     font-size: 1.1em;
     color: #777;
-  } 
+  }
   .layout-head {
     width: 100%;
     position: fixed;

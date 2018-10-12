@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import BlogColumnItem from '@/components/BlogColumnItem.vue'
-import Recommendations from '@/components/Recommendations.vue'
+import BlogColumnItem from '@/views/blog/children/BlogColumnItem.vue'
+import Recommendations from '@/views/blog/children/Recommendations.vue'
 
 export default {
   data () {

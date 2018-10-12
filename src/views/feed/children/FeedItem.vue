@@ -1,51 +1,51 @@
 <template>
   <!-- :class="{ private: feed.isPrivate }" -->
-  <div class="talk-show-item" :class="{ private: feed.isPrivate }">
-    <div class="talk-item-bar" :class="{ private: feed.isPrivate }">
+  <div class="feed-show-item" :class="{ private: feed.isPrivate }">
+    <div class="feed-item-bar" :class="{ private: feed.isPrivate }">
       <icon class="ellipsis" :class="{private: feed.isPrivate }" name="ellipsis-h"/></div>
-    <div class="talk-item-left"></div>
-    <div class="talk-item-right">
-      <div class="talk-right-header">
-        <div class="talk-auth-name">{{ feed.name }}</div>
-        <div class="talk-time">{{ feed.talkTime }}</div>
+    <div class="feed-item-left"></div>
+    <div class="feed-item-right">
+      <div class="feed-right-header">
+        <div class="feed-auth-name">{{ feed.name }}</div>
+        <div class="feed-time">{{ feed.time }}</div>
       </div>
-      <div class="talk-right-centent" :class="{ private: feed.isPrivate,open: isFold }">
+      <div class="feed-right-centent" :class="{ private: feed.isPrivate,open: isFold }">
         {{ feed.words }}
       </div>
-      <div class="talk-right-footer" :class="{ private: feed.isPrivate }">
+      <div class="feed-right-footer" :class="{ private: feed.isPrivate }">
         <template v-if="feed.isPrivate">
-          <div class="talk-right-footer-btn private" @click="toggleFold()">
+          <div class="feed-right-footer-btn private" @click="toggleFold()">
             Read more
           </div>
         </template>
         <template v-else>
-          <div class="talk-footer-bar">
-            <div class="talk-footer-zen">
-              <div class="talk-footer-icon" @click="toggleThumbs()"><icon class="thumbs" :class="{up: isThumbs}" name="regular/thumbs-up"/></div>
-              <div class="talk-footer-number">{{ feed.thumbs }}</div>
+          <div class="feed-footer-bar">
+            <div class="feed-footer-zen">
+              <div class="feed-footer-icon" @click="toggleThumbs()"><icon class="thumbs" :class="{up: isThumbs}" name="regular/thumbs-up"/></div>
+              <div class="feed-footer-number">{{ feed.thumbs }}</div>
             </div>
-            <div class="talk-footer-btn" @click="toggleReplie()">回复</div>
+            <div class="feed-footer-btn" @click="toggleReplie()">回复</div>
           </div>
           <template v-if="isReplie">
-            <div class="talk-replie-bar">
-              <div class="talk-replie-field">
-                <div class="talk-replie-avatar"></div>
-                <input class="talk-replie-input" type="text" placeholder="添加公开回复...">
+            <div class="feed-replie-bar">
+              <div class="feed-replie-field">
+                <div class="feed-replie-avatar"></div>
+                <input class="feed-replie-input" type="text" placeholder="添加公开回复...">
               </div>
-              <div class="talk-replie-btn">
+              <div class="feed-replie-btn">
                 <button @click="toggleReplie()">取消</button>
                 <button @click="toggleReplie()">回复</button>
               </div>
             </div>
           </template>
-          <div class="talk-replies-look" v-if="feed.replies">
+          <div class="feed-replies-look" v-if="feed.replies">
             <template v-if="feedId">
-              <div class="talk-footer-btn inline" @click="toggleReplieArea()">隐藏回复
+              <div class="feed-footer-btn inline" @click="toggleReplieArea()">隐藏回复
                 <icon class="chevron up" name="chevron-up"/>
               </div>
             </template>
             <template v-else>
-              <div class="talk-footer-btn inline" @click="toggleReplieArea()">查看 {{ feed.replies }} 条回复
+              <div class="feed-footer-btn inline" @click="toggleReplieArea()">查看 {{ feed.replies }} 条回复
                 <icon class="chevron" name="chevron-down"/>
               </div>
             </template>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import FeedReplie from '@/components/FeedReplie'
+import FeedReplie from '@/views/feed/children/FeedReplie'
 
 export default {
   props: ['feed'],
@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style scoped>
-  .talk-show-item {
+  .feed-show-item {
     width: 90%;
     max-width: 620px;
     display: flex;
@@ -131,7 +131,7 @@ export default {
     box-shadow: 0 1px 1px -2px rgba(0,0,0,.2), 0 3px 2px 0 rgba(0,0,0,.14), 0 1px 1px 0 rgba(0,0,0,.12);
     margin-bottom: 30px;
   }
-  .talk-item-left {
+  .feed-item-left {
     width: 45px;
     height: 45px;
     min-width: 45px;
@@ -141,26 +141,26 @@ export default {
     border-radius: 50%;
     cursor: pointer;
   }
-  .talk-item-right {
+  .feed-item-right {
     display: flex;
     flex-direction: column;
     margin: 10px;
     width: 100%;
   }
-  .talk-right-header {
+  .feed-right-header {
     display: flex;
     align-items: baseline;
   }
-  .talk-auth-name {
+  .feed-auth-name {
     font-weight: bold;
     margin-top: 2px;
     cursor: pointer;
     margin-right: 20px;
   }
-  .talk-time {
+  .feed-time {
     font-size: 0.8em;
   }
-  .talk-item-bar {
+  .feed-item-bar {
     color: #555;
     cursor: pointer;
     margin: 10px;
@@ -174,27 +174,27 @@ export default {
   .ellipsis.private {
     color: #fff;
   }
-  .talk-item-bar.private{
+  .feed-item-bar.private{
     color: #eee;
   }
-  .talk-right-centent {
+  .feed-right-centent {
     font-size: 0.9em;
     width: 93%;
     max-width: 535px;
     margin: 2px 0 8px 0;
     word-break: break-all;
   }
-  .talk-right-footer {
+  .feed-right-footer {
     display: flex;
     flex-direction: column;
     width: 90%;
   }
-  .talk-footer-bar {
+  .feed-footer-bar {
     display: flex;
     margin-bottom: 8px;
     align-items: baseline;
   }
-  .talk-footer-btn {
+  .feed-footer-btn {
     margin-right: 30px;
     font-size: 0.9em;
     cursor: pointer;
@@ -210,25 +210,25 @@ export default {
   .chevron.up {
     top: 1px;
   }
-  .talk-footer-btn.inline {
+  .feed-footer-btn.inline {
     display: inline-block;
   }
-  .talk-footer-btn.inline > i {
+  .feed-footer-btn.inline > i {
     font-size: 0.9em;
     margin-left: 6px;
     position: relative;
     top: -1px;
     color: #555;
   }
-  .talk-footer-btn.open {
+  .feed-footer-btn.open {
     margin-bottom: 15px;
   }
-  .talk-footer-zen {
+  .feed-footer-zen {
     margin-right: 25px;
     display: flex;
     align-items: baseline;
   }
-  .talk-footer-icon {
+  .feed-footer-icon {
     margin-right: 10px;
     cursor: pointer;
   }
@@ -238,42 +238,42 @@ export default {
   .thumbs.up {
     color: #4a91fd;
   }
-  .talk-footer-number {
+  .feed-footer-number {
     font-size: 0.8em;
   }
-  .talk-show-item.private {
+  .feed-show-item.private {
     background-color: #737373;
     color: #fff;
   }
-  .talk-right-centent.private {
+  .feed-right-centent.private {
     word-break: normal;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: default;
   }
-  .talk-right-centent.private.open {
+  .feed-right-centent.private.open {
     word-break: break-all;
   }
-  .talk-right-footer.private {
+  .feed-right-footer.private {
     align-items: center;
   }
-  .talk-right-footer-btn.private {
+  .feed-right-footer-btn.private {
     margin-right: 35px;
     font-size: 0.8em;
     cursor: pointer;
     text-decoration: underline;
     font-style: italic;
   }
-  .talk-replie-bar {
+  .feed-replie-bar {
     display: flex;
     flex-direction: column;
   }
-  .talk-replie-field {
+  .feed-replie-field {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .talk-replie-avatar {
+  .feed-replie-avatar {
     width: 28px;
     height: 28px;
     min-width: 28px;
@@ -283,25 +283,25 @@ export default {
     margin: 5px;
     margin-right: 10px;
   }
-  .talk-replie-input {
+  .feed-replie-input {
     width: 100%;
     height: 25px;
   }
-  .talk-replie-btn {
+  .feed-replie-btn {
     display: flex;
     justify-content: flex-end;
   }
-  .talk-replie-btn > button {
+  .feed-replie-btn > button {
     padding: 3px 10px;
     margin: 5px;
   }
-  .talk-centent-picture {
+  .feed-centent-picture {
     display: flex;
     margin-bottom: 15px;
     flex-wrap: wrap;
     align-items: center;
   }
-  .talk-picture-item {
+  .feed-picture-item {
     width: 80px;
     height: 80px;
     margin: 10px;
@@ -312,13 +312,13 @@ export default {
     align-items: center;
     box-shadow: 0 1px 0px -2px rgba(0,0,0,.2), 0 1px 2px 0 rgba(0,0,0,.14), 0 1px 1px 0 rgba(0,0,0,.12);
   }
-  .talk-picture-item.more {
+  .feed-picture-item.more {
     border-radius: 50%;
     width: 50px;
     height: 50px;
     background-color: #acd2ad;
   }
-  .talk-centent-video {
+  .feed-centent-video {
     width: 130px;
     height: 80px;
     margin: 10px;
@@ -330,7 +330,7 @@ export default {
     align-items: center;
     box-shadow: 0 1px 0px -2px rgba(0,0,0,.2), 0 1px 2px 0 rgba(0,0,0,.14), 0 1px 1px 0 rgba(0,0,0,.12);
   }
-  .talk-centent-video.open{
+  .feed-centent-video.open{
     width: 500px;
     height: 309px;
   }

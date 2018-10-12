@@ -2,14 +2,14 @@
   <div class="multi-bar">
     <div class="columns-btn btn"><router-link to="/columns"><icon name="columns"/></router-link></div>
     <div class="blog-btn btn"><router-link to="/blog"><icon name="book"/></router-link></div>
-    <div class="talk-btn btn"><router-link to="/talk"><icon name="comments"/></router-link></div>
+    <div class="talk-btn btn"><router-link to="/feed"><icon name="comments"/></router-link></div>
     <!-- <div class="edit-btn btn"><router-link to="/edit"><icon name="pen"/></router-link></div> -->
     <div class="edit-btn btn"><router-link to="/edit"><icon name="pen"/></router-link></div>
   </div>
 </template>
 
 <script>
-export  default {
+export default {
 
 }
 </script>
@@ -22,7 +22,7 @@ export  default {
     max-height: 100%;
     font-size: 1.2em;
     color: #777;
-  } 
+  }
   .multi-bar {
     position: fixed;
     /*

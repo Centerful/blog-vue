@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import BlogItem from '@/components/BlogItem.vue'
-import BlogItemLoad from '@/components/BlogItemLoad.vue'
+import BlogItem from '@/views/blog/children/BlogItem.vue'
+import BlogItemLoad from '@/views/blog/children/BlogItemLoad.vue'
 
 export default {
   name: 'blog',

@@ -94,7 +94,6 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    
     padding-bottom: 3px;
     background-color: #fff;
     border-radius: 3px;

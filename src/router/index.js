@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Columns from '@/views/Columns.vue'
-import Blog from '@/views/Blog.vue'
-import Talk from '@/views/Talk.vue'
-import Edit from '@/views/Edit.vue'
-import Normal from '@/views/Normal.vue'
-import Login from '@/views/Login.vue'
+import Columns from '@/views/column/Columns.vue'
+import Blog from '@/views/blog/Blog.vue'
+import Feed from '@/views/feed/Feed.vue'
+import Edit from '@/views/edit/Edit.vue'
+import Layout from '@/views/Layout.vue'
+import Login from '@/views/login/Login.vue'
+import BlogContent from '@/views/blog/BlogContent.vue'
 
-import BlogContent from '@/components/BlogContent.vue'
-import ColumnContent from '@/components/ColumnContent'
-import ColumnOpen from '@/components/ColumnOpen'
+import ColumnContent from '@/views/column/ColumnContent'
+import ColumnOpen from '@/views/column/ColumnOpen'
 
 Vue.use(Router)
 
@@ -21,7 +21,7 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       // component: () => import(/* webpackChunkName: "about" */ '@/views/Home.vue'),
-      component: Normal,
+      component: Layout,
       children: [
         { path: '', name: 'Blog', component: Blog },
         { path: 'columns', name: 'Columns', component: Columns },
@@ -29,7 +29,7 @@ export default new Router({
         { path: 'columns/open/:id', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
         { path: 'blog/:id', name: 'BlogContent', component: BlogContent },
-        { path: 'talk', name: 'Talk', component: Talk }
+        { path: 'feed', name: 'Feed', component: Feed }
       ],
       meta: {
         title: 'Centerful'

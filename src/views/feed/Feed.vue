@@ -1,8 +1,8 @@
 <template>
-  <div class="talk">
+  <div class="feed">
     <placeholder :marginTop="80"/>
-    <div class="talk-send-container">
-      <div class="talk-send-left">
+    <div class="feed-send-container">
+      <div class="feed-send-left">
         <div class="send-input"><textarea name="" id="" placeholder="Centerful.,分享此刻的想法..."></textarea></div>
         <div class="send-toolbar">
           <div class="send-emoji send-func-btn"><icon style="font-size: 1em" name="smile"/><i class="fa fa--o"></i></div>
@@ -18,14 +18,14 @@
         <span class="">添加照片</span>
       </div>
     </div>
-    <div class="talk-split">
+    <div class="feed-split">
     </div>
 
     <template v-if="loading">
-      <div class="talk-loading"></div>
-      <div class="talk-loading"></div>
-      <div class="talk-loading"></div>
-      <div class="talk-loading"></div>
+      <div class="feed-loading"></div>
+      <div class="feed-loading"></div>
+      <div class="feed-loading"></div>
+      <div class="feed-loading"></div>
     </template>
     <FeedItem v-else v-for="feed in feeds" :key="feed.id" :feed="feed"></FeedItem>
 
@@ -34,10 +34,10 @@
 
 <script>
 // @ is an alias to /src
-import FeedItem from '@/components/FeedItem.vue'
+import FeedItem from '@/views/feed/children/FeedItem.vue'
 
 export default {
-  name: 'talk',
+  name: 'feed',
   data () {
     return {
       feeds: [],
@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style scoped>
-  .talk{
+  .feed{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
@@ -81,14 +81,14 @@ export default {
     align-items: center;
     width: 100%;
   }
-  .talk-wapper {
+  .feed-wapper {
     width: 100%;
     max-width: 870px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .talk-send-container {
+  .feed-send-container {
     width: 90%;
     max-width: 620px;
     display: flex;
@@ -97,7 +97,7 @@ export default {
     border-radius: 2px;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
   }
-  .talk-send-left {
+  .feed-send-left {
     width: 82%;
   }
   .send-input >textarea {
@@ -145,7 +145,7 @@ export default {
   .send-btn {
 
   }
-  .talk-send-right {
+  .feed-send-right {
 
   }
   .send-add-picture {
@@ -160,12 +160,12 @@ export default {
   .send-add-picture > span {
     cursor: pointer;
   }
-  .talk-split {
+  .feed-split {
     border-bottom: 1px solid #ccc;
     margin: 30px;
     width: 80%;
   }
-  .talk-loading {
+  .feed-loading {
     width: 90%;
     max-width: 620px;
     display: flex;

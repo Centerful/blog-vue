@@ -13,7 +13,7 @@ import api from './api/api.js'
 
 // 自定义components
 // 占位符
-import Placeholder from '@/components/Placeholder'
+import Placeholder from '@/components/common/Placeholder'
 // 加载 进度条插件
 import Progressbar from '@/plugin/progressbar'
 

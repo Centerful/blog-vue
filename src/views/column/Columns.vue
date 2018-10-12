@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ColumnItem from '@/components/ColumnItem.vue'
+import ColumnItem from '@/views/column/children/ColumnItem.vue'
 
 export default {
   name: 'columns',
