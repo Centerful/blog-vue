@@ -12,6 +12,8 @@ import feedReplieData from '@/api/mock/feed-replies-data.js'
 import columnData from '@/api/mock/columns-data.js'
 // columnDetail数据
 import columnDetailData from '@/api/mock/columns-detail-data.js'
+// 编辑页面文章信息.
+import dirData from '@/api/mock/edit-dir-data.js'
 
 axios.defaults.withCredentials = true
 
@@ -74,6 +76,11 @@ export default {
     setTimeout(function () {
       cb(detailData)
     }, 800)
+  },
+  getDirs: (cb) => {
+    setTimeout(function () {
+      cb(dirData)
+    }, 300)
   },
   getNews: data => {
     return axios.get(url.newsList, {params: data})
