@@ -1,17 +1,17 @@
 import axios from 'axios'
 // import qs from 'qs'
 // 引入data数据.其实应该通过axios发送ajax请求本地json文件,本地需要部署nginx进行反向代理或是提供服务器功能.
-import blogData from '@/mock/blogs-data.js'
+import blogData from '@/api/mock/blogs-data.js'
 // 引入blog明细数据
-import blogDetailData from '@/mock/blogs-detail-data.js'
+import blogDetailData from '@/api/mock/blogs-detail-data.js'
 // feed数据
-import feedData from '@/mock/feed-data.js'
+import feedData from '@/api/mock/feed-data.js'
 // feed的replie数据
-import feedReplieData from '@/mock/feed-replies-data.js'
+import feedReplieData from '@/api/mock/feed-replies-data.js'
 // columns数据
-import columnData from '@/mock/columns-data.js'
+import columnData from '@/api/mock/columns-data.js'
 // columnDetail数据
-import columnDetailData from '@/mock/columns-detail-data.js'
+import columnDetailData from '@/api/mock/columns-detail-data.js'
 
 axios.defaults.withCredentials = true
 
@@ -26,6 +26,7 @@ let url = {
 // 包装各种请求,返回请求数据,并处理请求错误.
 const LATENCY = 2000
 
+// 接口统一管理
 export default {
   getBlogs: cb => {
     // return axios.post(url.login, qs.stringify(data))

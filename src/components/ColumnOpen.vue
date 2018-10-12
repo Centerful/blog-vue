@@ -29,11 +29,11 @@
             <span>zhuanlan.centerful.org/</span>
             <input type="text" class="">
           </div>
-          
         </div>
         <div class="form-columns-bar">
-          <button class="columns-bar-back" @click="back()">返回</button>
-          <button class="columns-bar-submit" @click="open()">申请开通</button>
+          <!-- 阻止默认事件 -> 阻止form进行onsubmit事件,却无参数可以提交-然后在#号前边存在问号的问题. -->
+          <button class="columns-bar-back" @click.prevent="back()">返回</button>
+          <button class="columns-bar-submit" @click.prevent="open()">申请开通</button>
         </div>
       </form>
     </div>
@@ -58,6 +58,7 @@ export default {
     // 返回路由的上一级
     back () {
       this.$router.go(-1)
+      // this.$router.push({ name: 'Columns' })
     }
   }
 }
@@ -99,7 +100,6 @@ export default {
     color: #a2a2a2;
   }
   .columns-form {
-    
   }
   .form-columns {
     display: flex;

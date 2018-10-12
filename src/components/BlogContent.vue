@@ -38,7 +38,7 @@
         <article class="blog-container">
           <div class="blog-title"><h2>{{ blog.blogTitle }}</h2></div>
           <div class="blog-title-split"></div>
-          <div class="blog-content" v-html="blog.blogHtml"></div>
+          <div class="blog-html" v-html="blog.blogHtml"></div>
         </article>
         <!-- <div class="blog-reward">
           自定义输入内容
@@ -96,6 +96,9 @@ export default {
 </script>
 
 <style scoped>
+  .blog-content {
+    width: 100%;
+  }
   .blog-placeholder {
     width: 100%;
     height: 60px;
@@ -192,7 +195,7 @@ export default {
     border-bottom: 2px solid #8282828a;
     margin-top: 9px;
   }
-  .blog-content {
+  .blog-html {
     font-size: 0.965em;
     line-height: 1.5em;
     width: 100%;

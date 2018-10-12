@@ -1,0 +1,78 @@
+<template>
+  <div class="multi-bar">
+    <div class="columns-btn btn"><router-link to="/columns"><icon name="columns"/></router-link></div>
+    <div class="blog-btn btn"><router-link to="/blog"><icon name="book"/></router-link></div>
+    <div class="talk-btn btn"><router-link to="/talk"><icon name="comments"/></router-link></div>
+    <!-- <div class="edit-btn btn"><router-link to="/edit"><icon name="pen"/></router-link></div> -->
+    <div class="edit-btn btn"><router-link to="/edit"><icon name="pen"/></router-link></div>
+  </div>
+</template>
+
+<script>
+export  default {
+
+}
+</script>
+
+<style scoped>
+  .fa-icon {
+    width: auto;
+    height: 1em;
+    max-width: 100%;
+    max-height: 100%;
+    font-size: 1.2em;
+    color: #777;
+  } 
+  .multi-bar {
+    position: fixed;
+    /*
+    居中的button
+    left: 1%;
+    bottom: 3.5%;
+    width: 60px;
+    height: 85%;
+    */
+    /*左下角button*/
+    left: 2%;
+    bottom: 4.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn{
+    width: 40px;
+    height: 40px;
+    background-color: #757575;
+    margin: 3px 0;
+    /**/
+    will-change: box-shadow;
+    border-radius: 50%;
+    cursor: pointer;
+
+    background-color: inherit;
+    border-color: #fff;
+    transition: all 0.5s ease-out;
+  }
+  .btn:hover{
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px 1px, rgba(0, 0, 0, 0.14) 0px 3px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+    background-color: #cacaca;
+    transition: background-color 0.5s ease-out;
+  }
+  .btn:active {
+    background-color: #ccc;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 15px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+    transition: background-color 0.5s ease-out;
+  }
+  .btn > a {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn > a > i {
+    font-size: 1.45em;
+    color: #636363;
+  }
+</style>
