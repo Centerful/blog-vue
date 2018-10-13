@@ -7,10 +7,7 @@
           <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)">
           <div class="edit-title-split"></div>
           <div class="edit-content">
-            <div id="test-editormd">
-              <textarea style="display:none;">
-              </textarea>
-            </div>
+            <Editormd></Editormd>
           </div>
         </div>
       </div>
@@ -21,6 +18,8 @@
 
 <script>
 import EditSideBar from '@/views/edit/children/EditSideBar.vue'
+import Editormd from '@/views/edit/children/Editormd.vue'
+
 export default {
   data () {
     return {
@@ -41,7 +40,7 @@ export default {
       })
     }
   },
-  components: { EditSideBar }
+  components: { EditSideBar, Editormd }
 }
 </script>
 

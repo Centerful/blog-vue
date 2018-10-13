@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Columns from '@/views/column/Columns.vue'
+import ColumnContent from '@/views/column/ColumnContent'
+import ColumnOpen from '@/views/column/ColumnOpen'
 import Blog from '@/views/blog/Blog.vue'
 import Feed from '@/views/feed/Feed.vue'
 import Edit from '@/views/edit/Edit.vue'
 import Layout from '@/views/Layout.vue'
 import Login from '@/views/login/Login.vue'
 import BlogContent from '@/views/blog/BlogContent.vue'
-
-import ColumnContent from '@/views/column/ColumnContent'
-import ColumnOpen from '@/views/column/ColumnOpen'
 
 Vue.use(Router)
 
@@ -23,7 +22,7 @@ export default new Router({
       // component: () => import(/* webpackChunkName: "about" */ '@/views/Home.vue'),
       component: Layout,
       children: [
-        { path: '', name: 'Blog', component: Blog },
+        { path: '', name: 'welcome', component: Blog },
         { path: 'columns', name: 'Columns', component: Columns },
         { path: 'columns/:id', name: 'ColumnContent', component: ColumnContent },
         { path: 'columns/open/:id', name: 'ColumnOpen', component: ColumnOpen },

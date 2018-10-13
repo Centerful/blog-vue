@@ -1,10 +1,10 @@
 import './lib/waves.css'
 import Waves from './lib/waves.js'
 
-function install (vue, options = { name: 'wave' }) {
+function install (Vue, options = { name: 'wave' }) {
   Vue.directive(options.name, {
     inserted (el, binding) {
-      
+
     }
   })
   Vue.mixin({
