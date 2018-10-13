@@ -11,3 +11,7 @@ memo: 将项目中的固定图片资源放在src/assets/img目录下.
 5.api.js扩展为使用fetch,async函数,await同步修饰符,promise对象的ajax请求,真实的请求后端服务器json数据.->是否需要nginx代理?
 
 6.页面基础元素使用material design风格.
+
+7.编写vue-waves插件,使用现成的waves.js库,封装成vue插件.参考github上vue-waves的项目[https://github.com/Teddy-Zhu/vue-waves]
+
+8.了解下 vm.$on,$emit,$dis...

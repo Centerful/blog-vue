@@ -49,7 +49,7 @@ export default {
 
 <style scoped>
   .edit-side-bar {
-    font-size: 0.85em;
+    font-size: 0.95em;
   }
   .edit-side-fake {
     position: fixed;

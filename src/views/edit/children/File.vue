@@ -2,10 +2,10 @@
   <li>
     <a class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
-        <span class="e-icon"><icon name="file"/></span>
+        <span class="e-icon"><icon name="file" :style="{color: '#666'}"/></span>
         <span class="e-name">{{ file.name }}</span>
       </span>
-      <span class="e-btn" :class="{ show: isHover }"><icon name="cog"/></span>
+      <span class="e-btn" @click.stop="" :class="{ show: isHover }" :style="{color: '#666'}"><icon name="cog"/></span>
     </a>
   </li>
 </template>
@@ -68,5 +68,9 @@ export default {
   .e-btn.show {
     opacity: 1;
     transition: opacity 0.2s ease-in-out;
+  }
+  .e-btn:hover {
+    background: #cecece;
+    transition: background 0.25s ease-in-out;
   }
 </style>

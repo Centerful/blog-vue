@@ -2,19 +2,19 @@
   <li class="e-dir">
     <a @mouseover="isHover = true" @mouseout="isHover = false" @click="fold = !fold" >
       <span class="e-row">
-        <span class="e-icon"><icon name="book"/></span>
-        <span clas s="e-name">{{ dir.name }}</span>
+        <span class="e-icon"><icon name="book" :style="{color: '#666'}"/></span>
+        <span class="e-name">{{ dir.name }}</span>
       </span>
-      <span class="e-btn" :class="{ show: isHover }"><icon name="cog"/></span>
+      <span class="e-btn" @click.stop="" :class="{ show: isHover }"><icon name="cog" :style="{color: '#666'}"/></span>
     </a>
     <ul :style="{ height:subHeight + 'px' }">
       <li>
-        <a class="e-create-blog" @mouseover="subIsHover = true" @mouseout="subIsHover = false">
+        <a class="e-create-blog">
           <span class="e-row">
             <span class="e-icon"><icon name="plus"/></span>
             <span class="e-name">新建文章</span>
           </span>
-          <span class="e-btn" :class="{ show: subIsHover }"><icon name="cog"/></span>
+          <span class="e-btn"></span>
         </a>
       </li>
       <file v-for="file in dir.files" :key="file.id" :file="file"></file>
@@ -29,7 +29,6 @@ export default {
   data () {
     return {
       isHover: false,
-      subIsHover: false,
       fold: true,
       subHeight2: 0
     }
@@ -116,5 +115,9 @@ export default {
   .e-btn.show {
     opacity: 1;
     transition: opacity 0.2s ease-in-out;
+  }
+  .e-btn:hover {
+    background: #cecece;
+    transition: background 0.25s ease-in-out;
   }
 </style>
