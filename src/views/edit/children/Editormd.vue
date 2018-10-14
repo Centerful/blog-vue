@@ -7,9 +7,10 @@
 </template>
 
 <script>
-if (typeof window !== 'undefined') {
-  var $s = require('scriptjs')
-}
+// if (typeof window !== 'undefined') {
+//   var $s = require('scriptjs')
+// }
+import $s from 'scriptjs'
 
 export default {
   props: {
