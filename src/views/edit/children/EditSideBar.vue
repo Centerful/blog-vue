@@ -22,8 +22,8 @@
             <Dir v-for="dir in dirs" :key="dir.id" :dir="dir"></Dir>
           </ul>
         </section>
-        <footer class="edit-footer">
-          <a href="./../list/blog-list-down-page.html">回到首页</a>
+        <footer @click="back" class="edit-footer">
+          <a>回到首页</a>
         </footer>
       </div>
     </div>
@@ -43,6 +43,9 @@ export default {
   },
   components: { Dir },
   methods: {
+    back () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
@@ -206,6 +209,8 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: #ddd;
+
+    cursor: pointer;
   }
   .edit-footer > a {
     font-size: 0.97em;

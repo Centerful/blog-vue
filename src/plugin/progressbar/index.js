@@ -4,7 +4,7 @@ import ProgressBar from './ProgressBar.vue'
 function install (Vue, options = {}) {
   // 默认配置
   const DEFUALT_OPTIONS = {
-    height: '3px',
+    height: '2px',
     isShow: false,
     reStart: true
   }

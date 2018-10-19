@@ -22,27 +22,6 @@ export default {
       type: String,
       default: 'editor-md'
     },
-    editorConfig2: {
-      type: Object,
-      default () {
-        return {
-          path: 'static/editor.md/lib/',
-          height: 1000,
-          taskList: true,
-          tex: true,
-          flowChart: true,
-          sequenceDiagram: true,
-          syncScrolling: 'single',
-          htmlDecode: 'style,script,iframe|filterXSS',
-          imageUpload: true,
-          imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp', 'JPG', 'JPEG', 'GIF', 'PNG', 'BMP', 'WEBP'],
-          imageUploadURL: '/api/page/uploadImg',
-          onload: () => {
-            console.log('editor-md is onload!')
-          }
-        }
-      }
-    },
     editorConfig: {
       type: Object,
       default () {
@@ -61,7 +40,6 @@ export default {
           },
           toolbarHandlers: {
             myPreview: function (cm, icon, cursor, selection) {
-              console.log(this)
               this.watch()
               this.unwatch()
               this.previewing()
@@ -72,23 +50,32 @@ export default {
               myPreview: '预览文章'
             }
           },
-          onload: function () {
+          onload () {
             $("i[name='watch']").parent().css('display', 'none')
+            $('.editormd').css('border', 'none')
+            console.log($('.CodeMirror-lines'))
+            $('.CodeMirror-lines').css('marginBottom', '450px')
+            $('.CodeMirror-gutters').css('border', 'none').css('backgroundColor', '#FFF')
+            
+            // setTimeout(() => {
+            //   console.log($('.CodeMirror-lines'))
+            // }, 1)
+
           },
-          onwatch: function () {
+          onwatch () {
           },
-          onpreviewing: function () {
+          onpreviewing () {
             $('.editormd-preview-container').css('padding', '20px 5px 50px 5px')
             $('.editormd-preview').css('position', 'relative')
           },
-          onpreviewed: function () {
+          onpreviewed () {
           },
-          onfullscreen: function () {
+          onfullscreen () {
             this.watch()
             $("i[name='watch']").parent().css('display', 'inline-block')
             $("i[name='myPreview']").parent().css('display', 'none')
           },
-          onfullscreenExit: function () {
+          onfullscreenExit () {
             this.unwatch()
             $("i[name='watch']").parent().css('display', 'none')
             $("i[name='myPreview']").parent().css('display', 'inline-block')
@@ -96,12 +83,19 @@ export default {
           }
         }
       }
+    },
+    blogId: {
+      type: Number,
+      required: true
     }
   },
   data () {
     return {
       editorPath: 'static/editor.md'
     }
+  },
+  created () {
+    
   },
   mounted () {
     $s([ `${this.editorPath}/../jquery.min.js`, `${this.editorPath}/lib/raphael.min.js`, `${this.editorPath}/lib/flowchart.min.js` ],
@@ -112,10 +106,12 @@ export default {
               this.initEditor()
             })
             $s(`${this.editorPath}/../highlight/highlight.min.js`, () => {
-              // hljs.initHighlightingOnLoad()
+              hljs.initHighlightingOnLoad()
             })
           })
       })
+    this.$nextTick(() => {
+    })
   },
   methods: {
     initEditor () {
@@ -130,7 +126,7 @@ export default {
 </script>
 
 <style scoped>
-  .editormd {
+  /*.editormd {
     border: none !important;
-  }
+  }*/
 </style>

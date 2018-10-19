@@ -1,15 +1,17 @@
 <template>
   <li class="e-dir">
-    <a @mouseover="isHover = true" @mouseout="isHover = false" @click="fold = !fold" >
+    <a v-waves @mouseover="isHover = true" @mouseout="isHover = false" @click="fold = !fold">
       <span class="e-row">
-        <span class="e-icon"><icon name="book" :style="{color: '#666'}"/></span>
+        <span class="e-icon"><icon :name="dir.type" :style="{color: '#666'}"/></span>
         <span class="e-name">{{ dir.name }}</span>
       </span>
-      <span class="e-btn" @click.stop="" :class="{ show: isHover }"><icon name="cog" :style="{color: '#666'}"/></span>
+      <div v-waves @click.stop="doCog">
+        <span class="e-btn" :class="{ show: isHover }"><icon name="cog" :style="{color: '#666'}"/></span>
+      </div>
     </a>
     <ul :style="{ height:subHeight + 'px' }">
-      <li>
-        <a class="e-create-blog">
+      <li v-if="dir.type == 'book'">
+        <a v-waves class="e-create-blog">
           <span class="e-row">
             <span class="e-icon"><icon name="plus"/></span>
             <span class="e-name">新建文章</span>
@@ -43,6 +45,11 @@ export default {
       }
     }
   },
+  methods: {
+    doCog () {
+
+    }
+  },
   watch: {
   }
 }
@@ -51,6 +58,9 @@ export default {
 <style scoped>
   a {
     cursor: pointer;
+  }
+  a > div {
+    border-radius: 3px;
   }
   .e-dir > a{
     height: 48px;

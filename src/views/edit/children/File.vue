@@ -1,11 +1,13 @@
 <template>
   <li>
-    <a class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
+    <a v-waves class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
         <span class="e-icon"><icon name="file" :style="{color: '#666'}"/></span>
         <span class="e-name">{{ file.name }}</span>
       </span>
-      <span class="e-btn" @click.stop="" :class="{ show: isHover }" :style="{color: '#666'}"><icon name="cog"/></span>
+      <div v-waves>
+        <span class="e-btn" @click.stop="doCog" :class="{ show: isHover }" :style="{color: '#666'}"><icon name="cog"/></span>
+      </div>
     </a>
   </li>
 </template>
@@ -16,6 +18,11 @@ export default {
   data () {
     return {
       isHover: false
+    }
+  },
+  methods: {
+    doCog () {
+
     }
   }
 }
@@ -38,6 +45,9 @@ export default {
     border-radius: 3px;
     background: #fff;
     transition: background 0.3s ease-in-out;
+  }
+  a > div {
+    border-radius: 3px;
   }
   .e-row {
     display: flex;

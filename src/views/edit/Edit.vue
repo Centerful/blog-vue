@@ -7,7 +7,7 @@
           <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)">
           <div class="edit-title-split"></div>
           <div class="edit-content">
-            <Editormd></Editormd>
+            <Editormd :blogId="1"></Editormd>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ export default [
   {
     id: 1,
     name: '村上春树',
-    type: 'dir',
+    type: 'book',
     files: [
       {
         id: 11,
@@ -33,7 +33,7 @@ export default [
   {
     id: 2,
     name: '轻小说',
-    type: 'dir',
+    type: 'book',
     files: [
       {
         id: 21,

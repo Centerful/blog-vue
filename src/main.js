@@ -16,6 +16,8 @@ import api from './api/api.js'
 import Placeholder from '@/components/common/Placeholder'
 // 加载 进度条插件
 import Progressbar from '@/plugin/progressbar'
+import Waves from '@/plugin/waves'
+
 
 Vue.config.productionTip = false
 
@@ -27,6 +29,7 @@ Vue.component('icon', Icon)
 Vue.component('placeholder', Placeholder)
 
 Vue.use(Progressbar)
+Vue.use(Waves)
 
 new Vue({
   el: '#app',
