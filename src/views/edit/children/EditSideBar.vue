@@ -42,6 +42,8 @@ export default {
     }
   },
   components: { Dir },
+  mounted () {
+  },
   methods: {
     back () {
       this.$router.go(-1)

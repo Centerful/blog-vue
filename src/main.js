@@ -16,8 +16,10 @@ import api from './api/api.js'
 import Placeholder from '@/components/common/Placeholder'
 // 加载 进度条插件
 import Progressbar from '@/plugin/progressbar'
+// 加载waves插件
 import Waves from '@/plugin/waves'
-
+// 加载Event bus插件.
+import bus from '@/plugin/bus'
 
 Vue.config.productionTip = false
 
@@ -30,6 +32,7 @@ Vue.component('placeholder', Placeholder)
 
 Vue.use(Progressbar)
 Vue.use(Waves)
+Vue.use(bus)
 
 new Vue({
   el: '#app',

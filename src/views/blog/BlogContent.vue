@@ -84,7 +84,7 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getBlogDetails(this.$route.params.id, (resp) => {
+      this.api.getBlog(this.$route.params.id, (resp) => {
         this.blog = resp
         this.loading = false
         this.$progress.finish()

@@ -1,8 +1,7 @@
 <template>
   <div :id="id">
     <link href="static/editor.md/css/editormd.min.css" rel="stylesheet">
-    <textarea style="display:none;">
-    </textarea>
+    <textarea style="display:none;"></textarea>
   </div>
 </template>
 
@@ -11,6 +10,7 @@
 //   var $s = require('scriptjs')
 // }
 import $s from 'scriptjs'
+let thisEditor = null
 
 export default {
   props: {
@@ -30,6 +30,7 @@ export default {
           width: '100%',
           syncScrolling: 'single',
           autoHeight: true,
+          placeholder: '写点什么...',
           watch: false,
           toolbarIcons: function () {
             return [ 'bold', 'del', 'italic', 'quote', 'list-ul', 'list-ol', 'hr', '|', 'link', 'reference-link', 'image', 'code', 'preformatted-text', 'code-block', 'table', '||', 'watch', 'myPreview', 'fullscreen', 'help' ]
@@ -53,14 +54,10 @@ export default {
           onload () {
             $("i[name='watch']").parent().css('display', 'none')
             $('.editormd').css('border', 'none')
-            console.log($('.CodeMirror-lines'))
-            $('.CodeMirror-lines').css('marginBottom', '450px')
+            $('.CodeMirror-lines').css('marginBottom', '350px')
             $('.CodeMirror-gutters').css('border', 'none').css('backgroundColor', '#FFF')
-            
-            // setTimeout(() => {
-            //   console.log($('.CodeMirror-lines'))
-            // }, 1)
-
+            $('.editormd-html-preview, .editormd-preview-container').css('fontSize', '15px')
+            // $('.editormd .CodeMirror pre').css('fontSize', '15px') 修改的edit-lib的css文件
           },
           onwatch () {
           },
@@ -83,10 +80,6 @@ export default {
           }
         }
       }
-    },
-    blogId: {
-      type: Number,
-      required: true
     }
   },
   data () {
@@ -95,7 +88,7 @@ export default {
     }
   },
   created () {
-    
+    this.eventListener()
   },
   mounted () {
     $s([ `${this.editorPath}/../jquery.min.js`, `${this.editorPath}/lib/raphael.min.js`, `${this.editorPath}/lib/flowchart.min.js` ],
@@ -117,9 +110,19 @@ export default {
     initEditor () {
       this.$nextTick((editormd = window.editormd) => {
         if (editormd) {
-          editormd(this.id, this.editorConfig)
+          thisEditor = editormd(this.id, this.editorConfig)
         }
       })
+    },
+    eventListener () {
+      this.$bus.on('setBlogText', this.setBlogText)
+      this.$bus.on('clearBlogText', this.clearBlogText)
+    },
+    setBlogText (blogText) {
+      thisEditor.setMarkdown(blogText)
+    },
+    clearBlogText () {
+      thisEditor.setMarkdown(null)
     }
   }
 }

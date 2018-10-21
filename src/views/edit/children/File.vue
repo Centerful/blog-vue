@@ -1,6 +1,6 @@
 <template>
   <li>
-    <a v-waves class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
+    <a v-waves @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
         <span class="e-icon"><icon name="file" :style="{color: '#666'}"/></span>
         <span class="e-name">{{ file.name }}</span>
@@ -23,6 +23,9 @@ export default {
   methods: {
     doCog () {
 
+    },
+    getBlog () {
+      this.$bus.emit('getBlog', this.file.id)
     }
   }
 }

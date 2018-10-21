@@ -11,7 +11,7 @@
     </a>
     <ul :style="{ height:subHeight + 'px' }">
       <li v-if="dir.type == 'book'">
-        <a v-waves class="e-create-blog">
+        <a v-waves @click="addBlog" class="e-create-blog">
           <span class="e-row">
             <span class="e-icon"><icon name="plus"/></span>
             <span class="e-name">新建文章</span>
@@ -48,6 +48,9 @@ export default {
   methods: {
     doCog () {
 
+    },
+    addBlog () {
+      this.$bus.emit('addBlog')
     }
   },
   watch: {

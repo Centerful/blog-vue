@@ -1,5 +1,16 @@
 export default [
   {
+    id: 11,
+    name: '哈利波特',
+    type: 'book',
+    files: [
+      {
+        id: 9527,
+        name: '幸存的男孩'
+      }
+    ]
+  },
+  {
     id: 1,
     name: '村上春树',
     type: 'book',

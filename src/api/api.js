@@ -37,7 +37,7 @@ export default {
       cb(blogData)
     }, LATENCY)
   },
-  getBlogDetails: (blogId, cb) => {
+  getBlog: (blogId, cb) => {
     let blogDetail = blogDetailData.find((e) => {
       if (e.blogID === parseInt(blogId)) {
         return e
@@ -81,6 +81,11 @@ export default {
     setTimeout(function () {
       cb(dirData)
     }, 300)
+  },
+  getBlogId: (cb) => {
+    setTimeout(function () {
+      cb(Math.floor(Math.random() * 1000 + 1))
+    }, 100)
   },
   getNews: data => {
     return axios.get(url.newsList, {params: data})
