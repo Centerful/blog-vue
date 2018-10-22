@@ -1,7 +1,7 @@
 <template>
   <div :id="id">
     <link href="static/editor.md/css/editormd.min.css" rel="stylesheet">
-    <textarea style="display:none;"></textarea>
+    <textarea v-html="blogContent" style="display:none;"></textarea>
   </div>
 </template>
 
@@ -10,10 +10,13 @@
 //   var $s = require('scriptjs')
 // }
 import $s from 'scriptjs'
-let thisEditor = null
 
 export default {
   props: {
+    // 当type为html时,blogContent必填.
+    blogContent: {
+      type: String
+    },
     type: {
       type: String,
       default: 'editor'
@@ -52,12 +55,11 @@ export default {
             }
           },
           onload () {
-            $("i[name='watch']").parent().css('display', 'none')
             $('.editormd').css('border', 'none')
+            $("i[name='watch']").parent().css('display', 'none')
             $('.CodeMirror-lines').css('marginBottom', '350px')
             $('.CodeMirror-gutters').css('border', 'none').css('backgroundColor', '#FFF')
-            $('.editormd-html-preview, .editormd-preview-container').css('fontSize', '15px')
-            // $('.editormd .CodeMirror pre').css('fontSize', '15px') 修改的edit-lib的css文件
+            $('.editormd .CodeMirror pre').css('fontSize', '14.8px')
           },
           onwatch () {
           },
@@ -84,7 +86,8 @@ export default {
   },
   data () {
     return {
-      editorPath: 'static/editor.md'
+      editorPath: 'static/editor.md',
+      instance: null
     }
   },
   created () {
@@ -110,19 +113,32 @@ export default {
     initEditor () {
       this.$nextTick((editormd = window.editormd) => {
         if (editormd) {
-          thisEditor = editormd(this.id, this.editorConfig)
+          if (this.type == 'editor') {
+            this.instance = editormd(this.id, this.editorConfig)  
+          } else {
+            this.instance = editormd.markdownToHTML(this.id, this.editorConfig);
+          }
         }
+        this.md_css()
       })
+    },
+    md_css () {
+      $('.editormd-html-preview, .editormd-preview-container').css('fontSize', '15px')
+      if (this.type == 'html') {
+        $('.editormd-html-preview, .editormd-preview-container').css('padding', '0')
+        $('.editormd-html-preview, .editormd-preview-container').css('paddingTop', '10px')
+      }
     },
     eventListener () {
       this.$bus.on('setBlogText', this.setBlogText)
       this.$bus.on('clearBlogText', this.clearBlogText)
     },
     setBlogText (blogText) {
-      thisEditor.setMarkdown(blogText)
+      console.log(this.instance)
+      this.instance.setMarkdown(blogText)
     },
     clearBlogText () {
-      thisEditor.setMarkdown(null)
+      this.instance.setMarkdown(null)
     }
   }
 }

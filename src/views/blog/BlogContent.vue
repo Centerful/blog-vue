@@ -38,7 +38,10 @@
         <article class="blog-container">
           <div class="blog-title"><h2>{{ blog.blogTitle }}</h2></div>
           <div class="blog-title-split"></div>
-          <div class="blog-html" v-html="blog.blogHtml"></div>
+          <!-- v-html="blog.blogHtml" -->
+          <div class="blog-html">
+            <Editormd type="html" :blogContent="blog.blogText"></Editormd>
+          </div>
         </article>
         <!-- <div class="blog-reward">
           自定义输入内容
@@ -70,6 +73,7 @@
 <script>
 import BlogColumnItem from '@/views/blog/children/BlogColumnItem.vue'
 import Recommendations from '@/views/blog/children/Recommendations.vue'
+import Editormd from '@/views/edit/children/Editormd.vue'
 
 export default {
   data () {
@@ -91,7 +95,7 @@ export default {
       })
     }
   },
-  components: { BlogColumnItem, Recommendations }
+  components: { BlogColumnItem, Recommendations, Editormd }
 }
 </script>
 
@@ -192,7 +196,7 @@ export default {
   }
   .blog-title-split {
     margin: 3px 15px 3px 3px;
-    border-bottom: 2px solid #8282828a;
+    border-bottom: 1px solid #8282828a;
     margin-top: 9px;
   }
   .blog-html {
