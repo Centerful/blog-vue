@@ -59,7 +59,6 @@ export default {
             $("i[name='watch']").parent().css('display', 'none')
             $('.CodeMirror-lines').css('marginBottom', '350px')
             $('.CodeMirror-gutters').css('border', 'none').css('backgroundColor', '#FFF')
-            $('.editormd .CodeMirror pre').css('fontSize', '14.8px')
           },
           onwatch () {
           },
@@ -73,12 +72,14 @@ export default {
             this.watch()
             $("i[name='watch']").parent().css('display', 'inline-block')
             $("i[name='myPreview']").parent().css('display', 'none')
+            $('.CodeMirror-scroll').attr('style', 'overflow:scroll !important;');
           },
           onfullscreenExit () {
             this.unwatch()
             $("i[name='watch']").parent().css('display', 'none')
             $("i[name='myPreview']").parent().css('display', 'inline-block')
             $(".CodeMirror-vscrollbar").css('display', 'none')
+            $('.CodeMirror-scroll').attr('style', 'overflow:hidden !important;');
           }
         }
       }
@@ -136,6 +137,7 @@ export default {
     setBlogText (blogText) {
       console.log(this.instance)
       this.instance.setMarkdown(blogText)
+      $('.CodeMirror-scroll').attr('style', 'overflow:hidden !important;');
     },
     clearBlogText () {
       this.instance.setMarkdown(null)

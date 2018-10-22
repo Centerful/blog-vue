@@ -8,7 +8,7 @@
           <header class="head-right">
             <icon class="head-btn" name="toggle-off"/>
             <icon class="head-btn" name="bell"/>
-            <div class="h-auth"></div>
+            <div class="h-auth" @click="login"></div>
           </header>
         </div>
         <progress-bar></progress-bar>
@@ -22,6 +22,11 @@ export default {
   name: 'headbar',
   data () {
     return {}
+  },
+  methods: {
+    login () {
+      this.$router.push({ name: 'Login' })
+    }
   }
 }
 </script>

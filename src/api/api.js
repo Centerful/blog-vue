@@ -87,7 +87,13 @@ export default {
       cb(Math.floor(Math.random() * 1000 + 1))
     }, 100)
   },
-  getNews: data => {
-    return axios.get(url.newsList, {params: data})
+  login: data => {
+    return axios.get(url.login, {params: data})
+  },
+  register: data => {
+    // TODO
+  },
+  visitor: data => {
+    // TODO
   }
 }

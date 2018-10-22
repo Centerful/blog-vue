@@ -13,8 +13,10 @@ memo: 将项目中的固定图片资源放在src/assets/img目录下.
 - [x] 了解下 vm.$on,$emit,$dis...
 - [ ] edit的题图hover上去要会变色,click后可以更换题图.
 - [ ] 研究下图片上传问题,使用七牛图片云服务?
-- [ ] feed页面UI根据google+的风格进行调整.
+- [ ] feed页面UI根据google+的风格进行调整.-UI优化可以放在后端搭建完成后.
 - [ ] 各页面的交互功能还需再完善,可用一点.
+- [ ] 添加plan页面.
+- [ ] 添加登录与注册页面.
 - [ ] 编写button,input,select,弹窗,提示等控件的ui.
 - [ ] 使用node.js+MongoDB编写后端接口.
 - [ ] 使用springboot开发后端.
