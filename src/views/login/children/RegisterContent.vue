@@ -53,7 +53,7 @@ export default {
       // 2.
       let formData = {}
       this.api.register(formData).then((resp) => {
-        console.log(resp);
+        console.log(resp)
         // 显示注册成功
       }).catch((error) => {
         console.log(error)

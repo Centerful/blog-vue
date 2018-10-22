@@ -34,7 +34,7 @@ export default {
       // 加载动画
       let formData = {}
       this.api.login(formData).then((resp) => {
-        console.log(resp);
+        console.log(resp)
         // 结束动画
       }).catch((error) => {
         console.log(error)
