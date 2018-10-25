@@ -7,8 +7,8 @@
         <div class="columns-bg-mask"></div>
         <div class="columns-bg-inner">
           <span class="columns-summary">带来极致创作体验</span>
-          <button class="columns-write-btn" @click="writeBlog()">开始写文章</button>
-          <button class="columns-open-btn" @click="openColumn()">开通专栏</button>
+          <button class="columns-write-btn" @click="writeBlog">开始写文章</button>
+          <button class="columns-open-btn" @click="openColumn">开通专栏</button>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ export default {
       })
     },
     writeBlog () {
-
+      this.$router.push({ name: 'Edit' })
     },
     openColumn () {
       // 当前用户的id.
