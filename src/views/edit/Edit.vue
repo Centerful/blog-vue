@@ -26,9 +26,9 @@ export default {
   },
   methods: {
     fetchData () {
-      this.api.getDirs((resp) => {
+      this.api.getBooks((resp) => {
         this.dirs = resp
-      })
+      }, { userId: 999 })
     }
   },
   components: { EditSideBar, EditContent }

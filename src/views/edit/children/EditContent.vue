@@ -41,7 +41,7 @@ export default {
       // 去后台拉取一个新的id,将blog题图,title,文章内容清空.
       console.log('addBlog')
       this.blogId = null
-      this.api.getBlogId((blogId) => {
+      this.api.getSeq((blogId) => {
         this.blogId = blogId
       })
       this.blogImg = null
@@ -54,13 +54,13 @@ export default {
         return
       }
       this.blogId = id
-      this.api.getBlog(this.blogId, (resp) => {
+      this.api.getBlog((resp) => {
         // 添加题图与title
         this.blogTitle = resp.blogTitle
         this.blogImg = resp.blogImg
         // 添加博客内容
         this.$bus.emit('setBlogText', resp.blogText)
-      })
+      }, this.blogId)
     }
   }
 

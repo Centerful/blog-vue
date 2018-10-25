@@ -135,7 +135,6 @@ export default {
       this.$bus.on('clearBlogText', this.clearBlogText)
     },
     setBlogText (blogText) {
-      console.log(this.instance)
       this.instance.setMarkdown(blogText)
       $('.CodeMirror-scroll').attr('style', 'overflow:hidden !important;');
     },

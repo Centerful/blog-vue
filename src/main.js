@@ -9,6 +9,8 @@ import router from './router'
 import 'vue-awesome/icons/'
 import Icon from 'vue-awesome/components/Icon'
 // 引入本地请求api
+import api_mock from './api/api-mock.js'
+// 连接服务器端的api
 import api from './api/api.js'
 
 // 自定义components
@@ -23,7 +25,7 @@ import bus from '@/plugin/bus'
 
 Vue.config.productionTip = false
 
-// 配置api
+// 配置api,api_mock
 Vue.prototype.api = api
 
 /* eslint-disable no-new */

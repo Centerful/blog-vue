@@ -88,11 +88,11 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getBlog(this.$route.params.id, (resp) => {
+      this.api.getBlog((resp) => {
         this.blog = resp
         this.loading = false
         this.$progress.finish()
-      })
+      }, this.$route.params.id)
     }
   },
   components: { BlogColumnItem, Recommendations, Editormd }

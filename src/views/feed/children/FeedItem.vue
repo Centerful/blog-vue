@@ -110,10 +110,10 @@ export default {
         this.feedId = null
       } else {
         this.feedId = this.feed.id
-        this.api.getFeedReplies(this.feed.id, (resp) => {
+        this.api.getFeedComments((resp) => {
           console.log(resp)
           this.feedReplies = resp
-        })
+        }, this.feed.id)
       }
     }
   }

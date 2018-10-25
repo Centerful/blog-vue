@@ -69,16 +69,16 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getColumnDetail(this.$route.params.id, (resp) => {
+      this.api.getColumnDetail((resp) => {
         this.detail = resp
         this.$progress.finish()
         this.loading = false
-      })
+      }, this.$route.params.id)
       this.BlogLoading = true
-      this.api.getBlogs((resp) => {
+      this.api.getColumnBlogs((resp) => {
         this.BlogLoading = false
         this.blogs = resp
-      })
+      }, this.$route.params.id)
     }
   }
 }
