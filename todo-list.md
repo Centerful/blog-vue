@@ -60,6 +60,7 @@
 - [ ] 使用springboot开发后端.
 - [ ] 使用svg图标代替vue-awsome
 - [ ] editor目前是simple版本不支持复选框,修改为完整版的.
-- [ ] 取消front-end中以mock形式获得数据,修改为通过restful方式从back-end获得数据
+- [x] 取消front-end中以mock形式获得数据,修改为通过restful方式从back-end获得数据
 - [ ] 本地下载并使用MongoDB.
 - [ ] node集成mongoose,编写models.
+- [ ] axios的POST,PUT,PATCH,DELETE方法封装一下,分为query(URL问号后边参数),form(body中,x-www-urlencoded),json(application/json)

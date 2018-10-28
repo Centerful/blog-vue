@@ -86,7 +86,7 @@ export default {
       console.error(err)
     }
   },
-  // x-www-unlencoded(form)与json两种
+  // x-www-unlencoded(form)与json三种
   async post (url, data) {
     // TODO 待修改
     try {
