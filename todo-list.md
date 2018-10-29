@@ -64,3 +64,4 @@
 - [ ] 本地下载并使用MongoDB.
 - [ ] node集成mongoose,编写models.
 - [ ] axios的POST,PUT,PATCH,DELETE方法封装一下,分为query(URL问号后边参数),form(body中,x-www-urlencoded),json(application/json)
+- [ ] 集成i18n
