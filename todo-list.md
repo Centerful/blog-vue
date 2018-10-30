@@ -65,3 +65,4 @@
 - [ ] node集成mongoose,编写models.
 - [ ] axios的POST,PUT,PATCH,DELETE方法封装一下,分为query(URL问号后边参数),form(body中,x-www-urlencoded),json(application/json)
 - [ ] 集成i18n
+- [ ] 写一个方法,将vue的data对象,copy成普通的js-data对象.

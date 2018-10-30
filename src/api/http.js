@@ -12,11 +12,7 @@ axios.defaults.timeout = 10000
 // axios请求拦截
 axios.interceptors.request.use(config => {
   // 发送请求之前做一些处理
-  config.headers = {
-    // 'Content-Type': 'application/json; charset=utf-8',
-    // 配置请求头
-    // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-  }
+  console.log(config)
   return config
 }, err => {
   // 当请求异常时做一些处理
@@ -86,16 +82,37 @@ export default {
       console.error(err)
     }
   },
-  // x-www-unlencoded(form)与json三种
-  async post (url, data) {
+  // x-www-urlencoded(form)与json两种
+  async post (url, data, type = 'json') {
     // TODO 待修改
-    try {
-      console.log(url)
-      let res = await axios.post(url, data)
-      return res
-    } catch (err) {
-      console.error(err)
+    if (type === 'json') {
+      try {
+        let res = await axios({
+          method: 'post',
+          url: url,
+          data: data,
+          headers: {'Content-Type': 'application/json;charset=utf-8'}
+        })
+        // let res = await axios.post(url, data)
+        return res
+      } catch (err) {
+        console.error(err)
+      }  
+    } else {
+      // x-www-urlencoded
+      try {
+        let res = await axios({
+          method: 'post',
+          url: url,
+          data: data,
+          headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+        })
+        return res
+      } catch (err) {
+        console.error(err)
+      }  
     }
+    
   },
   async patch () {
 

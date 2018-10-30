@@ -47,9 +47,9 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getBlogs((resp) => {
+      this.api.getBlogs((data) => {
         this.loading = false
-        this.blogs = resp
+        this.blogs = data
         this.$progress.finish()
       })
     }
