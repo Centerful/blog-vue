@@ -146,6 +146,11 @@ export default {
      * 每隔3s检测blog内容是否被修改过?
      */
     checkWrite () {
+      // md5 为null,则是第一次.
+      if (!this.md5) {
+        this.md5 = this.utils.md5Str(this.instance.getMarkdown() ? this.instance.getMarkdown() : '')
+        return 
+      }
       // md5值是否变更过.
       let newMD5 = this.utils.md5Str(this.instance.getMarkdown() ? this.instance.getMarkdown() : '')
       if (this.md5 != newMD5) {
