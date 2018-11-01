@@ -2,15 +2,15 @@
   <li class="e-dir">
     <a v-waves @mouseover="isHover = true" @mouseout="isHover = false" @click="fold = !fold">
       <span class="e-row">
-        <span class="e-icon"><icon :name="dir.type" :style="{color: '#666'}"/></span>
-        <span class="e-name">{{ dir.name }}</span>
+        <span class="e-icon"><icon :name="dir.book_type.toLowerCase()" :style="{color: '#666'}"/></span>
+        <span class="e-name">{{ dir.book_name }}</span>
       </span>
       <div v-waves @click.stop="doCog">
         <span class="e-btn" :class="{ show: isHover }"><icon name="cog" :style="{color: '#666'}"/></span>
       </div>
     </a>
     <ul :style="{ height:subHeight + 'px' }">
-      <li v-if="dir.type == 'book'">
+      <li v-if="dir.book_type.toLowerCase() == 'BOOK'">
         <a v-waves @click="addBlog" class="e-create-blog">
           <span class="e-row">
             <span class="e-icon"><icon name="plus"/></span>

@@ -25,8 +25,12 @@ export default {
   },
   methods: {
     login () {
-      this.$router.push({ name: 'Login' })
-    }
+      // TODO 目前先定为,退出返回到login页面.
+      this.api.logout((data) => {
+        this.$router.push({ name: 'Login' })
+      }, this.formData)
+    },
+
   }
 }
 </script>

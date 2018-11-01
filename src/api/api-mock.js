@@ -78,7 +78,7 @@ export default {
     }, 800)
   },
   getColumnBlogs: cb => {
-    getBlogs(cb)
+    this.getBlogs(cb)
   },
   getBooks: cb => {
     setTimeout(function () {

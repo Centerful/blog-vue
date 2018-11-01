@@ -30,6 +30,7 @@ export default {
       // 1.
       if (!this._validateForm()) {
         alert('表单校验错误')
+        return 
       }
       // 2.
       // 加载动画

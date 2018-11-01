@@ -3,22 +3,32 @@ import http from '@/api/http'
 export default {
   // 登录方法
   login: async (callback, data = {
-    user_name: '',
-    password: ''
+    user_name: null,
+    password: null
   }) => {
     let res = await http.post('/login', data)
     callback(res.data)
   },
+  logout: async (callback) => {
+    // 可以改成delete
+    let res = await http.post('/logout')
+    callback(res.data)
+  },
   register: async (callback, data = {
-    is_email: '',
-    user_name: '',
-    password: ''
+    is_email: null,
+    user_name: null,
+    password: null
   }) => {
     let res = await http.post('/register', data)
     callback(res.data)
   },
-  visitor: data => {
-    // TODO
+  visitor: async (callback, data = {
+    user_name: null,
+    email: null,
+    user_avatar: null
+  }) => {
+    let res = await http.post('/visitor', data)
+    callback(res.data)
   },
   getBlogs: async (callback, query) => {
     let res = await http.fetch('/blogs', query)

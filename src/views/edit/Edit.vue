@@ -26,9 +26,22 @@ export default {
   },
   methods: {
     fetchData () {
-      this.api.getBooks((resp) => {
-        this.dirs = resp
-      }, { userId: 999 })
+      this.api.getBooks((res) => {
+        if (res.code == 1) {
+          alert(res.message)
+          return 
+        }
+        this.dirs = res.sort(this.compare('book_order'))
+      })
+    },
+    compare (attr, func) {
+      if (func) {
+        return func
+      } else {
+        return (o1, o2) => {
+          return o1[attr] - o2[attr]
+        }
+      }
     }
   },
   components: { EditSideBar, EditContent }

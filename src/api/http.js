@@ -1,8 +1,11 @@
 import axios from 'axios'
 import qs from 'qs'
 
-// 跨域时cookie不变.
-axios.defaults.withCredentials = false
+/**
+ * [withCredentials description]
+ * 服务器需要设置:res.header("Access-Control-Allow-Origin", req.headers.Origin || req.headers.origin);
+ */
+axios.defaults.withCredentials = true
 // 设置基础请求URL
 const baseUrl = 'http://localhost:3000/v'
 axios.defaults.baseURL = baseUrl
@@ -97,7 +100,7 @@ export default {
         return res
       } catch (err) {
         console.error(err)
-      }  
+      }
     } else {
       // x-www-urlencoded
       try {
@@ -110,9 +113,8 @@ export default {
         return res
       } catch (err) {
         console.error(err)
-      }  
+      }
     }
-    
   },
   async patch () {
 
