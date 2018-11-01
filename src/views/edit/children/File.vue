@@ -3,7 +3,7 @@
     <a v-waves @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
         <span class="e-icon"><icon name="file" :style="{color: '#666'}"/></span>
-        <span class="e-name">{{ file.name }}</span>
+        <span class="e-name">{{ file.title }}</span>
       </span>
       <div v-waves>
         <span class="e-btn" @click.stop="doCog" :class="{ show: isHover }" :style="{color: '#666'}"><icon name="cog"/></span>
@@ -25,7 +25,10 @@ export default {
 
     },
     getBlog () {
-      this.$bus.emit('getBlog', this.file.id)
+      this.$bus.emit('getBlog', {
+        file_id: this.file.id,
+        books_id: this.file.books_id
+      })
     }
   }
 }

@@ -62,6 +62,27 @@ export default {
     let res = await http.fetch(`/books`, query)
     callback(res.data)
   },
+  getBookBlogs: async (callback, bookId) => {
+    let res = await http.fetch(`/books/${bookId}/blogs`)
+    callback(res.data)
+  },
+  addBlog: async (callback, data = {
+    title: null,
+    books_id: null,
+    blog_order: null
+  }) => {
+    let res = await http.post(`/blogs`, data)
+    callback(res.data)
+  },
+  updateBlog: async (callback, data = {
+    id: null,
+    blog_img: null,
+    title: null,
+    content: null
+  }) => {
+    let res = await http.put(`/blogs/${data.id}`, data)
+    callback(res.data)
+  },
   getSeq: async callback => {
     let res = await http.post(`/seq`)
     callback(res.data.id)

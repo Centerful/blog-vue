@@ -1,5 +1,5 @@
 import axios from 'axios'
-import qs from 'qs'
+// import qs from 'qs' // 将json数据解析成form格式,用于x-www-urlencoded请求头.
 
 /**
  * [withCredentials description]
@@ -107,7 +107,7 @@ export default {
         let res = await axios({
           method: 'post',
           url: url,
-          data: data,
+          data: qs.stringify(data),
           headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
         })
         return res
@@ -119,8 +119,35 @@ export default {
   async patch () {
 
   },
-  async put () {
-
+  async put (url, data, type = 'json') {
+    // TODO 待修改
+    if (type === 'json') {
+      try {
+        let res = await axios({
+          method: 'put',
+          url: url,
+          data: data,
+          headers: {'Content-Type': 'application/json;charset=utf-8'}
+        })
+        // let res = await axios.put(url, data)
+        return res
+      } catch (err) {
+        console.error(err)
+      }
+    } else {
+      // x-www-urlencoded
+      try {
+        let res = await axios({
+          method: 'put',
+          url: url,
+          data: qs.stringify(data),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+        })
+        return res
+      } catch (err) {
+        console.error(err)
+      }
+    }
   },
   async delete () {
 

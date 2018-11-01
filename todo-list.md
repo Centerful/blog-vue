@@ -47,6 +47,8 @@
 - [x] 编写vue-waves插件,使用现成的waves.js库,封装成vue插件.[参考github上vue-waves项目](https://github.com/Teddy-Zhu/vue-waves)
 - [x] 编写vue-event bus插件.[参考github项目](https://github.com/yangmingshan/vue-bus)
 - [ ] vue-event bus插件提供了一个通用的vue实例,各个组件都将事件添加到该实例上.这样事件在各个组件中,没有进行统一管理.参考vuex改进一下.
+- [ ] 实现一个简单的vuex-demo,基于flux架构.
+- [ ] 多组件的复杂交互行为的数据需要放在vuex中,还有一些全局数据.例如:用户数据.
 - [x] 了解下 vm.$on,$emit,$dis...
 - [ ] edit的题图hover上去要会变色,click后可以更换题图.
 - [ ] 调整editor选中颜色,语法校验
@@ -66,3 +68,5 @@
 - [ ] axios的POST,PUT,PATCH,DELETE方法封装一下,分为query(URL问号后边参数),form(body中,x-www-urlencoded),json(application/json)
 - [ ] 集成i18n
 - [ ] 写一个方法,将vue的data对象,copy成普通的js-data对象.
+- [ ] 研究下SSR,可以解决F5刷新时的白屏问题.
+- [ ] 研究下前端缓存,几乎全部的js/css都可以缓存起来.

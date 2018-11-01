@@ -19,7 +19,7 @@
         </header>
         <section class="edit-content">
           <ul>
-            <Dir v-for="dir in dirs" :key="dir.id" :dir="dir"></Dir>
+            <Dir v-for="dir in dirs" :key="dir.id" :ref="dir.id" :dir="dir"></Dir>
           </ul>
         </section>
         <footer @click="back" class="edit-footer">
@@ -34,17 +34,45 @@
 import Dir from '@/views/edit/children/Dir.vue'
 export default {
   name: 'EditSideBar',
-  props: ['dirs'],
   data () {
     return {
+      dirs: [],
       isHover: false,
       isOpen: false
     }
   },
-  components: { Dir },
-  mounted () {
+  created () {
+    this.eventListener()
   },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': {
+      handler: 'fetchData',
+      immediate: true // 立马执行一次,相当于created中调用一次.
+    }
+  },
+  components: { Dir },
   methods: {
+    // 添加事件,对外暴露事件
+    eventListener () {
+      this.$bus.on('titleInput', this.titleInput)
+    },
+    titleInput (dir) {
+      this.$refs[dir.books_id][0].dir.files.filter((file) => {
+        if (file.id == dir.file_id) {
+          file.title = dir.title
+        }
+      })
+    },
+    fetchData () {
+      this.api.getBooks((res) => {
+        if (res.code == 1) {
+          alert(res.message)
+          return 
+        }
+        this.dirs = res.data.sort(this.utils.compare('book_order'))
+      })
+    },
     back () {
       this.$router.go(-1)
     }

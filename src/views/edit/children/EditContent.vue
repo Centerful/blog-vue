@@ -1,14 +1,14 @@
 <template>
   <div class="edit-container">
     <div class="edit-wapper">
-      <div v-if="blogImg">
-        <img class="edit-img" :src="blogImg">
+      <div v-if="blog.blog_img">
+        <img class="edit-img" :src="blog.blog_img">
       </div>
       <div v-else class="edit-picture">添加题图</div>
-      <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)" v-model="blogTitle">
+      <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)" v-model="blog.title" @input="titleInput">
       <div class="edit-title-split"></div>
       <div class="edit-content">
-        <Editormd></Editormd>
+        <Editormd @writed="writed"></Editormd>
       </div>
     </div>
   </div>
@@ -21,46 +21,89 @@ export default {
   components: { Editormd },
   data () {
     return {
-      blogTitle: null,
-      blogImg: null,
-      blogId: null
+      blog: {
+        title: null,
+        blog_img: null,
+        content: null
+      },
+      dir: {
+        file_id: null,
+        books_id: null
+      },
+      // MD编辑器发生变更后,触发$emit传递.
+      write: false
     }
+  },
+  watch: {
   },
   created () {
     this.eventListener()
   },
+  mounted () {
+    setInterval(() => {
+      this.saveBlog()
+    }, 3000)
+  },
   methods: {
     // 添加事件,对外暴露事件
     eventListener () {
-      this.$bus.on('addBlog', this.addBlog)
       this.$bus.on('getBlog', this.getBlog)
     },
-    // 事件定义
-    // 新建文章时触发.
-    addBlog () {
-      // 去后台拉取一个新的id,将blog题图,title,文章内容清空.
-      console.log('addBlog')
-      this.blogId = null
-      this.api.getSeq((blogId) => {
-        this.blogId = blogId
-      })
-      this.blogImg = null
-      this.blogTitle = null
-      this.$bus.emit('clearBlogText')
+    // 
+    writed (content) {
+      this.blog.content = content
+      this.write = true
     },
+    titleInput () {
+      this.write = true
+      /*
+       * 我们需要修改指定dir.vue实例中file.title的值.
+       * 因此我们要将事件传递到EditSideBar.vue中,然后通过this.$ref('dir.id')找到对应的dir.vue实例.
+       * 然后 
+       * let file = this.$refs(dir.books_id).files.filter((file) => {
+       *   if (file.id = dir.file_id)
+       *     file.title = dir.title
+       * })
+       *
+       * 如果使用vuex-将数据存储在一个对象中.则直接修改对象中BooksTree的数据即可.
+       */
+      this.$bus.emit('titleInput', {
+        file_id: this.dir.file_id,
+        books_id: this.dir.books_id,
+        title: this.blog.title
+      })
+    },
+    // 事件定义
     // 开打某个blog时触发
-    getBlog (id) {
-      if (id === this.blogId) {
-        return
-      }
-      this.blogId = id
-      this.api.getBlog((resp) => {
+    getBlog (data) {
+      this.dir = data
+      this.api.getBlog((res) => {
         // 添加题图与title
-        this.blogTitle = resp.blogTitle
-        this.blogImg = resp.blogImg
+        this.blog.title = res.title
+        this.blog.blog_img = res.blog_img
+        this.blog.content = res.content
         // 添加博客内容
-        this.$bus.emit('setBlogText', resp.blogText)
-      }, this.blogId)
+        this.$bus.emit('setBlogContent', res.content)
+      }, this.dir.file_id)
+    },
+    /**
+     * 自动保存博客信息.
+     * 当发生input事件后将write改为true,autoSave每3秒检测一次,true-保存.
+     * TODO 弄个小组件,每次保存都会提示.
+     */
+    saveBlog () {
+      if (this.write) {
+        console.log(`检测博客是否更新!${this.write}`)
+        this.blog.id = this.dir.file_id
+        this.api.updateBlog((res) => {
+          if (res.code == 1) {
+            alert(res.message)
+          } else {
+            // 更新成功.
+          }
+          this.write = false
+        }, this.blog)
+      }
     }
   }
 

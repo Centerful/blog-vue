@@ -88,7 +88,8 @@ export default {
   data () {
     return {
       editorPath: 'static/editor.md',
-      instance: null
+      instance: null,
+      md5: null
     }
   },
   created () {
@@ -98,16 +99,14 @@ export default {
     $s([ `${this.editorPath}/../jquery.min.js`, `${this.editorPath}/lib/raphael.min.js`, `${this.editorPath}/lib/flowchart.min.js` ],
       () => {
         $s([ `${this.editorPath}/../xss.min.js`, `${this.editorPath}/lib/marked.min.js`, `${this.editorPath}/lib/prettify.min.js`, `${this.editorPath}/lib/underscore.min.js`, `${this.editorPath}/lib/sequence-diagram.min.js`, `${this.editorPath}/lib/jquery.flowchart.min.js` ],
-          () => {
-            $s(`${this.editorPath}/editormd.js`, () => {
-              this.initEditor()
-            })
-            $s(`${this.editorPath}/../highlight/highlight.min.js`, () => {
-              hljs.initHighlightingOnLoad()
-            })
+        () => {
+          $s(`${this.editorPath}/editormd.js`, () => {
+            this.initEditor()
           })
-      })
-    this.$nextTick(() => {
+          $s(`${this.editorPath}/../highlight/highlight.min.js`, () => {
+            hljs.initHighlightingOnLoad()
+          })
+        })
     })
   },
   methods: {
@@ -122,6 +121,12 @@ export default {
         }
         this.md_css()
       })
+      // 当editormd加载完成后 循环检测blog内容是否被修改过.
+      this.$nextTick(() => {
+        setInterval(() => {
+          this.checkWrite()
+        }, 3000)
+      })
     },
     md_css () {
       $('.editormd-html-preview, .editormd-preview-container').css('fontSize', '15px')
@@ -131,15 +136,22 @@ export default {
       }
     },
     eventListener () {
-      this.$bus.on('setBlogText', this.setBlogText)
-      this.$bus.on('clearBlogText', this.clearBlogText)
+      this.$bus.on('setBlogContent', this.setBlogContent)
     },
-    setBlogText (blogText) {
-      this.instance.setMarkdown(blogText)
+    setBlogContent (content) {
+      this.instance.setMarkdown(content)
       $('.CodeMirror-scroll').attr('style', 'overflow:hidden !important;');
     },
-    clearBlogText () {
-      this.instance.setMarkdown(null)
+    /**
+     * 每隔3s检测blog内容是否被修改过?
+     */
+    checkWrite () {
+      // md5值是否变更过.
+      let newMD5 = this.utils.md5Str(this.instance.getMarkdown() ? this.instance.getMarkdown() : '')
+      if (this.md5 != newMD5) {
+        this.md5 = newMD5
+        this.$emit('writed', this.instance.getMarkdown())
+      }
     }
   }
 }

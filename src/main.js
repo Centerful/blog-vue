@@ -12,6 +12,8 @@ import Icon from 'vue-awesome/components/Icon'
 import api_mock from './api/api-mock.js'
 // 连接服务器端的api
 import api from './api/api.js'
+// 引入自己写的工具类.
+import utils from './utils/utils.js'
 
 // 自定义components
 // 占位符
@@ -27,6 +29,7 @@ Vue.config.productionTip = false
 
 // 配置api,api_mock
 Vue.prototype.api = api
+Vue.prototype.utils = utils
 
 /* eslint-disable no-new */
 Vue.component('icon', Icon)
