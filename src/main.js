@@ -3,17 +3,22 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+// 引入material design ui库
+import Vuetify from 'vuetify'
+// 引入自定义stylus
+import './assets/css/main.styl'
+// 引入国际化.
+import zhHans from 'vuetify/es5/locale/zh-Hans'
 // 引入vue-aswesome-vue第三方图标库
 // 仅引入用到的图标以减小打包体积
 import 'vue-awesome/icons/'
 import Icon from 'vue-awesome/components/Icon'
 // 引入本地请求api
-import api_mock from './api/api-mock.js'
+import api_mock from '@/api/api-mock.js'
 // 连接服务器端的api
-import api from './api/api.js'
+import api from '@/api/api.js'
 // 引入自己写的工具类.
-import utils from './utils/utils.js'
+import utils from '@/utils/utils.js'
 
 // 自定义components
 // 占位符
@@ -34,6 +39,16 @@ Vue.prototype.utils = utils
 /* eslint-disable no-new */
 Vue.component('icon', Icon)
 Vue.component('placeholder', Placeholder)
+
+Vue.use(Vuetify, {
+  // 设置图标是material design
+  iconfont: 'mdi',
+  // 设置组件i18n为中文
+  lang: {
+    locales: { 'zh-Hans': zhHans },
+    current: 'zh-Hans'
+  }
+})
 
 Vue.use(Progressbar)
 Vue.use(Waves)

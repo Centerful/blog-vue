@@ -41,7 +41,7 @@ export default {
     height: 1em;
     max-width: 100%;
     max-height: 100%;
-    font-size: 1.1em;
+    font-size: 1.7em;
     color: #777;
   }
   .layout-head {

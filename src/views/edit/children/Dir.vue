@@ -77,7 +77,7 @@ export default {
       let blogInfo = {
         title: this.utils.getYMD(),
         books_id: this.dir.id,
-        blog_order: this.dir.files.length ? this.dir.files.length : 0  + 1
+        blog_order: (this.dir.files.length || 0)  + 1
       }
       this.api.addBlog((res) => {
         // 将新增blog添加进files中.

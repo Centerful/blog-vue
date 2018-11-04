@@ -8,11 +8,11 @@ html {
 body {
   background-color: #E6E6E6;
   margin: 0;
-  font-family: 'PingFang SC','Microsoft YaHei';
+  font-family: 'PingFang SC','Microsoft YaHei' !important;
 }
 a {
   text-decoration: none;
-  color: black;
+  color: black !important;
 }
 .overflow-hide {
   overflow:hidden;

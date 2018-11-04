@@ -148,11 +148,11 @@ export default {
     checkWrite () {
       // md5 为null,则是第一次.
       if (!this.md5) {
-        this.md5 = this.utils.md5Str(this.instance.getMarkdown() ? this.instance.getMarkdown() : '')
+        this.md5 = this.utils.md5Str(this.instance.getMarkdown() || '')
         return 
       }
       // md5值是否变更过.
-      let newMD5 = this.utils.md5Str(this.instance.getMarkdown() ? this.instance.getMarkdown() : '')
+      let newMD5 = this.utils.md5Str(this.instance.getMarkdown() || '')
       if (this.md5 != newMD5) {
         this.md5 = newMD5
         this.$emit('writed', this.instance.getMarkdown())

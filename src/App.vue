@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <v-app class="c">
+      <router-view/>  
+    </v-app> 
   </div>
 </template>
 
@@ -11,5 +13,10 @@ export default {
 </script>
 
 <style>
-  @import './assets/css/tags-init.css';
+  @import './assets/css/tags-init.css'
+</style>
+<style>
+/*  .theme--light.application {
+    background: #E6E6E6;
+  }*/
 </style>
