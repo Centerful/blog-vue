@@ -86,5 +86,24 @@ export default {
   getSeq: async callback => {
     let res = await http.post(`/seq`)
     callback(res.data.id)
+  },
+  imgUpload: async (callback, files) => {
+    if (!files || files.length < 1) {
+      callback({ code: 1, message: '请选择上传图片' })
+      return
+    }
+    if (files.length == 1) {
+      let data =  new FormData()
+      let file = files[0]
+      data.append('file', file)
+      data.append('chunk','0')
+      let res = await http.post('/images', data, 'file')
+      callback(res.data)
+    } else {
+      callback({
+        message: '目前暂不支持一次上传多张图片',
+        code: 1
+      })
+    }
   }
 }

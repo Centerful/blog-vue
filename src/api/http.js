@@ -85,7 +85,7 @@ export default {
       console.error(err)
     }
   },
-  // x-www-urlencoded(form)与json两种
+  // x-www-urlencoded(form)与json,file三种
   async post (url, data, type = 'json') {
     // TODO 待修改
     if (type === 'json') {
@@ -96,7 +96,18 @@ export default {
           data: data,
           headers: {'Content-Type': 'application/json;charset=utf-8'}
         })
-        // let res = await axios.post(url, data)
+        return res
+      } catch (err) {
+        console.error(err)
+      }
+    } else if (type === 'file') {
+      try {
+        let res = await axios({
+          method: 'post',
+          url: url,
+          data: data,
+          headers: {'Content-Type': 'multipart/form-data'}
+        })
         return res
       } catch (err) {
         console.error(err)

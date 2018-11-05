@@ -4,7 +4,19 @@
       <div v-if="blog.blog_img">
         <img class="edit-img" :src="blog.blog_img">
       </div>
-      <div v-else class="edit-picture">添加题图</div>
+      <!-- <div v-else class="edit-picture">添加题图</div> -->
+      <v-card class="edit-picture"
+        @mouseover="editIconShow = true" 
+        @mouseout="editIconShow = false">
+          <v-img @click="openImgInput" class="edit-prcture-wapper" src="/static/img/article-59521bcf81138.jpg">
+            <transition name="fade">
+              <v-icon v-if="editIconShow" class="edit-img-icon" large>mdi-camera-image</v-icon>
+            </transition>
+          </v-img>
+          <form id="imgForm" method="post" enctype="multipart/form-data" action="图片上传">
+            <input style="display: none;" @change="imgUpload" type="file" id="imageInput" accept="image/*">
+          </form>
+      </v-card>
       <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)" v-model="blog.title" @input="titleInput">
       <div class="edit-title-split"></div>
       <div class="edit-content">
@@ -21,6 +33,7 @@ export default {
   components: { Editormd },
   data () {
     return {
+      editIconShow: false,
       blog: {
         title: null,
         blog_img: null,
@@ -48,6 +61,23 @@ export default {
     // 添加事件,对外暴露事件
     eventListener () {
       this.$bus.on('getBlog', this.getBlog)
+    },
+    // 题图上传
+    imgUpload (data) {
+      let files = document.getElementById('imageInput').files
+      if (!files || files.length < 1) {
+        return
+      }
+      this.api.imgUpload((res) => {
+        if (res.code == 1) {
+          this.$bus.emit('dialog', res.message)
+        }
+        console.log(res)
+      }, files)
+    },
+    // 点击题图后开打input-文件选择框
+    openImgInput (data) {
+      document.getElementById('imageInput').click()
     },
     // 
     writed (content) {
@@ -97,7 +127,7 @@ export default {
         this.blog.id = this.dir.file_id
         this.api.updateBlog((res) => {
           if (res.code == 1) {
-            alert(res.message)
+            this.$bus.emit('dialog', res.message)
           } else {
             // 更新成功.
           }
@@ -125,7 +155,7 @@ export default {
     align-items: center;
   }
   .edit-img {
-    max-width: 660px;
+    max-width: 560px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -133,18 +163,32 @@ export default {
     box-shadow: 0 1px 1px -1px rgba(0,0,0,.2), 0 1px 3px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
     margin-bottom: 15px;
   }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
   .edit-picture {
-    max-width: 660px;
+    max-width: 560px;
     width: 100%;
-    height: 192px;
+    height: 323px;
     background-color: #f7f8f9;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ccc;
-    box-shadow: 0 1px 1px -1px rgba(0,0,0,.2), 0 1px 3px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);
+    color: #666666;
+    /*box-shadow: 0 1px 1px -1px rgba(0,0,0,.2), 0 1px 3px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);*/
     margin-bottom: 15px;
+  }
+  .edit-prcture-wapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 2px;
+    justify-content: center;
+    align-items: center;
   }
   .edit-title {
     max-width: 660px;

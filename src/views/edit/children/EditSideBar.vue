@@ -67,7 +67,7 @@ export default {
     fetchData () {
       this.api.getBooks((res) => {
         if (res.code == 1) {
-          alert(res.message)
+          this.$bus.emit('dialog', res.message)
           return 
         }
         this.dirs = res.data.sort(this.utils.compare('book_order'))

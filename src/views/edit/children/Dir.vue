@@ -52,7 +52,7 @@ export default {
         // 展开
         this.api.getBookBlogs((res) => {
           if (res.code == 1) {
-            alert(res.message)
+            this.$bus.emit('dialog', res.message)
             // 将文集设置为未打开状态.
             this.fold = !this.fold
             return 
