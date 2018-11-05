@@ -19,7 +19,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
-    z-index: -1;
+    z-index: 0;
     letter-spacing: 0.3px;
   }
   .footer > span {

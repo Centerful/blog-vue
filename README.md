@@ -162,4 +162,5 @@ Project
 - [ ] 应用的图标从vue-awesome修改为google material icons. 将应用内需要使用到的图标打包成单个svg文件.参考svg打包demo.
 - [ ] 做一个google-material-icons的vue插件.
 - [ ] html-使用vuetify框架重构,css使用stylus重构.
+- [ ] 目前使用material design 图标后边，自己集成svg，vuetify使用自定义图标集。
 

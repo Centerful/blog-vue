@@ -42,13 +42,13 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 1100;
+    z-index: 0;
   }
   .login-container {
     width: 280px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    /*box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);*/
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -73,7 +73,7 @@ export default {
     height: 128px;
     background-color: #ccc;
     border-radius: 50%;
-    margin: 30px 0;
+    margin: 30px 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,20 +128,7 @@ export default {
     box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
     z-index: 1100;
   }
-  .footer {
-    color: #aaa;
-    font-size: 0.7em;
-    position: fixed;
-    bottom: 5px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    z-index: -1;
-    letter-spacing: 0.3px;
-  }
-  .footer > span {
-    margin: 0 5px;
-    cursor: pointer;
-    font-style: italic;
+  .text-field {
+    font-size: 14px;
   }
 </style>

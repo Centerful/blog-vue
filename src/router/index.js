@@ -10,9 +10,6 @@ import Layout from '@/views/Layout.vue'
 import Login from '@/views/login/Login.vue'
 import BlogContent from '@/views/blog/BlogContent.vue'
 
-// 使用vuetify重构组件
-import Logintify from '@/views/login/Logintify.vue'
-
 Vue.use(Router)
 
 export default new Router({
@@ -45,7 +42,7 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Logintify
+      component: Login
     }
   ]
 })
