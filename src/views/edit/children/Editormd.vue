@@ -55,18 +55,22 @@ export default {
             }
           },
           onload () {
+            $('.CodeMirror-gutters').css('border', 'none').css('backgroundColor', '#FFF')
+            $('.CodeMirror-lines').css('marginBottom', '350px')
             $('.editormd').css('border', 'none')
             $("i[name='watch']").parent().css('display', 'none')
-            $('.CodeMirror-lines').css('marginBottom', '350px')
-            $('.CodeMirror-gutters').css('border', 'none').css('backgroundColor', '#FFF')
+            this.watch()
+            this.unwatch()
           },
           onwatch () {
           },
           onpreviewing () {
+            this.isPreview = true
             $('.editormd-preview-container').css('padding', '20px 5px 50px 5px')
             $('.editormd-preview').css('position', 'relative')
           },
           onpreviewed () {
+            this.isPreview = false
           },
           onfullscreen () {
             this.watch()
@@ -124,7 +128,7 @@ export default {
       // 当editormd加载完成后 循环检测blog内容是否被修改过.
       this.$nextTick(() => {
         setInterval(() => {
-          this.checkWrite()
+          this.loop()
         }, 3000)
       })
     },
@@ -140,12 +144,17 @@ export default {
     },
     setBlogContent (content) {
       this.instance.setMarkdown(content)
+      if (this.instance.isPreview) {
+        this.instance.previewing()
+      }
+      // md5替换一下。
+      this.md5 = this.utils.md5Str(content || '')
       $('.CodeMirror-scroll').attr('style', 'overflow:hidden !important;');
     },
     /**
      * 每隔3s检测blog内容是否被修改过?
      */
-    checkWrite () {
+    loop () {
       // md5 为null,则是第一次.
       if (!this.md5) {
         this.md5 = this.utils.md5Str(this.instance.getMarkdown() || '')

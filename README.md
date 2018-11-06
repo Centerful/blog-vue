@@ -163,4 +163,6 @@ Project
 - [ ] 做一个google-material-icons的vue插件.
 - [ ] html-使用vuetify框架重构,css使用stylus重构.
 - [ ] 目前使用material design 图标后边，自己集成svg，vuetify使用自定义图标集。
-
+- [ ] 权限不足时，重定向到登录页面。
+- [ ] 取消页面中超链接的使用，至少取消直接包含文本的超链接--使用span代替
+- [ ] 编辑器的语法校验关掉。

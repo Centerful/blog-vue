@@ -8,13 +8,13 @@
       </div>
       <div class="post-right-side flex-mid flex-small">
         <div class="post-title">
-          <a class="post-title-a" @click="to()">
+          <span class="post-title-a" @click="to()">
             <h2>{{ blogTitle }}</h2>
-          </a>
+          </span>
         </div>
         <div class="post-auth-date">
-          <span class="post-auth">by <a href="#" class="post-auth-a"> {{ authName }} </a></span>
-          <a href="#" class="post-date">{{ blogDate }}</a>
+          <span class="post-auth">by <span href="#" class="post-auth-a"> {{ authName }} </span></span>
+          <span href="#" class="post-date">{{ blogDate }}</span>
         </div>
         <div class="post-content">
           <p>
@@ -24,9 +24,9 @@
         <div class="post-footer">
           <div class="footer-container">
             <span class="footer-tags">
-              <a v-for="tag in blogTags" :key="tag.code" class="footer-tags-a" href="#">{{ tag.name }}</a>
+              <span v-for="tag in blogTags" :key="tag.code" class="footer-tags-a" href="#">{{ tag.name }}</span>
             </span>
-            <a href="#" class="footer-comments"></a>
+            <span href="#" class="footer-comments"></span>
           </div>
         </div>
       </div>

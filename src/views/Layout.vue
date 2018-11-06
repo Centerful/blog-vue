@@ -84,6 +84,7 @@ export default {
     justify-content: center;
   }
   .layout{
+    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;

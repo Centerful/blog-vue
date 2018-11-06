@@ -1,14 +1,20 @@
 <template>
   <li>
-    <a v-waves @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
+    <span v-waves @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
-        <span class="e-icon"><icon name="file" :style="{color: '#666'}"/></span>
+        <span class="e-icon">
+          <!-- <icon name="file" :style="{color: '#666'}"/> -->
+          <v-icon>mdi-file-document-outline</v-icon>
+        </span>
         <span class="e-name">{{ file.title }}</span>
       </span>
       <div v-waves>
-        <span class="e-btn" @click.stop="doCog" :class="{ show: isHover }" :style="{color: '#666'}"><icon name="cog"/></span>
+        <span class="e-btn" @click.stop="doCog" :class="{ show: isHover }" :style="{color: '#666'}">
+          <!-- <icon name="cog"/> -->
+          <v-icon style="font-size: 18px;">mdi-settings</v-icon>
+        </span>
       </div>
-    </a>
+    </span>
   </li>
 </template>
 
@@ -41,7 +47,7 @@ export default {
   li {
     list-style: none;
   }
-  li > a {
+  li > span {
     height: 44px;
     display: flex;
     align-items: center;
@@ -52,11 +58,12 @@ export default {
     background: #fff;
     transition: background 0.3s ease-in-out;
   }
-  a > div {
+  span > div {
     border-radius: 3px;
   }
   .e-row {
     display: flex;
+    align-items: center;
   }
   .e-icon {
     padding-right: 15px;
@@ -68,7 +75,7 @@ export default {
     white-space: nowrap;
     max-width: 180px;
   }
-  .e-dir > a > .e-row > .e-name {
+  .e-dir > span > .e-row > .e-name {
     max-width: 200px;
   }
   .e-btn {

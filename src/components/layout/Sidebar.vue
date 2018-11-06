@@ -1,10 +1,29 @@
 <template>
   <div class="multi-bar">
-    <div class="columns-btn btn"><router-link to="/columns"><icon name="columns"/></router-link></div>
-    <div class="blog-btn btn"><router-link to="/blog"><icon name="book"/></router-link></div>
-    <div class="talk-btn btn"><router-link to="/feed"><icon name="comments"/></router-link></div>
-    <!-- <div class="edit-btn btn"><router-link to="/edit"><icon name="pen"/></router-link></div> -->
-    <div class="edit-btn btn"><router-link to="/edit"><icon name="pen"/></router-link></div>
+    <div class="columns-btn btn"><router-link to="/columns">
+      <v-tooltip class="tip-btn" right nudge-right="5">
+        <v-icon slot="activator">mdi-collage</v-icon>
+        <span>专栏</span>
+      </v-tooltip>
+    </router-link></div>
+    <div class="blog-btn btn"><router-link to="/blog">
+      <v-tooltip class="tip-btn" right nudge-right="5">
+        <v-icon slot="activator">mdi-book-open-variant</v-icon>
+        <span>博客</span>
+      </v-tooltip>
+    </router-link></div>
+    <div class="talk-btn btn"><router-link to="/feed">
+      <v-tooltip class="tip-btn" right nudge-right="5">
+        <v-icon slot="activator">mdi-forum</v-icon>
+        <span>动态</span>
+      </v-tooltip>
+    </router-link></div>
+    <div class="edit-btn btn"><router-link to="/edit">
+      <v-tooltip class="tip-btn" right nudge-right="5">
+        <v-icon slot="activator">mdi-pencil</v-icon>
+        <span>编辑</span>
+      </v-tooltip>
+    </router-link></div>
   </div>
 </template>
 
@@ -71,8 +90,7 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .btn > a > i {
-    font-size: 1.45em;
-    color: #636363;
+  .tip-btn {
+    height: 24px;
   }
 </style>

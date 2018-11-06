@@ -1,18 +1,21 @@
 <template>
   <div class="edit-container">
     <div class="edit-wapper">
-      <div v-if="blog.blog_img">
+      <!-- <div v-if="blog.blog_img">
         <img class="edit-img" :src="blog.blog_img">
-      </div>
+      </div> -->
       <!-- <div v-else class="edit-picture">添加题图</div> -->
       <v-card class="edit-picture"
         @mouseover="editIconShow = true" 
-        @mouseout="editIconShow = false">
-          <v-img @click="openImgInput" class="edit-prcture-wapper" src="/static/img/article-59521bcf81138.jpg">
-            <transition name="fade">
-              <v-icon v-if="editIconShow" class="edit-img-icon" large>mdi-camera-image</v-icon>
-            </transition>
+        @mouseout="editIconShow = false" raised>
+          <v-img v-if="blog.blog_img" class="edit-picture-wapper" :src="blog.blog_img">
           </v-img>
+          <transition name="fade">
+            <div v-if="editIconShow" @click="openImgInput" class="edit-picture-overlay">
+              <v-icon class="edit-img-icon" large>mdi-camera-image</v-icon>
+              <div class="edit-picture-backdrop"></div>
+            </div>
+          </transition>
           <form id="imgForm" method="post" enctype="multipart/form-data" action="图片上传">
             <input style="display: none;" @change="imgUpload" type="file" id="imageInput" accept="image/*">
           </form>
@@ -22,6 +25,7 @@
       <div class="edit-content">
         <Editormd @writed="writed"></Editormd>
       </div>
+      <div></div>
     </div>
   </div>
 </template>
@@ -43,6 +47,7 @@ export default {
         file_id: null,
         books_id: null
       },
+      titleFlag: true,
       // MD编辑器发生变更后,触发$emit传递.
       write: false
     }
@@ -54,7 +59,7 @@ export default {
   },
   mounted () {
     setInterval(() => {
-      this.saveBlog()
+      this.loop()
     }, 3000)
   },
   methods: {
@@ -68,11 +73,19 @@ export default {
       if (!files || files.length < 1) {
         return
       }
+      //测试。
+      /*console.log(this.blog.blog_img)
+      this.blog.blog_img = '/static/img/article-59521bcf81138.jpg'
+      return */
       this.api.imgUpload((res) => {
-        if (res.code == 1) {
+        if (res.code != 0) {
           this.$bus.emit('dialog', res.message)
+          return
         }
-        console.log(res)
+        //  替换图片URL,由于前段项目与node不再同一域中，这里这里要指定node的地址。
+        this.blog.blog_img = 'http://localhost:3000/' + res.data.path
+        // 保存博客
+        this.saveBlog()
       }, files)
     },
     // 点击题图后开打input-文件选择框
@@ -85,6 +98,11 @@ export default {
       this.write = true
     },
     titleInput () {
+      // 开打博客时不用保存。
+      if (this.titleFlag) {
+        this.titleFlag = !this.titleFlag
+        return
+      }
       this.write = true
       /*
        * 我们需要修改指定dir.vue实例中file.title的值.
@@ -106,6 +124,7 @@ export default {
     // 事件定义
     // 开打某个blog时触发
     getBlog (data) {
+      console.log(`getBlog:${data}`)
       this.dir = data
       this.api.getBlog((res) => {
         // 添加题图与title
@@ -121,19 +140,20 @@ export default {
      * 当发生input事件后将write改为true,autoSave每3秒检测一次,true-保存.
      * TODO 弄个小组件,每次保存都会提示.
      */
-    saveBlog () {
+    loop () {
       if (this.write) {
-        console.log(`检测博客是否更新!${this.write}`)
-        this.blog.id = this.dir.file_id
-        this.api.updateBlog((res) => {
-          if (res.code == 1) {
-            this.$bus.emit('dialog', res.message)
-          } else {
-            // 更新成功.
-          }
-          this.write = false
-        }, this.blog)
+        this.saveBlog()
       }
+    },
+    saveBlog () {
+      this.blog.id = this.dir.file_id
+      this.api.updateBlog((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('dialog', res.message)
+        } else {
+        }
+        this.write = false
+      }, this.blog)
     }
   }
 
@@ -164,12 +184,13 @@ export default {
     margin-bottom: 15px;
   }
   .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .1s;
   }
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
   .edit-picture {
+    position: relative;
     max-width: 560px;
     width: 100%;
     height: 323px;
@@ -182,13 +203,33 @@ export default {
     /*box-shadow: 0 1px 1px -1px rgba(0,0,0,.2), 0 1px 3px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);*/
     margin-bottom: 15px;
   }
-  .edit-prcture-wapper {
+  .edit-picture-wapper {
+    position: absolute;
     width: 100%;
     height: 100%;
     display: flex;
     border-radius: 2px;
     justify-content: center;
     align-items: center;
+  }
+  .edit-picture-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .edit-picture-backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .6; 
+    background-color: white;
+  }
+  .edit-img-icon {
+    color: #000;
+    z-index: 2;
   }
   .edit-title {
     max-width: 660px;

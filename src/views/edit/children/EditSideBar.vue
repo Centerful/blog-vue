@@ -12,9 +12,18 @@
             <span>文章</span>
           </div>
           <div class="edit-header-bar">
-            <div><icon name="search"/></div>
-            <div><icon name="sort-amount-down"/></div>
-            <div><icon name="ellipsis-v"/></div>
+            <div>
+              <!-- <icon name="search"/> -->
+              <v-icon dark>mdi-magnify</v-icon>
+            </div>
+            <div>
+              <!-- <icon name="sort-amount-down"/> -->
+              <v-icon dark>mdi-sort-variant</v-icon>
+            </div>
+            <div>
+              <!-- <icon name="ellipsis-v"/> -->
+              <v-icon dark>mdi-dots-vertical</v-icon>
+            </div>
           </div>
         </header>
         <section class="edit-content">
@@ -22,9 +31,18 @@
             <Dir v-for="dir in dirs" :key="dir.id" :ref="dir.id" :dir="dir"></Dir>
           </ul>
         </section>
-        <footer @click="back" class="edit-footer">
-          <a>回到首页</a>
-        </footer>
+        <!-- <footer> -->
+          
+          <v-btn  
+            @click="back" 
+            class="white--text edit-footer" 
+            large
+            color="blue-grey">
+            <span>回到首页</span>
+            <v-icon right dark>mdi-home</v-icon>
+          </v-btn>
+        <!-- </footer> -->
+
       </div>
     </div>
   </div>
@@ -66,7 +84,7 @@ export default {
     },
     fetchData () {
       this.api.getBooks((res) => {
-        if (res.code == 1) {
+        if (res.code != 0) {
           this.$bus.emit('dialog', res.message)
           return 
         }
@@ -189,9 +207,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px;
+    padding: 16px;
     border-radius: 50%;
-    margin: 0 1px;
+    margin: 2px;
     width: 24px;
     height: 24px;
     transition: background-color 0.3s ease-in-out;
@@ -230,6 +248,8 @@ export default {
     margin-bottom: 90px;
   }
   .edit-footer {
+    margin: 0;
+    border-radius: 0;
     position: absolute;
     width: 100%;
     height: 40px;
@@ -238,11 +258,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ddd;
-
     cursor: pointer;
   }
-  .edit-footer > a {
+  .edit-footer > span {
     font-size: 0.97em;
     padding: 10px;
   }
