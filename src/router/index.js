@@ -24,10 +24,10 @@ export default new Router({
       children: [
         { path: '', name: 'welcome', component: Blog },
         { path: 'columns', name: 'Columns', component: Columns },
-        { path: 'columns/:id', name: 'ColumnContent', component: ColumnContent },
-        { path: 'columns/open/:id', name: 'ColumnOpen', component: ColumnOpen },
+        { path: 'columns/:_id', name: 'ColumnContent', component: ColumnContent },
+        { path: 'columns/open/:_id', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
-        { path: 'blog/:id', name: 'BlogContent', component: BlogContent },
+        { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
         { path: 'feed', name: 'Feed', component: Feed }
       ],
       meta: {

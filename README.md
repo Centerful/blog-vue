@@ -168,3 +168,4 @@ Project
 - [ ] 编辑器的语法校验关掉。
 - [ ] 使用骨架屏技术（Skeleton Screen）
 - [ ] 使用照片灯箱。
+- [ ] 使用vuetify的treeview重写文集的侧边栏。

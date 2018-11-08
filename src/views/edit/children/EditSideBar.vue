@@ -7,23 +7,37 @@
       <div class="edit-mask" :class="{ loaded: isOpen }" @click="isOpen = false"></div>
       <div class="edit-side" :class="{ loaded: isOpen }">
         <header>
-          <div title="7篇文章" class="edit-header-number">
-            <strong>7</strong>
-            <span>文章</span>
-          </div>
+          <template v-if="isSearch">
+            <v-text-field 
+              placeholder="Search"
+              append-icon="mdi-close"
+              :append-icon-cb="closeSearch"
+              prepend-inner-icon="mdi-magnify"
+              color="white"
+              dark
+              autofocus
+            ></v-text-field>
+          </template>
+          <template v-else>
+            <div title="7篇文章" class="edit-header-number">
+              <strong>7</strong>
+              <span>文章</span>
+            </div>
+          </template>
           <div class="edit-header-bar">
-            <div>
-              <!-- <icon name="search"/> -->
-              <v-icon dark>mdi-magnify</v-icon>
-            </div>
-            <div>
-              <!-- <icon name="sort-amount-down"/> -->
-              <v-icon dark>mdi-sort-variant</v-icon>
-            </div>
-            <div>
-              <!-- <icon name="ellipsis-v"/> -->
-              <v-icon dark>mdi-dots-vertical</v-icon>
-            </div>
+            <v-btn v-show="!isSearch" @click="isSearch = !isSearch" flat icon dark>
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            <v-menu z-index="30" bottom offset-y>
+              <v-btn slot="activator" flat icon dark>
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+              <v-list>
+                <v-list-tile v-for="(item, i) in headerOptions" :key="i" @click="headerOps(item.code)">
+                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
           </div>
         </header>
         <section class="edit-content">
@@ -31,20 +45,30 @@
             <Dir v-for="dir in dirs" :key="dir._id" :ref="dir._id" :dir="dir"></Dir>
           </ul>
         </section>
-        <!-- <footer> -->
-          
-          <v-btn  
-            @click="back" 
-            class="white--text edit-footer" 
-            large
-            color="blue-grey">
-            <span>回到首页</span>
-            <v-icon right dark>mdi-home</v-icon>
-          </v-btn>
-        <!-- </footer> -->
-
+        <v-btn  
+          @click="back" 
+          class="white--text edit-footer" 
+          large
+          color="blue-grey">
+          <span>回到首页</span>
+          <v-icon right dark>mdi-home</v-icon>
+        </v-btn>
       </div>
     </div>
+    <v-dialog v-model="addBook" persistent max-width="400px">
+      <v-card>
+        <v-card-text>
+          <v-form ref="bookForm" v-model="addBookValid">
+            <v-text-field v-model="book_name" label="文集名称" :rules="[v => !!v || '名称不能为空']" required autofocus hide-details></v-text-field>  
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click.native="addBook = false, book_name = null">关 闭</v-btn>
+          <v-btn color="primary" @click.native="toAddBook" :disabled="!addBookValid">保 存</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -55,8 +79,18 @@ export default {
   data () {
     return {
       dirs: [],
+      isSearch: false,
       isHover: false,
-      isOpen: false
+      addBookValid: false,
+      isOpen: false,
+      addBook: false,
+      book_name: null,
+      headerOptions: [
+        {
+          title: '添加文集',
+          code: 'addBook'
+        }
+      ]
     }
   },
   created () {
@@ -76,7 +110,7 @@ export default {
       this.$bus.on('titleInput', this.titleInput)
     },
     titleInput (dir) {
-      this.$refs[dir.books_id][0].dir.files.filter((file) => {
+      this.$refs[dir.book_id][0].dir.files.filter((file) => {
         if (file._id == dir.file_id) {
           file.title = dir.title
         }
@@ -90,6 +124,33 @@ export default {
         }
         this.dirs = res.data.sort(this.utils.compare('book_order'))
       })
+    },
+    closeSearch () {
+      console.log('closeSearch')
+      this.isSearch = !this.isSearch
+    },
+    headerOps (code) {
+      switch (code) {
+        case "addBook":
+          // 添加文集
+          this.addBook = true
+          break;
+      }
+    },
+    toAddBook () {
+      if (!this.$refs.bookForm.validate()) {
+        return 
+      }
+      this.api.addBook((res) => {
+        if (res.code == 1) {
+          this.$bus.emit('dialog', res.message)
+          return 
+        }
+        // 插入第一条
+        this.dirs.unshift(res.data)
+        this.book_name = null
+        this.addBook = false
+      }, {book_name: this.book_name})
     },
     back () {
       this.$router.go(-1)
@@ -131,7 +192,7 @@ export default {
     height: 100%;
     width: 350px;
     background-color: #fff;
-    z-index: 99;
+    z-index: 20;
     box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
 
     left: -360px;
@@ -152,7 +213,7 @@ export default {
     left: -10px;
     /*background: rgba(0,0,0,.4);*/
     background: rgba(255,255,255,0.8);
-    z-index: 98;
+    z-index: 10;
     /*display: none;*/
     opacity: 0.8;
     display: none;
@@ -177,7 +238,7 @@ export default {
     box-shadow: 0 6px 12px -3px rgba(0,0,0,0.2);
     overflow: hidden;
     color: #fff;
-    z-index: 10;
+    z-index: 20;
   }
   .edit-header-number {
     display: flex;
@@ -201,7 +262,10 @@ export default {
     align-items: center;
     justify-content: center;
   }
-  .edit-header-bar > div {
+  .edit-header-bar > button {
+    margin: 2px;
+  }
+  .edit-header-bar > dasd {
     cursor: pointer;
     color: #fff;
     display: flex;
@@ -214,7 +278,7 @@ export default {
     height: 24px;
     transition: background-color 0.3s ease-in-out;
   }
-  .edit-header-bar > div:hover {
+  .edit-header-bar > asdasd:hover {
     background-color: #ffffff30;
     transition: background-color 0.3s ease-in-out;
   }

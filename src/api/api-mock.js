@@ -85,11 +85,6 @@ export default {
       cb(dirData)
     }, 300)
   },
-  getSeq: cb => {
-    setTimeout(function () {
-      cb(Math.floor(Math.random() * 1000 + 1))
-    }, 100)
-  },
   login: data => {
     return axios.get(url.login, {params: data})
   },

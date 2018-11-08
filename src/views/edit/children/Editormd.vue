@@ -140,7 +140,10 @@ export default {
       }
     },
     eventListener () {
-      this.$bus.on('setBlogContent', this.setBlogContent)
+      // 编辑页面才会 监听该事件
+      if (!this.blogContent) {
+        this.$bus.on('setBlogContent', this.setBlogContent)  
+      }
     },
     setBlogContent (content) {
       this.instance.setMarkdown(content)

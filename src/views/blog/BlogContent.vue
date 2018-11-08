@@ -10,7 +10,9 @@
       <div class="blog-wapper">
         <!-- 标题图片,可以是video,audio,gif,img等 -->
         <div class="blog-title-meta">
-          <img class="blog-meta-img" :src="blog.blogImg">
+          <!-- <img class="blog-meta-img" :src="blog.blog_img"> -->
+          <v-img class="blog-meta-img elevation-1" :src="blog.blog_img"></v-img>
+          <!-- <v-img class="blog-meta-img elevation-1" :src="blog.blog_img"></v-img> -->
         </div>
         <!-- 作者卡 -->
         <div class="blog-auth-card">
@@ -19,28 +21,28 @@
           <div class="auth-meta">
             <div class="auth-left-avatar">
               <a class="avatar-wapper">
-                <img class="avatar-wapper-img" :src="blog.authImg">
+                <img class="avatar-wapper-img" :src="blog.user.user_avatar">
               </a>
             </div>
             <div class="auth-right-info">
-              <div class="auth-name"><h4>{{ blog.authName }}</h4></div>
-              <span class="auth-autograph">{{ blog.authAutograph }}</span>
+              <div class="auth-name"><h4>{{ blog.user.nick_name }}</h4></div>
+              <span class="auth-autograph">{{ blog.user.signature }}</span>
             </div>
           </div>
           <!-- 文章相关属性:文章最后编辑时间(hover上去后提示发布时间),字数,阅读数,评论,点赞数. -->
           <div class="blog-meta">
             <!-- 这里应当有hover的提示框 -->
-            <span class="blog-meta-time">文章编辑于: {{ blog.blogDate }}</span>
-            <span>字数: {{ blog.blogWords }}</span>
-            <span>浏览: {{ blog.blogBrowse }}</span>
+            <span class="blog-meta-time">文章编辑于： {{ utils.getYMD(new Date(blog.update_time)) }}</span>
+            <span>字数： {{ blogWords }}</span>
+            <span>浏览： {{ blog.reads }}</span>
           </div>
         </div>
         <article class="blog-container">
-          <div class="blog-title"><h2>{{ blog.blogTitle }}</h2></div>
+          <div class="blog-title"><h2>{{ blog.title }}</h2></div>
           <div class="blog-title-split"></div>
           <!-- v-html="blog.blogHtml" -->
           <div class="blog-html">
-            <Editormd type="html" :blogContent="blog.blogText"></Editormd>
+            <Editormd type="html" :blogContent="blog.content" :ref="editorId" :key="editorId" :id="editorId"></Editormd>
           </div>
         </article>
         <!-- <div class="blog-reward">
@@ -53,7 +55,7 @@
         </div> -->
         <!-- 水印样式 -->
         <div class="blog-tags">
-          <a v-for="tag in blog.blogTags" :key="tag.code" class="blog-tag">{{ tag.name }}</a>
+          <a v-for="tag in blog.tags" :key="tag._id" class="blog-tag">{{ tag.name }}</a>
         </div>
         <!--  -->
         <div class="blog-column">
@@ -78,12 +80,18 @@ import Editormd from '@/views/edit/children/Editormd.vue'
 export default {
   data () {
     return {
+      editorId: 'readOnlyEdit',
       blog: {},
       loading: true
     }
   },
   created () {
     this.fetchData()
+  },
+  computed: {
+    blogWords () {
+      return this.blog.content.length
+    }
   },
   methods: {
     fetchData () {
@@ -116,16 +124,9 @@ export default {
     padding: 0 10%;
   }
   .blog-title-meta {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 20px;
-    /*box-shadow: 0 1px 1px 1px rgba(0,0,0,0.2);*/
-    /*box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);*/
   }
   .blog-meta-img {
-    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
     border-radius: 2px;
     display: block;
     width: auto;

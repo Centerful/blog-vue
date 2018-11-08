@@ -13,7 +13,7 @@
           </span>
         </div>
         <div class="post-auth-date">
-          <span class="post-auth">by <span href="#" class="post-auth-a"> {{ nick_name }} </span></span>
+          <span class="post-auth">by <span href="#" class="post-auth-a"> {{ user.nick_name }} </span></span>
           <span href="#" class="post-date">{{ utils.getYMD(new Date(update_time)) }}</span>
         </div>
         <div class="post-content">
@@ -37,8 +37,8 @@
 <script>
 export default {
   props: {
-    id: {
-      type: Number,
+    _id: {
+      type: String,
       required: true
     },
     blog_type: {
@@ -53,9 +53,12 @@ export default {
       type: String,
       required: true
     },
-    nick_name: {
-      type: String,
-      required: true
+    user: {
+      required: true,
+      nick_name: {
+        type: String,
+        required: true
+      }
     },
     update_time: {
       type: String,
@@ -86,7 +89,7 @@ export default {
   },
   methods: {
     to: function () {
-      this.$router.push({name: 'BlogContent', params: { id: this.blogID }})
+      this.$router.push({name: 'BlogContent', params: { _id: this._id }})
     }
   }
 }

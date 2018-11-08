@@ -12,7 +12,7 @@
           </v-img>
           <transition name="fade">
             <div v-if="editIconShow" @click="openImgInput" class="edit-picture-overlay">
-              <v-icon class="edit-img-icon" large>mdi-camera-image</v-icon>
+              <v-icon color="blue-grey lighten-2" class="edit-img-icon" large>mdi-camera-image</v-icon>
               <div class="edit-picture-backdrop"></div>
             </div>
           </transition>
@@ -23,7 +23,7 @@
       <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)" v-model="blog.title" @input="titleInput">
       <div class="edit-title-split"></div>
       <div class="edit-content">
-        <Editormd @writed="writed"></Editormd>
+        <Editormd @writed="writed" :ref="editorId" :key="editorId" :id="editorId"></Editormd>
       </div>
       <div></div>
     </div>
@@ -38,6 +38,7 @@ export default {
   data () {
     return {
       editIconShow: false,
+      editorId: 'editorId',
       blog: {
         title: null,
         blog_img: null,
@@ -45,7 +46,7 @@ export default {
       },
       dir: {
         file_id: null,
-        books_id: null
+        book_id: null
       },
       titleFlag: true,
       // MD编辑器发生变更后,触发$emit传递.
@@ -82,8 +83,8 @@ export default {
           this.$bus.emit('dialog', res.message)
           return
         }
-        //  替换图片URL,由于前段项目与node不再同一域中，这里这里要指定node的地址。
-        this.blog.blog_img = 'http://localhost:3000/' + res.data.path
+        //  替换图片URL
+        this.blog.blog_img = res.data.path
         // 保存博客
         this.saveBlog()
       }, files)
@@ -117,14 +118,13 @@ export default {
        */
       this.$bus.emit('titleInput', {
         file_id: this.dir.file_id,
-        books_id: this.dir.books_id,
+        book_id: this.dir.book_id,
         title: this.blog.title
       })
     },
     // 事件定义
     // 开打某个blog时触发
     getBlog (data) {
-      console.log(`getBlog:${data}`)
       this.dir = data
       this.api.getBlog((res) => {
         // 添加题图与title

@@ -93,11 +93,11 @@ export default {
       this._login()
     },
     _login () {
-      this.api.login((data) => {
+      this.api.login((res) => {
         // 3.
         // 结束动画
-        if (data.code == 1) {
-          this.$bus.emit('dialog', data.message)
+        if (res.code == 1) {
+          this.$bus.emit('dialog', res.message)
           return 
         }
         this.$router.push({name: 'welcome'})

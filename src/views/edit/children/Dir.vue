@@ -29,7 +29,7 @@
               <!-- <icon name="plus"/> -->
               <v-icon>mdi-plus</v-icon>
             </span>
-            <span class="e-name">新建文章</span>
+            <span class="e-name">添加文章</span>
           </span>
           <span class="e-btn"></span>
         </span>

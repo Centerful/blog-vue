@@ -74,6 +74,10 @@ export default {
     let res = await http.post(`/blogs`, data)
     callback(res.data)
   },
+  addBook: async (callback, data) => {
+    let res = await http.post(`/books`, data)
+    callback(res.data)
+  },
   updateBlog: async (callback, data = {
     id: null,
     blog_img: null,
@@ -82,10 +86,6 @@ export default {
   }) => {
     let res = await http.put(`/blogs/${data._id}`, data)
     callback(res.data)
-  },
-  getSeq: async callback => {
-    let res = await http.post(`/seq`)
-    callback(res.data._id)
   },
   imgUpload: async (callback, files) => {
     if (!files || files.length < 1) {
