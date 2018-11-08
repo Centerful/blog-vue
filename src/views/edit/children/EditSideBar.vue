@@ -28,7 +28,7 @@
         </header>
         <section class="edit-content">
           <ul>
-            <Dir v-for="dir in dirs" :key="dir.id" :ref="dir.id" :dir="dir"></Dir>
+            <Dir v-for="dir in dirs" :key="dir._id" :ref="dir._id" :dir="dir"></Dir>
           </ul>
         </section>
         <!-- <footer> -->
@@ -77,7 +77,7 @@ export default {
     },
     titleInput (dir) {
       this.$refs[dir.books_id][0].dir.files.filter((file) => {
-        if (file.id == dir.file_id) {
+        if (file._id == dir.file_id) {
           file.title = dir.title
         }
       })

@@ -59,7 +59,7 @@
         <div class="blog-column">
           <div class="column-title">文章收录于以下专栏</div>
           <div class="column-items">
-            <div v-for="column in blog.blogColumns" :key="column.id">
+            <div v-for="column in blog.blogColumns" :key="column._id">
               <BlogColumnItem :blogColumn="column"></BlogColumnItem>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default {
         this.blog = resp
         this.loading = false
         this.$progress.finish()
-      }, this.$route.params.id)
+      }, this.$route.params._id)
     }
   },
   components: { BlogColumnItem, Recommendations, Editormd }

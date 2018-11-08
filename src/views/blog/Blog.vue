@@ -13,7 +13,7 @@
         <BlogItemLoad></BlogItemLoad>
         <BlogItemLoad></BlogItemLoad>
       </template>
-      <BlogItem v-for="blog in blogs" :key="blog.blogID" v-bind="blog"></BlogItem>
+      <BlogItem v-for="blog in blogs" :key="blog._id" v-bind="blog"></BlogItem>
       <div class="loading" v-if="!loading"><icon name="spinner" pulse/></div>
     </div>
   </div>
@@ -47,9 +47,13 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getBlogs((data) => {
+      this.api.getBlogs((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('dialog', res.message)
+          return 
+        }
         this.loading = false
-        this.blogs = data
+        this.blogs = res.data
         this.$progress.finish()
       })
     }

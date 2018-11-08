@@ -13,7 +13,7 @@
             <div class="bar-left-summary">{{ detail.summary }}</div>
             <div class="bar-left-footer">
               <div>
-                <span v-for="tag in detail.tags" :key="tag.id" class="columns-item-tag">{{ tag.name }}</span>
+                <span v-for="tag in detail.tags" :key="tag._id" class="columns-item-tag">{{ tag.name }}</span>
               </div>
               <span class="columns-item-article">{{ detail.blogNumber }} 篇文章</span>
             </div>
@@ -73,12 +73,12 @@ export default {
         this.detail = resp
         this.$progress.finish()
         this.loading = false
-      }, this.$route.params.id)
+      }, this.$route.params._id)
       this.BlogLoading = true
       this.api.getColumnBlogs((resp) => {
         this.BlogLoading = false
         this.blogs = resp
-      }, this.$route.params.id)
+      }, this.$route.params._id)
     }
   }
 }

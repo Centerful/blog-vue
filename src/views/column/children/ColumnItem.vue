@@ -14,7 +14,7 @@
       <div class="columns-item-summary">{{ column.summary }}</div>
       <div class="columns-item-footer">
         <div class="columns-item-left">
-          <span v-for="tag in column.tags" :key="tag.id" class="columns-item-tag">{{ tag.name }}</span>
+          <span v-for="tag in column.tags" :key="tag._id" class="columns-item-tag">{{ tag.name }}</span>
         </div>
         <div class="columns-item-right">
           <span class="columns-item-founder">{{ column.founderName }}</span>
@@ -32,7 +32,7 @@ export default {
   methods: {
     // 进入专栏查看专栏里的文章.
     toBlogs () {
-      this.$router.push({name: 'ColumnContent', params: { id: this.column.id }})
+      this.$router.push({name: 'ColumnContent', params: { id: this.column._id }})
     }
   }
 }

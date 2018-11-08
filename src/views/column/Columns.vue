@@ -22,7 +22,7 @@
         <div class="column-load"></div>
       </template>
       <template v-else>
-        <ColumnItem v-for="column in columns" :key="column.id" :column="column"></ColumnItem>
+        <ColumnItem v-for="column in columns" :key="column._id" :column="column"></ColumnItem>
       </template>
     </div>
   </div>

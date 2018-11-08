@@ -80,12 +80,12 @@ export default {
     title: null,
     content: null
   }) => {
-    let res = await http.put(`/blogs/${data.id}`, data)
+    let res = await http.put(`/blogs/${data._id}`, data)
     callback(res.data)
   },
   getSeq: async callback => {
     let res = await http.post(`/seq`)
-    callback(res.data.id)
+    callback(res.data._id)
   },
   imgUpload: async (callback, files) => {
     if (!files || files.length < 1) {

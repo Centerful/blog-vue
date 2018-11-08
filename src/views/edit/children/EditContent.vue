@@ -106,10 +106,10 @@ export default {
       this.write = true
       /*
        * 我们需要修改指定dir.vue实例中file.title的值.
-       * 因此我们要将事件传递到EditSideBar.vue中,然后通过this.$ref('dir.id')找到对应的dir.vue实例.
+       * 因此我们要将事件传递到EditSideBar.vue中,然后通过this.$ref('dir._id')找到对应的dir.vue实例.
        * 然后 
        * let file = this.$refs(dir.books_id).files.filter((file) => {
-       *   if (file.id = dir.file_id)
+       *   if (file._id = dir.file_id)
        *     file.title = dir.title
        * })
        *
@@ -146,7 +146,7 @@ export default {
       }
     },
     saveBlog () {
-      this.blog.id = this.dir.file_id
+      this.blog._id = this.dir.file_id
       this.api.updateBlog((res) => {
         if (res.code != 0) {
           this.$bus.emit('dialog', res.message)

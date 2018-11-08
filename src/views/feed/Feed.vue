@@ -27,7 +27,7 @@
       <div class="feed-loading"></div>
       <div class="feed-loading"></div>
     </template>
-    <FeedItem v-else v-for="feed in feeds" :key="feed.id" :feed="feed"></FeedItem>
+    <FeedItem v-else v-for="feed in feeds" :key="feed._id" :feed="feed"></FeedItem>
 
   </div>
 </template>

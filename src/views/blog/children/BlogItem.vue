@@ -2,29 +2,29 @@
   <article class="post-item">
     <div class="post-container flex-small">
       <div class="post-left-side flex-mid flex-small">
-        <div class="post-meta" :class="blogType">
-          <img class="post-meta-img" :src="blogImg">
+        <div class="post-meta" :class="blog_type.toLowerCase()">
+          <v-img class="post-meta-img elevation-1" :src="blog_img"></v-img>
         </div>
       </div>
       <div class="post-right-side flex-mid flex-small">
         <div class="post-title">
           <span class="post-title-a" @click="to()">
-            <h2>{{ blogTitle }}</h2>
+            <h2>{{ title }}</h2>
           </span>
         </div>
         <div class="post-auth-date">
-          <span class="post-auth">by <span href="#" class="post-auth-a"> {{ authName }} </span></span>
-          <span href="#" class="post-date">{{ blogDate }}</span>
+          <span class="post-auth">by <span href="#" class="post-auth-a"> {{ nick_name }} </span></span>
+          <span href="#" class="post-date">{{ utils.getYMD(new Date(update_time)) }}</span>
         </div>
         <div class="post-content">
           <p>
-            {{ blogPart }}
+            {{ content }}
           </p>
         </div>
         <div class="post-footer">
           <div class="footer-container">
             <span class="footer-tags">
-              <span v-for="tag in blogTags" :key="tag.code" class="footer-tags-a" href="#">{{ tag.name }}</span>
+              <span v-for="tag in tags" :key="tag._id" class="footer-tags-a" href="#">{{ tag.name }}</span>
             </span>
             <span href="#" class="footer-comments"></span>
           </div>
@@ -37,38 +37,38 @@
 <script>
 export default {
   props: {
-    blogID: {
+    id: {
       type: Number,
       required: true
     },
-    blogType: {
+    blog_type: {
       type: String,
       required: true
     },
-    blogTitle: {
+    title: {
       type: String,
       required: true
     },
-    blogImg: {
+    blog_img: {
       type: String,
       required: true
     },
-    authName: {
+    nick_name: {
       type: String,
       required: true
     },
-    blogDate: {
+    update_time: {
       type: String,
       required: true
     },
-    blogPart: {
+    content: {
       type: String,
       required: true
     },
-    blogTags: {
+    tags: {
       type: Array,
       required: false,
-      code: {
+      id: {
         type: String,
         required: true
       },
@@ -113,6 +113,9 @@ export default {
 }
 .post-meta {
   margin-top: 10px;
+}
+.post-meta::before {
+  cursor: pointer;
 }
 .post-meta.hot::before{
   content: '';
@@ -175,6 +178,7 @@ export default {
   z-index: 2;
 }
 .post-meta-img {
+  cursor: pointer;
   border-radius: 3px;
   display: block;
   width:auto;
@@ -212,9 +216,18 @@ export default {
   line-height: 1.8;
   font-size: 14px;
   margin: 14px 0;
+  min-height: 100px;
 }
 .post-content p {
   margin: 0;
+  overflow: hidden;
+  /*添加最大高度，防止ie浏览器 -webkit-box失效后高度不受控制问题。*/
+  max-height: 100px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 .post-footer {
   border-top: 1px solid #e9e9e9;

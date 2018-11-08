@@ -32,7 +32,7 @@ export default {
     },
     getBlog () {
       this.$bus.emit('getBlog', {
-        file_id: this.file.id,
+        file_id: this.file._id,
         books_id: this.file.books_id
       })
     }

@@ -34,7 +34,7 @@
           <span class="e-btn"></span>
         </span>
       </li>
-      <file v-for="file in dir.files" :key="file.id" :file="file"></file>
+      <file v-for="file in dir.files" :key="file._id" :file="file"></file>
     </ul>
   </li>
 </template>
@@ -75,7 +75,7 @@ export default {
           // 插入blogs信息.
           this.$set(this.dir, 'files', res.data.sort(this.utils.compare('blog_order')))
           this.autoHeight()
-        }, this.dir.id)
+        }, this.dir._id)
       } else {
         // 收缩
         this.autoHeight()
@@ -91,7 +91,7 @@ export default {
     addBlog () {
       let blogInfo = {
         title: this.utils.getYMD(),
-        books_id: this.dir.id,
+        books_id: this.dir._id,
         blog_order: (this.dir.files.length || 0)  + 1
       }
       this.api.addBlog((res) => {

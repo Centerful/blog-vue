@@ -2,7 +2,7 @@
   <div class="multi-bar">
     <div class="columns-btn btn"><router-link to="/columns">
       <v-tooltip class="tip-btn" right nudge-right="5">
-        <v-icon slot="activator">mdi-collage</v-icon>
+        <v-icon slot="activator">mdi-widgets</v-icon>
         <span>专栏</span>
       </v-tooltip>
     </router-link></div>

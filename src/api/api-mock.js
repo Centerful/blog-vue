@@ -69,7 +69,7 @@ export default {
   },
   getColumnDetail: (cb, columnId) => {
     let detailData = columnDetailData.find((e) => {
-      if (e.id === parseInt(columnId)) {
+      if (e._id === parseInt(columnId)) {
         return e
       }
     })

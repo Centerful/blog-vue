@@ -51,7 +51,7 @@
             </template>
           </div>
           <template v-if="feedId">
-            <FeedReplie v-for="replie in feedReplies" :key="replie.id" :replie="replie"></FeedReplie>
+            <FeedReplie v-for="replie in feedReplies" :key="replie._id" :replie="replie"></FeedReplie>
           </template>
         </template>
       </div>
@@ -109,11 +109,11 @@ export default {
       if (this.feedId) { // 如果feedId被赋值了则需要隐藏.
         this.feedId = null
       } else {
-        this.feedId = this.feed.id
+        this.feedId = this.feed._id
         this.api.getFeedComments((resp) => {
           console.log(resp)
           this.feedReplies = resp
-        }, this.feed.id)
+        }, this.feed._id)
       }
     }
   }
