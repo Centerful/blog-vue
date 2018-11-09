@@ -15,7 +15,6 @@ axios.defaults.timeout = 10000
 // axios请求拦截
 axios.interceptors.request.use(config => {
   // 发送请求之前做一些处理
-  console.log(config)
   return config
 }, err => {
   // 当请求异常时做一些处理
@@ -160,7 +159,12 @@ export default {
       }
     }
   },
-  async delete () {
-
+  async delete (url, query) {
+    try {
+      let res = await axios.delete(url, { params: query })
+      return res
+    } catch (err) {
+      console.error(err)
+    }
   }
 }

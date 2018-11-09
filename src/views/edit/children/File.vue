@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span v-waves @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
+    <span v-ripple style="cursor: pointer;" @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
         <span class="e-icon">
           <!-- <icon name="file" :style="{color: '#666'}"/> -->
@@ -8,33 +8,85 @@
         </span>
         <span class="e-name">{{ file.title }}</span>
       </span>
-      <div v-waves>
-        <span class="e-btn" @click.stop="doCog" :class="{ show: isHover }" :style="{color: '#666'}">
-          <!-- <icon name="cog"/> -->
-          <v-icon style="font-size: 18px;">mdi-settings</v-icon>
-        </span>
-      </div>
+      <v-menu z-index="30" bottom offset-y style="font-size: 16px;">
+        <v-btn slot="activator" v-show="isHover" flat icon>
+          <v-icon  style="font-size: 18px;">mdi-settings</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile v-for="(item, i) in blogOptions" v-if="item.type == file.blog_status" :key="i" @click="blogOps(item.code)">
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </span>
+    <simpleDialog :title="title" :content="conten"></simpleDialog>
+    <!-- 是否删除博客：“{{file.title}}”， 删除后博客被移动到垃圾桶 -->
   </li>
 </template>
 
 <script>
+import simpleDialog from '@/components/common/SimpleDialo.vue'
 export default {
   props: ['file'],
   data () {
     return {
-      isHover: false
+      title: null,
+      content: null,
+      isHover: false,
+      deleteBlogFlag: false,
+      blogOptions: [
+        {code: 'publish', title: '发布博客', type: 'DRAFT'},
+        {code: 'delete', title: '删除博客', type: 'DRAFT'},
+        {code: 'reversion', title: '恢复博客', type: 'DELETE'},
+        {code: 'clean', title: '彻底删除', type: 'DELETE'},
+        {code: 'updatePublish', title: '更新发布', type: 'PUBLISH'},
+        {code: 'cancelPublish', title: '取消发布', type: 'PUBLISH'}
+      ],
     }
   },
+  components: { simpleDialog },
   methods: {
-    doCog () {
-
-    },
     getBlog () {
       this.$bus.emit('getBlog', {
         file_id: this.file._id,
         book_id: this.file.book
       })
+    },
+    blogOps (code) {
+      switch (code) {
+        case 'publish':
+          alert('发布')
+          break
+        case 'delete':
+          this.deleteBlogFlag = true
+          break
+        case 'reversion':
+
+          break
+        case 'clean':
+
+          break
+        case 'updatePublish':
+
+          break
+        case 'cancelPublish':
+
+          break
+      }
+    },
+    deleteBlog () {
+      this.deleteBlogFlag = false
+      this.api.deleteBlogById((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('dialog', res.message)
+          return 
+        }
+      // 通知dir，将当前blog移动到trash中。
+      this.$emit('deleteblog', this.file._id)
+      }, this.file._id)
+    },
+    publish () {
+
     }
   }
 }

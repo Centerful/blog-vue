@@ -2,13 +2,14 @@ export default {
   /**
    * sort的比较函数
    */
-  compare (attr, func) {
-    if (func) {
-      return func
-    } else {
+  compare (attr, sort) {
+    if (sort == -1) {
       return (o1, o2) => {
-        return o1[attr] - o2[attr]
-      }
+        return o2[attr] - o1[attr]
+      }  
+    }
+    return (o1, o2) => {
+      return o1[attr] - o2[attr]
     }
   },
   /**

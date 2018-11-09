@@ -125,14 +125,19 @@ export default {
     // 事件定义
     // 开打某个blog时触发
     getBlog (data) {
+      if (this.dir.file_id === data.file_id && this.dir.book_id === data.book_id) {
+        return
+      }
       this.dir = data
       this.api.getBlog((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('dialog', res.message)
+          return 
+        }
         // 添加题图与title
-        this.blog.title = res.title
-        this.blog.blog_img = res.blog_img
-        this.blog.content = res.content
+        this.blog = res.data
         // 添加博客内容
-        this.$bus.emit('setBlogContent', res.content)
+        this.$bus.emit('setBlogContent', this.blog.content)
       }, this.dir.file_id)
     },
     /**

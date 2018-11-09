@@ -110,7 +110,7 @@ export default {
       this.$bus.on('titleInput', this.titleInput)
     },
     titleInput (dir) {
-      this.$refs[dir.book_id][0].dir.files.filter((file) => {
+      this.$refs[dir.book_id][0].files.filter((file) => {
         if (file._id == dir.file_id) {
           file.title = dir.title
         }
@@ -146,8 +146,10 @@ export default {
           this.$bus.emit('dialog', res.message)
           return 
         }
-        // 插入第一条
-        this.dirs.unshift(res.data)
+        // 在垃圾桶前插入一条
+        let trash = this.dirs.pop()
+        this.dirs.push(res.data)
+        this.dirs.push(trash)
         this.book_name = null
         this.addBook = false
       }, {book_name: this.book_name})

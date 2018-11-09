@@ -34,8 +34,12 @@ export default {
     let res = await http.fetch('/blogs', query)
     callback(res.data)
   },
-  getBlog: async (callback, bolgId) => {
-    let res = await http.fetch(`/blogs/${bolgId}`)
+  getBlog: async (callback, blogId) => {
+    let res = await http.fetch(`/blogs/${blogId}`)
+    callback(res.data)
+  },
+  deleteBlogById: async (callback, blogId) => {
+    let res = await http.delete(`/blogs/${blogId}`)
     callback(res.data)
   },
   getColumns: async (callback, query) => {

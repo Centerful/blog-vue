@@ -96,8 +96,12 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getBlog((resp) => {
-        this.blog = resp
+      this.api.getBlog((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('dialog', res.message)
+          return 
+        }
+        this.blog = res.data
         this.loading = false
         this.$progress.finish()
       }, this.$route.params._id)

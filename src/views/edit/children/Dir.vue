@@ -1,32 +1,33 @@
 <template>
   <li class="e-dir">
-    <span v-waves @mouseover="isHover = true" @mouseout="isHover = false" @click="toggleFold">
+    <span style="cursor: pointer;" v-ripple @mouseover="isHover = true" @mouseout="isHover = false" @click="toggleFold">
       <span class="e-row">
         <span class="e-icon">
-          <!-- <icon :name="dir.book_type.toLowerCase()" :style="{color: '#666'}"/> -->
           <template v-if="dir.book_type.toLowerCase() === 'book'">
             <v-icon>mdi-book</v-icon>
           </template>
           <template v-else>
             <v-icon>mdi-delete</v-icon>
           </template>
-          
         </span>
         <span class="e-name">{{ dir.book_name }}</span>
       </span>
-      <div v-waves @click.stop="doCog">
-        <span class="e-btn" :class="{ show: isHover }">
-          <!-- <icon name="cog" :style="{color: '#666'}"/> -->
-          <v-icon style="font-size: 18px;">mdi-settings</v-icon>
-        </span>
-      </div>
+      <v-menu z-index="30" bottom offset-y v-if="dir.book_type.toLowerCase() != 'trash'">
+        <v-btn slot="activator" v-show="isHover" flat icon>
+          <v-icon  style="font-size: 18px;">mdi-settings</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile v-for="(item, i) in dirOptions" :key="i" @click="dirOps(item.code)">
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </span>
     <ul :style="{ height:subHeight + 'px' }">
       <li v-if="dir.book_type.toLowerCase() == 'book'">
-        <span v-waves @click="addBlog" class="e-create-blog">
+        <span v-ripple style="cursor: pointer;" @click="addBlog" class="e-create-blog">
           <span class="e-row">
             <span class="e-icon">
-              <!-- <icon name="plus"/> -->
               <v-icon>mdi-plus</v-icon>
             </span>
             <span class="e-name">添加文章</span>
@@ -34,7 +35,7 @@
           <span class="e-btn"></span>
         </span>
       </li>
-      <file v-for="file in dir.files" :key="file._id" :file="file"></file>
+      <file @deleteblog="deleteBlog" v-for="file in files" :key="file._id" :file="file"></file>
     </ul>
   </li>
 </template>
@@ -47,21 +48,25 @@ export default {
     return {
       isHover: false,
       fold: true,
-      subHeight: 0
+      subHeight: 0,
+      files: [],
+      dirOptions: [
+        {code: 'rename', title: '重命名'},
+        {code: 'delete', title: '删除文集'}
+      ]
     }
   },
   components: { file },
   computed: {
   },
+  mounted () {
+    if (this.dir.book_type.toLowerCase() == 'trash') {
+      this.$bus.on('blogToTrash', this.blogToTrash)
+    }
+  },
   methods: {
-    doCog () {
-
-    },
     // 每次打开前发送ajax请求,获得当前文集下blogs信息.
     toggleFold () {
-      if (!this.dir.files) {
-        this.$set(this.dir, 'files', [])
-      }
       this.fold = !this.fold
       if (!this.fold) {
         // 展开
@@ -73,8 +78,7 @@ export default {
             return 
           }
           // 插入blogs信息.
-          this.$set(this.dir, 'files', res.data.sort(this.utils.compare('blog_order')))
-          this.autoHeight()
+          this.files = res.data.sort(this.utils.compare('blog_order'))
         }, this.dir._id)
       } else {
         // 收缩
@@ -85,23 +89,57 @@ export default {
       if (this.fold) {
         this.subHeight = 0
       } else {
-        this.subHeight = (this.dir.files.length + 1) * 44
+        this.subHeight = (this.files.length + 1) * 44
       }
     },
     addBlog () {
       let blogInfo = {
         title: this.utils.getYMD(),
         books_id: this.dir._id,
-        blog_order: (this.dir.files.length || 0)  + 1
+        blog_order: (this.files.length || 0)  + 1
       }
       this.api.addBlog((res) => {
         // 将新增blog添加进files中.
-        this.dir.files.push(res.data)
-        this.autoHeight()
+        if (res.code != 0) {
+          this.$bus.emit('dialog', res.message)
+          return 
+        }
+        this.files.push(res.data)
       }, blogInfo)
+    },
+    deleteBlog (blogId) {
+      console.log('删除博客：'+blogId)
+      // 选出需要移动到trash中的blog。
+      let blog = this.files.filter((ele, index) => {
+        if (blogId == ele._id) {
+          ele.index = index
+          return true
+        }
+        return false
+      })[0]
+      // 当前文集中删除博客
+      this.files.splice(blog.index, 1)
+      // 添加进trash中。
+      this.$bus.emit('blogToTrash', blog)
+    },
+    blogToTrash (blog) {
+      this.files.push(blog)
+    },
+    dirOps (code) {
+      switch (code) {
+        case 'rename':
+          alert('rename')
+          break;
+        case 'delete':
+          alert('delete')
+          break;
+      }
     }
   },
   watch: {
+    files () {
+      this.autoHeight()
+    }
   }
 }
 </script>

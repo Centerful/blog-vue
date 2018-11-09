@@ -169,3 +169,4 @@ Project
 - [ ] 使用骨架屏技术（Skeleton Screen）
 - [ ] 使用照片灯箱。
 - [ ] 使用vuetify的treeview重写文集的侧边栏。
+- [ ] vue如何封装其他vue库标签为自己的组件，例如封装simpleDialog。
