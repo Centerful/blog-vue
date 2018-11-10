@@ -98,7 +98,7 @@ export default {
       this.loading = true
       this.api.getBlog((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
         this.blog = res.data

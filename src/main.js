@@ -28,6 +28,11 @@ import utils from '@/utils/utils.js'
 import Placeholder from '@/components/common/Placeholder'
 // 加载 进度条插件
 import Progressbar from '@/plugin/progressbar'
+import ConfirmDialog from '@/components/common/ConfirmDialog'
+import FormConfirmDialog from '@/components/common/FormConfirmDialog'
+import PromptDialog from '@/components/common/PromptDialog'
+import SnackBar from '@/components/common/SnackBar'
+
 // 加载waves插件
 import Waves from '@/plugin/waves'
 // 加载Event bus插件.
@@ -42,6 +47,13 @@ Vue.prototype.utils = utils
 /* eslint-disable no-new */
 Vue.component('icon', Icon)
 Vue.component('placeholder', Placeholder)
+Vue.component('ConfirmDialog', ConfirmDialog)
+Vue.component('promptDialog', PromptDialog)
+Vue.component('SnackBar', SnackBar)
+Vue.component('FormConfirmDialog', FormConfirmDialog)
+
+
+
 
 Vue.use(Vuetify, {
   // 设置图标是material design

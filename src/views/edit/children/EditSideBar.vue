@@ -55,20 +55,16 @@
         </v-btn>
       </div>
     </div>
-    <v-dialog v-model="addBook" persistent max-width="400px">
-      <v-card>
-        <v-card-text>
-          <v-form ref="bookForm" v-model="addBookValid">
-            <v-text-field v-model="book_name" label="文集名称" :rules="[v => !!v || '名称不能为空']" required autofocus hide-details></v-text-field>  
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat @click.native="addBook = false, book_name = null">关 闭</v-btn>
-          <v-btn color="primary" @click.native="toAddBook" :disabled="!addBookValid">保 存</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  
+    <form-confirm-dialog v-model="addBook" :confirm="toAddBook" title="添加文集">
+      <v-text-field 
+        v-model="book_name" 
+        label="文集名称" 
+        :rules="[v => !!v || '名称不能为空']" 
+        required 
+        autofocus>
+      </v-text-field>
+    </form-confirm-dialog>
   </div>
 </template>
 
@@ -81,7 +77,6 @@ export default {
       dirs: [],
       isSearch: false,
       isHover: false,
-      addBookValid: false,
       isOpen: false,
       addBook: false,
       book_name: null,
@@ -119,7 +114,7 @@ export default {
     fetchData () {
       this.api.getBooks((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
         this.dirs = res.data.sort(this.utils.compare('book_order'))
@@ -131,19 +126,16 @@ export default {
     },
     headerOps (code) {
       switch (code) {
+        // 添加文集
         case "addBook":
-          // 添加文集
           this.addBook = true
           break;
       }
     },
     toAddBook () {
-      if (!this.$refs.bookForm.validate()) {
-        return 
-      }
       this.api.addBook((res) => {
         if (res.code == 1) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
         // 在垃圾桶前插入一条

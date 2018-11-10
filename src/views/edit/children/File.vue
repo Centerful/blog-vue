@@ -4,7 +4,7 @@
       <span class="e-row">
         <span class="e-icon">
           <!-- <icon name="file" :style="{color: '#666'}"/> -->
-          <v-icon>mdi-file-document-outline</v-icon>
+          <v-icon>mdi-file</v-icon>
         </span>
         <span class="e-name">{{ file.title }}</span>
       </span>
@@ -13,38 +13,32 @@
           <v-icon  style="font-size: 18px;">mdi-settings</v-icon>
         </v-btn>
         <v-list>
-          <v-list-tile v-for="(item, i) in blogOptions" v-if="item.type == file.blog_status" :key="i" @click="blogOps(item.code)">
+          <v-list-tile v-for="(item, i) in blogOptions" v-if="item.type.indexOf(file.blog_status) != -1" :key="i" @click="blogOps(item.code)">
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
     </span>
-    <simpleDialog :title="title" :content="conten"></simpleDialog>
-    <!-- 是否删除博客：“{{file.title}}”， 删除后博客被移动到垃圾桶 -->
   </li>
 </template>
 
 <script>
-import simpleDialog from '@/components/common/SimpleDialo.vue'
 export default {
   props: ['file'],
   data () {
     return {
-      title: null,
-      content: null,
       isHover: false,
-      deleteBlogFlag: false,
       blogOptions: [
         {code: 'publish', title: '发布博客', type: 'DRAFT'},
         {code: 'delete', title: '删除博客', type: 'DRAFT'},
         {code: 'reversion', title: '恢复博客', type: 'DELETE'},
         {code: 'clean', title: '彻底删除', type: 'DELETE'},
         {code: 'updatePublish', title: '更新发布', type: 'PUBLISH'},
-        {code: 'cancelPublish', title: '取消发布', type: 'PUBLISH'}
+        {code: 'cancelPublish', title: '取消发布', type: 'PUBLISH'},
+        {code: 'history', title: '历史版本', type: ['DRAFT', 'PUBLISH']}
       ],
     }
   },
-  components: { simpleDialog },
   methods: {
     getBlog () {
       this.$bus.emit('getBlog', {
@@ -58,31 +52,53 @@ export default {
           alert('发布')
           break
         case 'delete':
-          this.deleteBlogFlag = true
+          let deleteObj = {
+            title: '删除确认',
+            content: `是否删除博客：“${this.file.title}”， 删除后博客被移动到垃圾桶！`,
+            confirm: this.deleteToTrash // 传递confirm时callback函数。
+          }
+          this.$bus.emit('confirm', deleteObj)
           break
         case 'reversion':
-
+          // TODO
           break
         case 'clean':
-
+          let clean = {
+            title: '删除确认',
+            content: `是否从垃圾桶中删除博客：“${this.file.title}”， 删除后博客无法再恢复！`,
+            confirm: this.cleanBlog
+          }
+          this.$bus.emit('confirm', clean)
           break
         case 'updatePublish':
-
+          // TODO
           break
         case 'cancelPublish':
-
+          // TODO
+          break
+        case 'history':
+          // TODO
           break
       }
     },
-    deleteBlog () {
-      this.deleteBlogFlag = false
-      this.api.deleteBlogById((res) => {
+    deleteToTrash () {
+      this.api.deleteToTrash((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
       // 通知dir，将当前blog移动到trash中。
-      this.$emit('deleteblog', this.file._id)
+      this.$emit('deleteToTrash', this.file._id)
+      }, this.file._id)
+    },
+    // 从垃圾桶中删除博客
+    cleanBlog () {
+      this.api.cleanBlog((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+      this.$emit('cleanblog', this.file._id)
       }, this.file._id)
     },
     publish () {

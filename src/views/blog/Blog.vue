@@ -49,7 +49,7 @@ export default {
       this.loading = true
       this.api.getBlogs((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
         this.loading = false

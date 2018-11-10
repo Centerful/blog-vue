@@ -80,7 +80,7 @@ export default {
       return */
       this.api.imgUpload((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return
         }
         //  替换图片URL
@@ -131,7 +131,7 @@ export default {
       this.dir = data
       this.api.getBlog((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
         // 添加题图与title
@@ -154,7 +154,7 @@ export default {
       this.blog._id = this.dir.file_id
       this.api.updateBlog((res) => {
         if (res.code != 0) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
         } else {
         }
         this.write = false

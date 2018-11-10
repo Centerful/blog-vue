@@ -169,4 +169,4 @@ Project
 - [ ] 使用骨架屏技术（Skeleton Screen）
 - [ ] 使用照片灯箱。
 - [ ] 使用vuetify的treeview重写文集的侧边栏。
-- [ ] vue如何封装其他vue库标签为自己的组件，例如封装simpleDialog。
+- [x] vue如何封装其他vue库标签为自己的组件，例如封装vuetify的Dialog组件作为自己的common组件。---> 如果是在main.js中通过Vue全局注册则可以使用。如果是局部注册该组件会报错。

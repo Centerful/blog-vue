@@ -97,7 +97,7 @@ export default {
         // 3.
         // 结束动画
         if (res.code == 1) {
-          this.$bus.emit('dialog', res.message)
+          this.$bus.emit('prompt', res.message)
           return 
         }
         this.$router.push({name: 'welcome'})

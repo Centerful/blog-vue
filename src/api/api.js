@@ -38,7 +38,11 @@ export default {
     let res = await http.fetch(`/blogs/${blogId}`)
     callback(res.data)
   },
-  deleteBlogById: async (callback, blogId) => {
+  deleteToTrash: async (callback, blogId) => {
+    let res = await http.delete(`/blogs/${blogId}/trash`)
+    callback(res.data)
+  },
+  cleanBlog: async (callback, blogId) => {
     let res = await http.delete(`/blogs/${blogId}`)
     callback(res.data)
   },

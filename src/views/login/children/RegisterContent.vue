@@ -143,7 +143,7 @@ export default {
       // 2.
       this.api.register((data) => {
         if (data.code == 1) {
-          this.$bus.emit('dialog', data.message)
+          this.$bus.emit('prompt', data.message)
           return 
         }
         // 3.
