@@ -95,6 +95,14 @@ export default {
     let res = await http.put(`/blogs/${data._id}`, data)
     callback(res.data)
   },
+  reversion: async (callback, data = { blog_id: null, book_id: null }) => {
+    let res = await http.patch(`/blogs/${data.blog_id}/reversion`, data)
+    callback(res.data)
+  },
+  bookRename: async (callback, data = {book_id: null, book_name: null}) => {
+    let res = await http.patch(`/books/${data.book_id}/rename`, data)
+    callback(res.data)
+  },
   imgUpload: async (callback, files) => {
     if (!files || files.length < 1) {
       callback({ code: 1, message: '请选择上传图片' })

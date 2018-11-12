@@ -84,6 +84,15 @@ export default {
       console.error(err)
     }
   },
+  // 
+  async delete (url, query) {
+    try {
+      let res = await axios.delete(url, { params: query })
+      return res
+    } catch (err) {
+      console.error(err)
+    }
+  },
   // x-www-urlencoded(form)与json,file三种
   async post (url, data, type = 'json') {
     // TODO 待修改
@@ -126,9 +135,38 @@ export default {
       }
     }
   },
-  async patch () {
-
+  // 
+  async patch (url, data, type = 'json') {
+    // TODO 待修改
+    if (type === 'json') {
+      try {
+        let res = await axios({
+          method: 'patch',
+          url: url,
+          data: data,
+          headers: {'Content-Type': 'application/json;charset=utf-8'}
+        })
+        // let res = await axios.patch(url, data)
+        return res
+      } catch (err) {
+        console.error(err)
+      }
+    } else {
+      // x-www-urlencoded
+      try {
+        let res = await axios({
+          method: 'patch',
+          url: url,
+          data: qs.stringify(data),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+        })
+        return res
+      } catch (err) {
+        console.error(err)
+      }
+    }
   },
+  // 
   async put (url, data, type = 'json') {
     // TODO 待修改
     if (type === 'json') {
@@ -159,12 +197,5 @@ export default {
       }
     }
   },
-  async delete (url, query) {
-    try {
-      let res = await axios.delete(url, { params: query })
-      return res
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  // TODO 可以抽象出一个公共的方法。
 }

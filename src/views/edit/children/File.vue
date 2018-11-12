@@ -19,6 +19,19 @@
         </v-list>
       </v-menu>
     </span>
+    <form-confirm-dialog v-model="reversionDialog" :confirm="reversion" title="恢复博客">
+      <v-card-text>
+        {{ reversionContent }}
+        <v-select
+          v-model="bookSelect"
+          item-text="book_name"
+          item-value="_id"
+          :items="books"
+          :rules="selectRules"
+          required
+        ></v-select>
+      </v-card-text>
+    </form-confirm-dialog>
   </li>
 </template>
 
@@ -37,6 +50,21 @@ export default {
         {code: 'cancelPublish', title: '取消发布', type: 'PUBLISH'},
         {code: 'history', title: '历史版本', type: ['DRAFT', 'PUBLISH']}
       ],
+      reversionDialog: false,
+      bookSelect: { _id: '', book_name: '' },
+      reversionContent: null,
+      books: [],
+      selectRules: [
+        v => {
+          if (v._id == '') {
+            return '请选择文集'
+          }
+          if (v && v._id == undefined) {
+            return true
+          }
+          return '请选择文集'
+        }
+      ]
     }
   },
   methods: {
@@ -55,17 +83,28 @@ export default {
           let deleteObj = {
             title: '删除确认',
             content: `是否删除博客：“${this.file.title}”， 删除后博客被移动到垃圾桶！`,
+            confirmColor: 'red',
             confirm: this.deleteToTrash // 传递confirm时callback函数。
           }
           this.$bus.emit('confirm', deleteObj)
           break
         case 'reversion':
-          // TODO
+          // 获得文集数据
+          this.api.getBooks((res) => {
+            if (res.code != 0) {
+              this.$bus.emit('prompt', res.message)
+              return 
+            }
+            this.books = res.data
+          }, {only_book: true})
+          this.reversionContent = `博客“${this.file.title}”恢复至文集：`
+          this.reversionDialog = true
           break
         case 'clean':
           let clean = {
             title: '删除确认',
             content: `是否从垃圾桶中删除博客：“${this.file.title}”， 删除后博客无法再恢复！`,
+            confirmColor: 'red',
             confirm: this.cleanBlog
           }
           this.$bus.emit('confirm', clean)
@@ -98,11 +137,25 @@ export default {
           this.$bus.emit('prompt', res.message)
           return 
         }
-      this.$emit('cleanblog', this.file._id)
+        this.$emit('cleanblog', this.file._id)
       }, this.file._id)
     },
     publish () {
 
+    },
+    // 恢复到指定文集
+    reversion () {
+      let data = { blog_id: this.file._id, book_id: this.bookSelect }
+      this.api.reversion((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        // 通知垃圾桶删除当前博客，通知文集添加博客。
+        data.file = this.file
+        data.file.blog_order = res.data.blog_order
+        this.$emit('reversionToBook', data)
+      }, data)
     }
   }
 }

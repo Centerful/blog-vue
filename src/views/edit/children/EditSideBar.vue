@@ -103,13 +103,18 @@ export default {
     // 添加事件,对外暴露事件
     eventListener () {
       this.$bus.on('titleInput', this.titleInput)
+      this.$bus.on('trashToBlog', this.trashToBlog)
     },
     titleInput (dir) {
-      this.$refs[dir.book_id][0].files.filter((file) => {
+      this.$refs[dir.book_id][0].files.find((file) => {
         if (file._id == dir.file_id) {
           file.title = dir.title
         }
       })
+    },
+    // 文件添加垃圾箱中删除的博客
+    trashToBlog (data) {
+      this.$refs[data.book_id][0].files.push(data.file)
     },
     fetchData () {
       this.api.getBooks((res) => {

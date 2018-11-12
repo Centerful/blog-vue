@@ -35,7 +35,7 @@
           <span class="e-btn"></span>
         </span>
       </li>
-      <file @deleteToTrash="deleteToTrash" @cleanblog="cleanBlog" v-for="file in files" :key="file._id" :file="file"></file>
+      <file @deleteToTrash="deleteToTrash" @reversionToBook="reversionToBook"  @cleanblog="cleanBlog" v-for="file in files" :key="file._id" :file="file"></file>
       <form-confirm-dialog v-model="renameDialog" :confirm="rename" title="文集重命名">
         <v-text-field 
           v-model="renameVal"
@@ -132,6 +132,11 @@ export default {
     cleanBlog (_id) {
       this._deleteFile(_id)
     },
+    // 从垃圾箱中删除博客
+    reversionToBook (data) {
+      this._deleteFile(data.blog_id)
+      this.$bus.emit('trashToBlog', data)
+    },
     _deleteFile (_id) {
       // 找到对应file数据
       let blog = this.files.filter((ele, index) => {
@@ -145,7 +150,7 @@ export default {
       this.files.splice(blog.index, 1)
       return blog
     },
-    // TODO 文集的操作
+    // 文集的操作
     dirOps (code) {
       switch (code) {
         case 'rename':
@@ -159,6 +164,7 @@ export default {
             let deleteObj = {
               title: '删除确认',
               content: `是否删除文集：“${this.dir.book_name}”， 删除后文集将无法恢复！`,
+              confirmColor: 'red',
               confirm: this.deleteBook // 传递confirm时callback函数。
             }
             this.$bus.emit('confirm', deleteObj)
@@ -174,8 +180,14 @@ export default {
     },
     // 重命名文集
     rename () {
-      // TODO
-      console.log('修改后文集名称：'+this.renameVal)
+      this.api.bookRename((res) => {
+        // 将新增blog添加进files中.
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        this.dir.book_name = this.renameVal
+      }, {book_id: this.dir._id, book_name: this.renameVal})
     },
     // 删除文集
     deleteBook () {

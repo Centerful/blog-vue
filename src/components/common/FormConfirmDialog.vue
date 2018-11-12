@@ -59,6 +59,7 @@ export default {
       if (this.cancel) {
         this.cancel()
       }
+      this.$refs.form.reset()
     },
     confirmEvent () {
       if (!this.$refs.form.validate()) {
@@ -68,6 +69,7 @@ export default {
       if (this.confirm) {
         this.confirm()
       }
+      this.$refs.form.reset()
     }
   }
 }
