@@ -36,7 +36,7 @@
         </span>
       </li>
       <file @deleteToTrash="deleteToTrash" @reversionToBook="reversionToBook"  @cleanblog="cleanBlog" v-for="file in files" :key="file._id" :file="file"></file>
-      <form-confirm-dialog v-model="renameDialog" :confirm="rename" title="文集重命名">
+      <form-confirm-dialog ref="formDialog" v-model="renameDialog" :confirm="rename" title="文集重命名">
         <v-text-field 
           v-model="renameVal"
           label="文集名称"
@@ -154,7 +154,7 @@ export default {
     dirOps (code) {
       switch (code) {
         case 'rename':
-          // 需要用带输入框的文集，利用slot特性。比较复杂 TODO ，将confirm-dialog放到App.vue中通过bus的事件调用。
+          // 需要用带输入框的文集，利用slot特性。比较复杂 ，将confirm-dialog放到App.vue中通过bus的事件调用。
           // 将错误提示框，写成common组件，注册bus的事件。
           // common组件中props为title，content的参数校验修改下，可以传入null。   
           this.renameDialog = true
@@ -187,12 +187,20 @@ export default {
           return 
         }
         this.dir.book_name = this.renameVal
+        this.$refs.formDialog.clearForm() // 清空Dialog中的表单
       }, {book_id: this.dir._id, book_name: this.renameVal})
     },
     // 删除文集
     deleteBook () {
-      // TODO
-      console.log('文集已被删除！')
+      this.api.deleteBook((res) => {
+        // 将新增blog添加进files中.
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        // 通知sidebar删除当前book
+        this.$bus.emit("deleteBook", this.dir._id)
+      }, this.dir._id)
     }
   },
   watch: {

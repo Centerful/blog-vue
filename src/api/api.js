@@ -70,6 +70,10 @@ export default {
     let res = await http.fetch(`/books`, query)
     callback(res.data)
   },
+  deleteBook: async (callback, book_id) => {
+    let res = await http.delete(`/books/${book_id}`)
+    callback(res.data)
+  },
   getBookBlogs: async (callback, bookId) => {
     let res = await http.fetch(`/books/${bookId}/blogs`)
     callback(res.data)

@@ -10,8 +10,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat @click.native="cancelEvent">{{cancelText}}</v-btn>
-        <v-btn color="primary" @click.native="confirmEvent" :disabled="!valid">{{confirmText}}</v-btn>
+        <v-btn flat @click.native="_cancelEvent">{{cancelText}}</v-btn>
+        <v-btn color="primary" @click.native="_confirmEvent" :disabled="!valid">{{confirmText}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -27,6 +27,10 @@ export default {
     maxWidth: {
       type: Number,
       default: 360
+    },
+    autoClear: {
+      type: Boolean,
+      default: false
     },
     persistent: {
       type: Boolean,
@@ -54,14 +58,19 @@ export default {
     }
   },
   methods: {
-    cancelEvent () {
+    clearForm () {
+      this.$refs.form.reset()
+    },
+    _cancelEvent () {
       this.$emit('update', false)
       if (this.cancel) {
         this.cancel()
       }
-      this.$refs.form.reset()
+      if (this.autoClear) {
+        this.$refs.form.reset()
+      }
     },
-    confirmEvent () {
+    _confirmEvent () {
       if (!this.$refs.form.validate()) {
         return 
       }
@@ -69,7 +78,9 @@ export default {
       if (this.confirm) {
         this.confirm()
       }
-      this.$refs.form.reset()
+      if (this.autoClear) {
+        this.$refs.form.reset()
+      }
     }
   }
 }

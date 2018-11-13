@@ -104,6 +104,7 @@ export default {
     eventListener () {
       this.$bus.on('titleInput', this.titleInput)
       this.$bus.on('trashToBlog', this.trashToBlog)
+      this.$bus.on("deleteBook", this.deleteBook)
     },
     titleInput (dir) {
       this.$refs[dir.book_id][0].files.find((file) => {
@@ -115,6 +116,16 @@ export default {
     // 文件添加垃圾箱中删除的博客
     trashToBlog (data) {
       this.$refs[data.book_id][0].files.push(data.file)
+    },
+    // 删除博客
+    deleteBook (book_id) {
+      let idx;
+      this.dirs.find((ele, index) => {
+        if (ele._id == book_id) {
+          idx = index
+        }
+      })
+      this.dirs.splice(idx, 1)
     },
     fetchData () {
       this.api.getBooks((res) => {

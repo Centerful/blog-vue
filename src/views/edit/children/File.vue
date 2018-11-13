@@ -19,7 +19,7 @@
         </v-list>
       </v-menu>
     </span>
-    <form-confirm-dialog v-model="reversionDialog" :confirm="reversion" title="恢复博客">
+    <form-confirm-dialog v-model="reversionDialog" :autoClear="true" :confirm="reversion" title="恢复博客">
       <v-card-text>
         {{ reversionContent }}
         <v-select
@@ -56,7 +56,7 @@ export default {
       books: [],
       selectRules: [
         v => {
-          if (v._id == '') {
+          if (!v || v._id == '') {
             return '请选择文集'
           }
           if (v && v._id == undefined) {
@@ -77,7 +77,8 @@ export default {
     blogOps (code) {
       switch (code) {
         case 'publish':
-          alert('发布')
+          // TODO
+          
           break
         case 'delete':
           let deleteObj = {
@@ -111,12 +112,14 @@ export default {
           break
         case 'updatePublish':
           // TODO
+
           break
         case 'cancelPublish':
           // TODO
           break
         case 'history':
           // TODO
+
           break
       }
     },
@@ -145,6 +148,7 @@ export default {
     },
     // 恢复到指定文集
     reversion () {
+      // 在异步方法外边将form表单数据拉取出。可以将formdialog设置为自动清空。
       let data = { blog_id: this.file._id, book_id: this.bookSelect }
       this.api.reversion((res) => {
         if (res.code != 0) {
@@ -154,6 +158,7 @@ export default {
         // 通知垃圾桶删除当前博客，通知文集添加博客。
         data.file = this.file
         data.file.blog_order = res.data.blog_order
+        data.file.blog_status = 'DRAFT'
         this.$emit('reversionToBook', data)
       }, data)
     }
