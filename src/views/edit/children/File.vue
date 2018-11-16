@@ -28,14 +28,18 @@
           item-value="_id"
           :items="books"
           :rules="selectRules"
+          label="文集"
+          placeholder="请选择..."
           required
         ></v-select>
       </v-card-text>
     </form-confirm-dialog>
+    <publish-blog-dialog v-model="publishDialog" :confirm="publish"></publish-blog-dialog>
   </li>
 </template>
 
 <script>
+import PublishBlogDialog from '@/views/edit/children/PublishBlogDialog.vue'
 export default {
   props: ['file'],
   data () {
@@ -51,6 +55,7 @@ export default {
         {code: 'history', title: '历史版本', type: ['DRAFT', 'PUBLISH']}
       ],
       reversionDialog: false,
+      publishDialog: false,
       bookSelect: { _id: '', book_name: '' },
       reversionContent: null,
       books: [],
@@ -67,6 +72,7 @@ export default {
       ]
     }
   },
+  components: { PublishBlogDialog },
   methods: {
     getBlog () {
       this.$bus.emit('getBlog', {
@@ -77,8 +83,15 @@ export default {
     blogOps (code) {
       switch (code) {
         case 'publish':
-          // TODO
-          
+          // 获得自己的专栏信息与标签信息
+          // this.api.getColumns((res) => {
+          //   if (res.code != 0) {
+          //     this.$bus.emit('prompt', res.message)
+          //     return 
+          //   }
+          //   this.books = res.data
+          // }, {only_book: true})
+          this.publishDialog = true
           break
         case 'delete':
           let deleteObj = {
@@ -98,7 +111,7 @@ export default {
             }
             this.books = res.data
           }, {only_book: true})
-          this.reversionContent = `博客“${this.file.title}”恢复至文集：`
+          this.reversionContent = `博客“${this.file.title}”恢复至：`
           this.reversionDialog = true
           break
         case 'clean':
@@ -143,8 +156,9 @@ export default {
         this.$emit('cleanblog', this.file._id)
       }, this.file._id)
     },
+    // 发布博客
     publish () {
-
+      console.log('发布专栏。')
     },
     // 恢复到指定文集
     reversion () {
