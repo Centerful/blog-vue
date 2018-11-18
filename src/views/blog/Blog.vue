@@ -47,7 +47,7 @@ export default {
   methods: {
     fetchData () {
       this.loading = true
-      this.api.getBlogs((res) => {
+      this.api.getPublishs((res) => {
         if (res.code != 0) {
           this.$bus.emit('prompt', res.message)
           return 

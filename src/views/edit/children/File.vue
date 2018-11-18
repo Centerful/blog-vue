@@ -34,7 +34,8 @@
         ></v-select>
       </v-card-text>
     </form-confirm-dialog>
-    <publish-blog-dialog v-model="publishDialog" :confirm="publish"></publish-blog-dialog>
+    <publish-blog-dialog v-model="publishDialog" :blog_id="file._id" :confirm="publish">
+    </publish-blog-dialog>
   </li>
 </template>
 
@@ -83,20 +84,12 @@ export default {
     blogOps (code) {
       switch (code) {
         case 'publish':
-          // 获得自己的专栏信息与标签信息
-          // this.api.getColumns((res) => {
-          //   if (res.code != 0) {
-          //     this.$bus.emit('prompt', res.message)
-          //     return 
-          //   }
-          //   this.books = res.data
-          // }, {only_book: true})
           this.publishDialog = true
           break
         case 'delete':
           let deleteObj = {
             title: '删除确认',
-            content: `是否删除博客：“${this.file.title}”， 删除后博客被移动到垃圾桶！`,
+            content: `是否删除博客：“${this.file.title}”，删除后博客被移动到垃圾桶！`,
             confirmColor: 'red',
             confirm: this.deleteToTrash // 传递confirm时callback函数。
           }
@@ -117,18 +110,23 @@ export default {
         case 'clean':
           let clean = {
             title: '删除确认',
-            content: `是否从垃圾桶中删除博客：“${this.file.title}”， 删除后博客无法再恢复！`,
+            content: `是否从垃圾桶中删除博客：“${this.file.title}”，删除后博客无法再恢复！`,
             confirmColor: 'red',
             confirm: this.cleanBlog
           }
           this.$bus.emit('confirm', clean)
           break
         case 'updatePublish':
-          // TODO
-
+          this.publishDialog = true
           break
         case 'cancelPublish':
-          // TODO
+          let cancelObj = {
+            title: '取消发布',
+            content: `是否取消发布博客：“${this.file.title}”，取消发布后博客从专栏上撤回，通过发布功能可以再次发布博客。`,
+            confirmColor: 'red',
+            confirm: this.cancelPublish // 传递confirm时callback函数。
+          }
+          this.$bus.emit('confirm', cancelObj)
           break
         case 'history':
           // TODO
@@ -156,9 +154,27 @@ export default {
         this.$emit('cleanblog', this.file._id)
       }, this.file._id)
     },
-    // 发布博客
-    publish () {
-      console.log('发布专栏。')
+    // 发布或更新博客
+    publish (val) {
+      let data = val
+      data.blog_id = this.file._id
+      this.api.publish((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        this.file.blog_status = 'PUBLISH'
+      }, data)
+    },
+    // 取消发布
+    cancelPublish () {
+      this.api.cancelPublish((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        this.file.blog_status = 'DRAFT'
+      }, this.file._id)
     },
     // 恢复到指定文集
     reversion () {

@@ -45,6 +45,8 @@ export default {
       type: String,
       default: '取 消'
     },
+    // 表单参数传递。
+    params: Object,
     confirm: Function,
     cancel: Function
   },
@@ -76,7 +78,7 @@ export default {
       }
       this.$emit('update', false)
       if (this.confirm) {
-        this.confirm()
+        this.confirm(this.params)
       }
       if (this.autoClear) {
         this.$refs.form.reset()

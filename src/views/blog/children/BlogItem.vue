@@ -14,7 +14,7 @@
         </div>
         <div class="post-auth-date">
           <span class="post-auth">by <span href="#" class="post-auth-a"> {{ user.nick_name }} </span></span>
-          <span href="#" class="post-date">{{ utils.getYMD(new Date(update_time)) }}</span>
+          <span href="#" class="post-date">{{ utils.getYMD(new Date(blog_time)) }}</span>
         </div>
         <div class="post-content">
           <p>
@@ -60,31 +60,26 @@ export default {
         required: true
       }
     },
-    update_time: {
+    publish_time: {
       type: String,
       required: true
     },
+    republish_time: String,
     content: {
       type: String,
       required: true
     },
-    tags: {
-      type: Array,
-      required: false,
-      id: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String,
-        required: true
-      }
-    }
+    tags: Array
   },
   name: 'BlogItem',
   data () {
     return {
       // msg: 'Welcome to Your Vue.js App!'
+    }
+  },
+  computed: {
+    blog_time () {
+      return this.republish_time || this.publish_time
     }
   },
   methods: {

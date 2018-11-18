@@ -2,10 +2,7 @@ import http from '@/api/http'
 // 接口统一管理
 export default {
   // 登录方法
-  login: async (callback, data = {
-    user_name: null,
-    password: null
-  }) => {
+  login: async (callback, data = {user_name: null,password: null}) => {
     let res = await http.post('/login', data)
     callback(res.data)
   },
@@ -14,26 +11,18 @@ export default {
     let res = await http.post('/logout')
     callback(res.data)
   },
-  register: async (callback, data = {
-    is_email: null,
-    user_name: null,
-    password: null
-  }) => {
+  register: async (callback, data = {is_email: null,user_name: null,password: null}) => {
     let res = await http.post('/register', data)
     callback(res.data)
   },
-  visitor: async (callback, data = {
-    user_name: null,
-    email: null,
-    user_avatar: null
-  }) => {
+  visitor: async (callback, data = {user_name: null,email: null,user_avatar: null}) => {
     let res = await http.post('/visitor', data)
     callback(res.data)
   },
-  getBlogs: async (callback, query) => {
+  /*getBlogs: async (callback, query) => {
     let res = await http.fetch('/blogs', query)
     callback(res.data)
-  },
+  },*/
   getBlog: async (callback, blogId) => {
     let res = await http.fetch(`/blogs/${blogId}`)
     callback(res.data)
@@ -78,11 +67,7 @@ export default {
     let res = await http.fetch(`/books/${bookId}/blogs`)
     callback(res.data)
   },
-  addBlog: async (callback, data = {
-    title: null,
-    books_id: null,
-    blog_order: null
-  }) => {
+  addBlog: async (callback, data = {title: null, books_id: null, blog_order: null}) => {
     let res = await http.post(`/blogs`, data)
     callback(res.data)
   },
@@ -90,17 +75,32 @@ export default {
     let res = await http.post(`/books`, data)
     callback(res.data)
   },
-  updateBlog: async (callback, data = {
-    id: null,
-    blog_img: null,
-    title: null,
-    content: null
-  }) => {
+  updateBlog: async (callback, data = { id: null, blog_img: null, title: null, content: null }) => {
     let res = await http.put(`/blogs/${data._id}`, data)
     callback(res.data)
   },
+  publish: async (callback, data) => {
+    let res = await http.put(`/publishs/${data.blog_id}`, data)
+    callback(res.data)
+  },
+  getPublishs: async (callback, query) => {
+    let res = await http.fetch('/publishs', query)
+    callback(res.data)
+  },
+  getPublish: async (callback, blogId) => {
+    let res = await http.fetch(`/publishs/${blogId}`)
+    callback(res.data)
+  },
+  getPublishSummaryById: async (callback, blog_id) => {
+    let res = await http.fetch(`/publishs/${blog_id}/summary`)
+    callback(res.data)
+  },
+  cancelPublish: async (callback, blog_id) => {
+    let res = await http.delete(`/publishs/${blog_id}`)
+    callback(res.data)
+  },
   reversion: async (callback, data = { blog_id: null, book_id: null }) => {
-    let res = await http.patch(`/blogs/${data.blog_id}/reversion`, data)
+    let res = await http.post(`/blogs/${data.blog_id}/reversion`, data)
     callback(res.data)
   },
   bookRename: async (callback, data = {book_id: null, book_name: null}) => {
