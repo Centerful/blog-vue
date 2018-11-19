@@ -19,10 +19,6 @@ export default {
     let res = await http.post('/visitor', data)
     callback(res.data)
   },
-  /*getBlogs: async (callback, query) => {
-    let res = await http.fetch('/blogs', query)
-    callback(res.data)
-  },*/
   getBlog: async (callback, blogId) => {
     let res = await http.fetch(`/blogs/${blogId}`)
     callback(res.data)
