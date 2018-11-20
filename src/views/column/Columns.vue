@@ -7,8 +7,8 @@
         <div class="columns-bg-mask"></div>
         <div class="columns-bg-inner">
           <span class="columns-summary">带来极致创作体验</span>
-          <button class="columns-write-btn" @click="writeBlog">开始写文章</button>
-          <button class="columns-open-btn" @click="openColumn">开通专栏</button>
+          <v-btn depressed class="ma-2" @click="openColumn">开通专栏</v-btn>
+          <v-btn flat style="color: white;" @click="writeBlog">开始写文章</v-btn>
         </div>
       </div>
     </div>
@@ -62,7 +62,7 @@ export default {
     },
     openColumn () {
       // 当前用户的id.
-      this.$router.push({name: 'ColumnOpen', params: { id: 123 }})
+      this.$router.push({name: 'ColumnOpen'})
     }
   }
 }
@@ -136,10 +136,9 @@ export default {
     color: #ffffff;
   }
   .columns-write-btn{
-    margin: 10px;
   }
   .columns-open-btn{
-
+    margin: 10px;
   }
   .columns-split-line{
     border-bottom: 1px solid #aaa;

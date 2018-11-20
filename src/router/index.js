@@ -25,7 +25,7 @@ export default new Router({
         { path: '', name: 'welcome', component: Blog },
         { path: 'columns', name: 'Columns', component: Columns },
         { path: 'columns/:_id', name: 'ColumnContent', component: ColumnContent },
-        { path: 'columns/open/:_id', name: 'ColumnOpen', component: ColumnOpen },
+        { path: 'columns/open/', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
         { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
         { path: 'feed', name: 'Feed', component: Feed }

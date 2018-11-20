@@ -9,6 +9,21 @@
           <div class="columns-img-btn">图片选择</div>
         </div>
       </div>
+      <v-card class="edit-picture"
+        @mouseover="editIconShow = true" 
+        @mouseout="editIconShow = false" raised>
+          <v-img v-if="column_img" class="edit-picture-wapper" :src="column_img">
+          </v-img>
+          <transition name="fade">
+            <div v-if="editIconShow" @click="openImgInput" class="edit-picture-overlay">
+              <v-icon color="blue-grey lighten-2" class="edit-img-icon" large>mdi-camera-image</v-icon>
+              <div class="edit-picture-backdrop"></div>
+            </div>
+          </transition>
+          <form id="imgForm" method="post" enctype="multipart/form-data" action="图片上传">
+            <input style="display: none;" @change="imgUpload" type="file" id="imageInput" accept="image/*">
+          </form>
+      </v-card>
       <!-- 表单是 Material Design风格-->
       <form class="columns-form" action="">
         <div class="form-columns">
@@ -44,7 +59,8 @@
 export default {
   data () {
     return {
-
+      editIconShow: false,
+      column_img: null
     }
   },
   created () {
@@ -54,6 +70,30 @@ export default {
     // 开通专栏
     open () {
 
+    },
+    openImgInput (data) {
+      document.getElementById('imageInput').click()
+    },
+    // 题图上传
+    imgUpload (data) {
+      let files = document.getElementById('imageInput').files
+      if (!files || files.length < 1) {
+        return
+      }
+      //测试。
+      /*console.log(this.blog.blog_img)
+      this.blog.blog_img = '/static/img/article-59521bcf81138.jpg'
+      return */
+      this.api.imgUpload((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return
+        }
+        //  替换图片URL
+        this.blog.blog_img = res.data.path
+        // 保存博客
+        this.saveBlog()
+      }, files)
     },
     // 返回路由的上一级
     back () {
@@ -98,6 +138,44 @@ export default {
     position: absolute;
     bottom: 10px;
     color: #a2a2a2;
+  }
+  .edit-picture {
+    position: relative;
+    max-width: 560px;
+    width: 100%;
+    height: 323px;
+    background-color: #f7f8f9;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666666;
+    /*box-shadow: 0 1px 1px -1px rgba(0,0,0,.2), 0 1px 3px 0 rgba(0,0,0,.14), 0 1px 2px 0 rgba(0,0,0,.12);*/
+    margin-bottom: 15px;
+  }
+  .edit-picture-wapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 2px;
+    justify-content: center;
+    align-items: center;
+  }
+  .edit-picture-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .edit-picture-backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .6; 
+    background-color: white;
   }
   .columns-form {
   }
