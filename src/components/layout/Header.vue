@@ -61,8 +61,7 @@ export default {
   .head-inner {
     height: 43px;
     background-color: #fff;
-    width: 72%;
-    max-width: 890px;
+    width: 890px;
     box-shadow: 0 1px 5px -1px rgba(0, 0, 0, 0.3);
     border-bottom: 1px solid #C6C6C6;
     opacity: 0.955;
