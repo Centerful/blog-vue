@@ -5,9 +5,6 @@
     <placeholder/>
     <div class="search" v-if="search"></div>
     <div class="blog-items">
-      <!-- <div class="" v-if="loading">
-        Loading...
-      </div> -->
       <template v-if="loading">
         <BlogItemLoad></BlogItemLoad>
         <BlogItemLoad></BlogItemLoad>
