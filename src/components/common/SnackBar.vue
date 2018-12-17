@@ -26,7 +26,7 @@ export default {
       x: '',
       y: 'top',
       mode: '',
-      color: 'info' // SUCCESS,INFO,ERROR
+      color: 'info' // SUCCESS,INFO,ERROR,WARNING
     }
   },
   mounted () {

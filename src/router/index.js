@@ -10,6 +10,9 @@ import Layout from '@/views/Layout.vue'
 import Login from '@/views/login/Login.vue'
 import BlogContent from '@/views/blog/BlogContent.vue'
 
+
+import Lab from '@/views/lab/Lab.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -28,7 +31,8 @@ export default new Router({
         { path: 'columns/open/', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
         { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
-        { path: 'feed', name: 'Feed', component: Feed }
+        { path: 'feed', name: 'Feed', component: Feed },
+        { path: 'lab', name: 'lab', component: Lab }
       ],
       meta: {
         title: 'Centerful'

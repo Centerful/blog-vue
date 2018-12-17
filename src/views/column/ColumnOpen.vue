@@ -2,17 +2,16 @@
   <div class="column-open">
     <placeholder></placeholder>
     <div class="columns-form-wapper">
-      <div class="columns-img-pick">
+      <!-- <div class="columns-img-pick">
         <div class="columns-img-wapper">
-          <!-- 黄金比例,或白金比例 -->
           <img src="" alt="" class="columns-img">
           <div class="columns-img-btn">图片选择</div>
         </div>
-      </div>
+      </div> -->
       <v-card class="edit-picture"
         @mouseover="editIconShow = true" 
         @mouseout="editIconShow = false" raised>
-          <v-img v-if="column_img" class="edit-picture-wapper" :src="column_img">
+          <v-img v-if="formData.column_img" class="edit-picture-wapper" :src="formData.column_img">
           </v-img>
           <transition name="fade">
             <div v-if="editIconShow" @click="openImgInput" class="edit-picture-overlay">
@@ -25,32 +24,57 @@
           </form>
       </v-card>
       <!-- 表单是 Material Design风格-->
-      <form class="columns-form" action="">
-        <div class="form-columns">
-          <span class="form-label">专栏名</span>
-          <input type="text" class="columns-name-input">
-        </div>
-        <div class="form-columns">
-          <span class="form-label">专栏类别</span>
-          <div class="columns-type-slip">哈利波特 +</div>
-        </div>
-        <div class="form-columns">
-          <span class="form-label">专栏介绍</span>
-          <textarea class="columns-summary-input" name="" id=""></textarea>
-        </div>
-        <div class="form-columns">
-          <span class="form-label">专栏域名</span>
-          <div class="columns-domain-input">
-            <span>zhuanlan.centerful.org/</span>
-            <input type="text" class="">
-          </div>
-        </div>
-        <div class="form-columns-bar">
-          <!-- 阻止默认事件 -> 阻止form进行onsubmit事件,却无参数可以提交-然后在#号前边存在问号的问题. -->
-          <button class="columns-bar-back" @click.prevent="back()">返回</button>
-          <button class="columns-bar-submit" @click.prevent="open()">申请开通</button>
-        </div>
-      </form>
+      <div></div>
+      <v-form class="columns-form" ref="columnsForm" v-model="valid">
+        <v-text-field 
+          class="text-field" 
+          v-model="formData.columns_name"
+          label="专栏名"
+          :rules="columnsNameRules"
+          required>
+        </v-text-field>
+        <v-textarea
+          v-model="formData.introduction"
+          :rules="introductionRules"
+          auto-grow
+          label="专栏介绍"
+          rows="1"
+        ></v-textarea>
+        <v-text-field 
+          class="text-field" 
+          v-model="formData.columns_domain"
+          label="专栏域名"
+          :rules="columnsDomainRules"
+          prefix="www.centerful.org/columns/"
+          required>
+        </v-text-field>
+        <v-combobox
+          v-model="tags"
+          :items="totalTags"
+          label="添加标签"
+          chips
+          hint="最多添加3个标签"
+          persistent-hint
+          clearable
+          prepend-icon="mdi-tag"
+          multiple>
+          <template slot="selection" slot-scope="data">
+            <v-chip :selected="data.selected" close @input="tags.splice(tags.indexOf(data.item), 1),tags = [...tags]">
+              <strong>{{ data.item }}</strong>
+            </v-chip>
+          </template>
+        </v-combobox>
+      </v-form>
+      <v-layout justify-end row class="columns-form">
+        <v-spacer></v-spacer>
+        <v-btn @click="back" flat>返 回</v-btn>
+        <v-btn 
+          color="info" 
+          :disabled="!valid"
+          @click="open">
+          申请开通
+        </v-btn>
+      </v-layout>
     </div>
   </div>
 </template>
@@ -60,7 +84,40 @@ export default {
   data () {
     return {
       editIconShow: false,
-      column_img: null
+      columnsNameRules: [
+        v => {
+          if (!v) {
+            return "专栏名不能为空"
+          }
+          if (v.length > 32) {
+            return "长度不能大于三十二位"
+          }
+        }
+      ],
+      introductionRules: [
+        v => {
+          if (!v) {
+            return "专栏介绍不能为空"
+          }
+        }
+      ],
+      columnsDomainRules: [
+        v => {
+          if (!v) {
+            return "域名不能为空"
+          }
+        }
+      ],
+      formData: {
+        column_img: null,
+        columns_name: null,
+        columns_type: null,
+        introduction: null,
+        columns_domain: null
+      },
+      valid: false,
+      tags: [],
+      totalTags: []
     }
   },
   created () {
@@ -69,7 +126,38 @@ export default {
   methods: {
     // 开通专栏
     open () {
-
+      // 1.
+      if (!this.$refs.columnsForm.validate()) {
+        return 
+      }
+      // img校验
+      if (!this.formData.column_img) {
+        // snak 弹窗。
+        let snack = {
+          content: '请上传专栏图片',
+          color: 'ERROR',
+          y: 'bottom'
+        }
+        this.$bus.emit('snack', snack)
+        return
+      }
+      // 2.
+      // 加载动画
+      this._open()
+    },
+    _open () {
+      // 添加标签
+      this.formData.tags = this.tags
+      console.log(this.formData)
+      this.api.addColumn((res) => {
+        // 3.
+        // 结束动画
+        if (res.code == 1) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        this.$router.push({name: 'Columns'})
+      }, this.formData)
     },
     openImgInput (data) {
       document.getElementById('imageInput').click()
@@ -90,9 +178,9 @@ export default {
           return
         }
         //  替换图片URL
-        this.blog.blog_img = res.data.path
+        this.formData.column_img = res.data.path
         // 保存博客
-        this.saveBlog()
+        // 
       }, files)
     },
     // 返回路由的上一级
@@ -100,11 +188,18 @@ export default {
       this.$router.go(-1)
       // this.$router.push({ name: 'Columns' })
     }
+  },
+  watch: {
+    tags (val) {
+      if (val.length > 3) {
+        this.$nextTick(() => this.tags.pop())
+      }
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
   .column-open {
     padding: 20px;
     width: 100%;
@@ -178,6 +273,8 @@ export default {
     background-color: white;
   }
   .columns-form {
+    width: 50%;
+    margin-top: 40px;
   }
   .form-columns {
     display: flex;

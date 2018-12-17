@@ -35,12 +35,16 @@ export default {
     let res = await http.fetch('/columns', query)
     callback(res.data)
   },
-  getColumnDetail: async (callback, columnId) => {
+  getColumn: async (callback, columnId) => {
     let res = await http.fetch(`/columns/${columnId}`)
     callback(res.data)
   },
   getColumnBlogs: async (callback, columnId) => {
     let res = await http.fetch(`/columns/${columnId}/blogs`)
+    callback(res.data)
+  },
+  addColumn: async (callback, data = { column_img: null, columns_name: null, columns_type: null, introduction: null, columns_domain: null, tags: null }) => {
+    let res = await http.post(`/columns`, data)
     callback(res.data)
   },
   getFeeds: async (callback, query) => {

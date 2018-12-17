@@ -47,11 +47,12 @@ export default {
   components: {
     FeedItem
   },
-  created () {
-    this.fetchData()
-  },
   watch: {
-    '$route': 'fetchData'
+    // 如果路由有变化，会再次执行该方法
+    '$route': {
+      handler: 'fetchData',
+      immediate: true // 立马执行一次,相当于created中调用一次.
+    }
   },
   methods: {
     fetchData () {

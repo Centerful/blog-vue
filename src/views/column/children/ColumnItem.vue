@@ -3,22 +3,22 @@
     <div class="columns-item-img">
       <div class="columns-item-bar">
         <!-- 连载中,完结 -->
-        <div v-if="column.status === 'open'" class="columns-item-status">连载中</div>
-        <div v-else-if="column.status === 'close'" class="columns-item-status finish">已完结</div>
+        <div v-if="column.column_status === 'open'" class="columns-item-status">连载中</div>
+        <div v-else-if="column.column_status === 'close'" class="columns-item-status finish">已完结</div>
         <div class="columns-item-multi"><icon name="ellipsis-h"/></div>
       </div>
-      <img :src="column.img" alt="">
+      <img :src="column.column_img" alt="">
     </div>
     <div class="columns-item-content">
-      <div class="columns-item-title" @click="toBlogs()">{{ column.name }}</div>
-      <div class="columns-item-summary">{{ column.summary }}</div>
+      <div class="columns-item-title" @click="toBlogs()">{{ column.column_name }}</div>
+      <div class="columns-item-summary">{{ column.introduction }}</div>
+      <span class="columns-item-founder">{{ column.creater.nick_name }}</span>
       <div class="columns-item-footer">
         <div class="columns-item-left">
-          <span v-for="tag in column.tags" :key="tag._id" class="columns-item-tag">{{ tag.name }}</span>
+          <span v-for="tag in column.tags" :key="tag" class="columns-item-tag">{{ tag }}</span>
         </div>
         <div class="columns-item-right">
-          <span class="columns-item-founder">{{ column.founderName }}</span>
-          <span class="columns-item-article">{{ column.blogNumber }} 篇文章</span>
+          <span class="columns-item-article">{{ column.blog_count }} 篇文章</span>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@ export default {
   methods: {
     // 进入专栏查看专栏里的文章.
     toBlogs () {
-      this.$router.push({name: 'ColumnContent', params: { id: this.column._id }})
+      this.$router.push({name: 'ColumnContent', params: { _id: this.column._id }})
     }
   }
 }
