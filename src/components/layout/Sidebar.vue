@@ -20,8 +20,15 @@
     </router-link></div>
     <div class="edit-btn btn"><router-link to="/edit">
       <v-tooltip class="tip-btn" right nudge-right="5">
-        <v-icon slot="activator">mdi-pencil</v-icon>
+        <!-- <v-icon slot="activator">mdi-pencil</v-icon> -->
+        <v-icon slot="activator">mdi-circle-edit-outline</v-icon>
         <span>编辑</span>
+      </v-tooltip>
+    </router-link></div>
+    <div class="talk-btn btn"><router-link to="/lab">
+      <v-tooltip class="tip-btn" right nudge-right="5">
+        <v-icon slot="activator">mdi-creation</v-icon>
+        <span>实验室</span>
       </v-tooltip>
     </router-link></div>
   </div>

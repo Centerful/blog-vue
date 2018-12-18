@@ -168,10 +168,6 @@ export default {
       if (!files || files.length < 1) {
         return
       }
-      //测试。
-      /*console.log(this.blog.blog_img)
-      this.blog.blog_img = '/static/img/article-59521bcf81138.jpg'
-      return */
       this.api.imgUpload((res) => {
         if (res.code != 0) {
           this.$bus.emit('prompt', res.message)

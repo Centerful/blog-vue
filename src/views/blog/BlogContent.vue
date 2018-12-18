@@ -32,7 +32,7 @@
           <!-- 文章相关属性:文章最后编辑时间(hover上去后提示发布时间),字数,阅读数,评论,点赞数. -->
           <div class="blog-meta">
             <!-- 这里应当有hover的提示框 -->
-            <span class="blog-meta-time">文章编辑于： {{ utils.getYMD(new Date(blog.blog_time)) }}</span>
+            <span class="blog-meta-time">文章编辑于： {{ utils.dateFmt(new Date(blog.publish_time), 'MM-dd hh:mm') }}</span>
             <span>字数： {{ blogWords }}</span>
             <span>浏览： {{ blog.reads }}</span>
           </div>
@@ -164,6 +164,7 @@ export default {
 
   .auth-right-info {
     display: flex;
+    width: 100%;
     flex-direction: column;
     margin-left: 10px;
   }
