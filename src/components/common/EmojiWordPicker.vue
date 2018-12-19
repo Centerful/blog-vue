@@ -5,58 +5,58 @@
       <h3>颜文字</h3>
     </v-card-title>
     <v-divider></v-divider>
-    <v-card-text class="scroll-y emoji" @click="picked">
-      <span>d(`･∀･)b</span>
-      <span>(∂ω∂)</span>
-      <span>_(´ཀ`」∠)_</span>
-      <span>(;´༎ຶД༎ຶ`)</span>
-      <span>(｡ì _ í｡)</span>
-      <span>(⁎⁍̴̛ᴗ⁍̴̛⁎)</span>
-      <span>(；´Д｀)</span>
-      <span>ᶘ ᵒᴥᵒᶅ</span>
-      <span>（｡・`ω´･）</span>
-      <span>（°ー°〃）</span>
-      <span>（~_~;）</span>
-      <span>（-_-）</span>
-      <span>（^_-）</span>
-      <span>（?_?）</span>
-      <span>^_^</span>
-      <span>٩(˃̶͈̀௰˂̶͈́)و</span>
-      <span>(−_−＃)</span>
-      <span>(O_o)</span>
-      <span>Σ(๑º㉨º๑ )</span>
-      <span>ꉂ೭(˵¯̴͒ꇴ¯̴͒˵)౨”</span>
-      <span>(งᵒ̌皿ᵒ̌)ง⁼³</span>
-      <span>٩(๑´3‘๑)۶</span>
-      <span>ಠ_ಠ</span>
-      <span>( ･ω･)ﾉ</span>
-      <span>(灬ºωº灬)</span>
-      <span>(๑>ᴗ<๑)</span>
-      <span>( ´◔ ‸◔')</span>
-      <span>Orz</span>
-      <span>( ´•̥̥̥ω•̥̥̥` )</span>
-      <span>(⸝⸝⸝ᵒ̴̶̥́ ⌑ ᵒ̴̶̣̥̀⸝⸝⸝)</span>
-      <span>（˙﹏˙）</span>
-      <span>●ˍ●</span>
-      <span><（￣︶￣）></span>
-      <span>[]~（￣▽￣）~*</span>
-      <span>（￣ˇ￣）</span>
-      <span>（￣﹏￣）</span>
-      <span>（‵﹏′）</span>
-      <span>（￣ε（#￣）</span>
-      <span>（￣.￣）</span>
-      <span>╮（￣▽￣）╭</span>
-      <span>（￣▽￣）~*</span>
-      <span>（⊙ˍ⊙）</span>
-      <span>（￣▽￣）"</span>
-      <span>╮（╯▽╰）╭</span>
-      <span>（=￣ω￣=）</span>
-      <span>（￣３￣）a</span>
-      <span>（￣0 ￣）y</span>
-      <span>（。_。）</span>
-      <span>（＞﹏＜）</span>
-      <span>（→_→）</span>
-      <span>（ˇˍˇ）\</span>
+    <v-card-text class="scroll-y emoji">
+      <span @click="picked">d(`･∀･)b</span>
+      <span @click="picked">(∂ω∂)</span>
+      <span @click="picked">_(´ཀ`」∠)_</span>
+      <span @click="picked">(;´༎ຶД༎ຶ`)</span>
+      <span @click="picked">(｡ì _ í｡)</span>
+      <span @click="picked">(⁎⁍̴̛ᴗ⁍̴̛⁎)</span>
+      <span @click="picked">(；´Д｀)</span>
+      <span @click="picked">ᶘ ᵒᴥᵒᶅ</span>
+      <span @click="picked">（｡・`ω´･）</span>
+      <span @click="picked">（°ー°〃）</span>
+      <span @click="picked">（~_~;）</span>
+      <span @click="picked">（-_-）</span>
+      <span @click="picked">（^_-）</span>
+      <span @click="picked">（?_?）</span>
+      <span @click="picked">^_^</span>
+      <span @click="picked">٩(˃̶͈̀௰˂̶͈́)و</span>
+      <span @click="picked">(−_−＃)</span>
+      <span @click="picked">(O_o)</span>
+      <span @click="picked">Σ(๑º㉨º๑ )</span>
+      <span @click="picked">ꉂ೭(˵¯̴͒ꇴ¯̴͒˵)౨”</span>
+      <span @click="picked">(งᵒ̌皿ᵒ̌)ง⁼³</span>
+      <span @click="picked">٩(๑´3‘๑)۶</span>
+      <span @click="picked">ಠ_ಠ</span>
+      <span @click="picked">( ･ω･)ﾉ</span>
+      <span @click="picked">(灬ºωº灬)</span>
+      <span @click="picked">(๑>ᴗ<๑)</span>
+      <span @click="picked">( ´◔ ‸◔')</span>
+      <span @click="picked">Orz</span>
+      <span @click="picked">( ´•̥̥̥ω•̥̥̥` )</span>
+      <span @click="picked">(⸝⸝⸝ᵒ̴̶̥́ ⌑ ᵒ̴̶̣̥̀⸝⸝⸝)</span>
+      <span @click="picked">（˙﹏˙）</span>
+      <span @click="picked">●ˍ●</span>
+      <span @click="picked"><（￣︶￣）></span>
+      <span @click="picked">[]~（￣▽￣）~*</span>
+      <span @click="picked">（￣ˇ￣）</span>
+      <span @click="picked">（￣﹏￣）</span>
+      <span @click="picked">（‵﹏′）</span>
+      <span @click="picked">（￣ε（#￣）</span>
+      <span @click="picked">（￣.￣）</span>
+      <span @click="picked">╮（￣▽￣）╭</span>
+      <span @click="picked">（￣▽￣）~*</span>
+      <span @click="picked">（⊙ˍ⊙）</span>
+      <span @click="picked">（￣▽￣）"</span>
+      <span @click="picked">╮（╯▽╰）╭</span>
+      <span @click="picked">（=￣ω￣=）</span>
+      <span @click="picked">（￣３￣）a</span>
+      <span @click="picked">（￣0 ￣）y</span>
+      <span @click="picked">（。_。）</span>
+      <span @click="picked">（＞﹏＜）</span>
+      <span @click="picked">（→_→）</span>
+      <span @click="picked">（ˇˍˇ）\</span>
     </v-card-text>
   </v-card>
 </template>
@@ -72,9 +72,9 @@ export default {
   },
   methods: {
     picked (val) {
-      if (!val) return
-      if (val.path[0].nodeName != "SPAN") return
-      if (this.pick) this.pick(val.target.innerText)
+      // if (!val) return
+      // if (val.path[0].nodeName != "SPAN") return
+      if (this.pick) this.pick(' '+val.target.innerText+' ')
     }
   }
 }
@@ -85,6 +85,7 @@ export default {
     width: 400px;
   }
   .emoji {
+    overflow-x: hidden;
     max-height: 300px;
     user-select: none;
   }

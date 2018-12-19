@@ -7,8 +7,13 @@
       <v-btn @click="currentTab = 'ListMenu'" color="info">v-list测试</v-btn>
       <v-btn @click="currentTab = 'FlexLayout'" color="info">Flex布局</v-btn>
       <v-btn @click="currentTab = 'CardHover'" color="info">CardHover</v-btn>
+      <v-btn @click="currentTab = 'VueArray'" color="info">Vue数组</v-btn>
+      <v-btn @click="currentTab = 'GetCursor'" color="info">获得文本域光标</v-btn>
+      <v-btn @click="currentTab = 'LightBox'" color="info">灯箱</v-btn>
+      <v-btn @click="currentTab = 'MyLightBox'" color="info">我的灯箱</v-btn>
+      <v-btn @click="currentTab = 'VueBadges'" color="info">Badges</v-btn>
     </div>
-    <compontent :is="currentTab"></compontent>
+    <compontent :is="currentTab" :img="'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg'"></compontent>
   </v-layout>
 </template>
 
@@ -20,6 +25,11 @@ import EmojiWordPicker from '@/components/common/EmojiWordPicker.vue'
 import ListMenu from '@/views/lab/children/VList_VMenu.vue'
 import FlexLayout from '@/views/lab/children/FlexLayout.vue'
 import CardHover from '@/views/lab/children/CardHover.vue'
+import VueArray from '@/views/lab/children/VueArray.vue'
+import GetCursor from '@/views/lab/children/GetCursor.vue'
+import LightBox from '@/views/lab/children/LightBox.vue'
+import MyLightBox from '@/views/lab/children/MyLightBox.vue'
+import VueBadges from '@/views/lab/children/VueBadges.vue'
 
 export default {
   data () {
@@ -30,7 +40,7 @@ export default {
   created () {
     this.$progress.finish()
   },
-  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover }
+  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges }
 }
 </script>
 

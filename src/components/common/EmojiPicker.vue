@@ -5,95 +5,95 @@
       <h3>Emoji</h3>
     </v-card-title>
     <v-divider></v-divider>
-    <v-card-text class="scroll-y emoji" @click="picked">
-      <span>😀</span>
-      <span>😇</span>
-      <span>😈</span>
-      <span>😎</span>
-      <span>😐</span>
-      <span>😑</span>
-      <span>😕</span>
-      <span>😗</span>
-      <span>😙</span>
-      <span>😛</span>
-      <span>😟</span>
-      <span>😦</span>
-      <span>😧</span>
-      <span>😬</span>
-      <span>😮</span>
-      <span>😯</span>
-      <span>😴</span>
-      <span>😶</span>
-      <span>😁</span>
-      <span>😂</span>
-      <span>😃</span>
-      <span>😄</span>
-      <span>😅</span>
-      <span>😆</span>
-      <span>😉</span>
-      <span>😊</span>
-      <span>😋</span>
-      <span>😌</span>
-      <span>😍</span>
-      <span>😏</span>
-      <span>😒</span>
-      <span>😓</span>
-      <span>😔</span>
-      <span>💔</span>
-      <span>❤️</span>
-      <span>💘</span>
-      <span>👍</span>
-      <span>👎</span>
-      <span>👌</span>
-      <span>👊</span>
-      <span>✊</span>
-      <span>✌️</span>
-      <span>👋</span>
-      <span>✋</span>
-      <span>👐</span>
-      <span>☝️</span>
-      <span>👇</span>
-      <span>👈</span>
-      <span>👉</span>
-      <span>🙌</span>
-      <span>🙏</span>
-      <span>👆</span>
-      <span>👏</span>
-      <span>💪</span>
-      <span>🤘</span>
-      <span>🖕</span>
-      <span>😖</span>
-      <span>😘</span>
-      <span>😚</span>
-      <span>😜</span>
-      <span>😝</span>
-      <span>😞</span>
-      <span>😠</span>
-      <span>😡</span>
-      <span>😢</span>
-      <span>😣</span>
-      <span>😤</span>
-      <span>😥</span>
-      <span>😨</span>
-      <span>😩</span>
-      <span>😪</span>
-      <span>😫</span>
-      <span>😭</span>
-      <span>😰</span>
-      <span>😱</span>
-      <span>😲</span>
-      <span>😳</span>
-      <span>😵</span>
-      <span>😷</span>
-      <span>😸</span>
-      <span>😹</span>
-      <span>😺</span>
-      <span>😻</span>
-      <span>😼</span>
-      <span>😽</span>
-      <span>😾</span>
-      <span>😿</span>
-      <span>🙀</span>
+    <v-card-text class="scroll-y emoji">
+      <span @click="picked">😀</span>
+      <span @click="picked">😇</span>
+      <span @click="picked">😈</span>
+      <span @click="picked">😎</span>
+      <span @click="picked">😐</span>
+      <span @click="picked">😑</span>
+      <span @click="picked">😕</span>
+      <span @click="picked">😗</span>
+      <span @click="picked">😙</span>
+      <span @click="picked">😛</span>
+      <span @click="picked">😟</span>
+      <span @click="picked">😦</span>
+      <span @click="picked">😧</span>
+      <span @click="picked">😬</span>
+      <span @click="picked">😮</span>
+      <span @click="picked">😯</span>
+      <span @click="picked">😴</span>
+      <span @click="picked">😶</span>
+      <span @click="picked">😁</span>
+      <span @click="picked">😂</span>
+      <span @click="picked">😃</span>
+      <span @click="picked">😄</span>
+      <span @click="picked">😅</span>
+      <span @click="picked">😆</span>
+      <span @click="picked">😉</span>
+      <span @click="picked">😊</span>
+      <span @click="picked">😋</span>
+      <span @click="picked">😌</span>
+      <span @click="picked">😍</span>
+      <span @click="picked">😏</span>
+      <span @click="picked">😒</span>
+      <span @click="picked">😓</span>
+      <span @click="picked">😔</span>
+      <span @click="picked">💔</span>
+      <span @click="picked">❤️</span>
+      <span @click="picked">💘</span>
+      <span @click="picked">👍</span>
+      <span @click="picked">👎</span>
+      <span @click="picked">👌</span>
+      <span @click="picked">👊</span>
+      <span @click="picked">✊</span>
+      <span @click="picked">✌️</span>
+      <span @click="picked">👋</span>
+      <span @click="picked">✋</span>
+      <span @click="picked">👐</span>
+      <span @click="picked">☝️</span>
+      <span @click="picked">👇</span>
+      <span @click="picked">👈</span>
+      <span @click="picked">👉</span>
+      <span @click="picked">🙌</span>
+      <span @click="picked">🙏</span>
+      <span @click="picked">👆</span>
+      <span @click="picked">👏</span>
+      <span @click="picked">💪</span>
+      <span @click="picked">🤘</span>
+      <span @click="picked">🖕</span>
+      <span @click="picked">😖</span>
+      <span @click="picked">😘</span>
+      <span @click="picked">😚</span>
+      <span @click="picked">😜</span>
+      <span @click="picked">😝</span>
+      <span @click="picked">😞</span>
+      <span @click="picked">😠</span>
+      <span @click="picked">😡</span>
+      <span @click="picked">😢</span>
+      <span @click="picked">😣</span>
+      <span @click="picked">😤</span>
+      <span @click="picked">😥</span>
+      <span @click="picked">😨</span>
+      <span @click="picked">😩</span>
+      <span @click="picked">😪</span>
+      <span @click="picked">😫</span>
+      <span @click="picked">😭</span>
+      <span @click="picked">😰</span>
+      <span @click="picked">😱</span>
+      <span @click="picked">😲</span>
+      <span @click="picked">😳</span>
+      <span @click="picked">😵</span>
+      <span @click="picked">😷</span>
+      <span @click="picked">😸</span>
+      <span @click="picked">😹</span>
+      <span @click="picked">😺</span>
+      <span @click="picked">😻</span>
+      <span @click="picked">😼</span>
+      <span @click="picked">😽</span>
+      <span @click="picked">😾</span>
+      <span @click="picked">😿</span>
+      <span @click="picked">🙀</span>
     </v-card-text>
   </v-card>
 </template>
@@ -105,8 +105,6 @@ export default {
   },
   methods: {
     picked (val) {
-      if (!val) return
-      if (val.path[0].nodeName != "SPAN") return
       if (this.pick) this.pick(val.target.innerText)
     }
   }

@@ -1,52 +1,55 @@
 <template>
   <div class="feed">
     <placeholder :marginTop="80"/>
-    <v-form class="feed-form" ref="feedForm" v-model="valid">
-      <v-card>
-        <v-card-title style="padding-bottom: 0">
-          <v-textarea
-            v-model="formData.feedContent"
-            :rules="rules.feedContent"
-            auto-grow
-            label="专栏介绍"
-            rows="1"
-          ></v-textarea>
-        </v-card-title>
-        <v-card-actions style="padding-top: 0">
-          <v-menu offset-y transition="slide-y-transition">
-            <v-btn flat icon style="margin-left: 5px" color="blue-grey" slot="activator">
-              <v-icon>mdi-emoticon-outline</v-icon>
-            </v-btn>
-            <EmojiPicker :pick="pick"></EmojiPicker>
-          </v-menu>
-          <v-menu offset-y transition="slide-y-transition">
-            <v-btn flat style="margin: 5px" color="blue-grey" slot="activator">
-              颜文字
-            </v-btn>
-            <EmojiWordPicker :pick="pick"></EmojiWordPicker>
-          </v-menu>
-          <v-btn flat icon color="blue-grey" @click="openImgInput">
-            <v-icon>mdi-camera-image</v-icon>
+    <v-card class="feed-form">
+      <v-form ref="feedForm" v-model="valid">
+      <v-card-title style="padding-bottom: 0">
+        <v-textarea
+          v-model="formData.feedContent"
+          :rules="rules.feedContent"
+          auto-grow
+          outline
+          label="动态"
+          placeholder="这一刻的想法..."
+          rows="1"
+        ></v-textarea>
+      </v-card-title>
+      </v-form>
+      <v-card-actions style="padding-top: 0">
+        <v-menu style="margin-left: 8px;" offset-y transition="slide-y-transition">
+          <v-btn flat color="blue-grey" slot="activator">
+            颜文字
           </v-btn>
-          <v-switch style="margin-left: 10px"
-            :label="`Switch : ${formData.feed_status.toString()}`"
-            v-model="formData.feed_status"
-          ></v-switch>
-          <v-spacer></v-spacer>
-          <v-btn @click="clear" flat>取 消</v-btn>
-          <v-btn color="info" @click="send">发 布</v-btn>
-        </v-card-actions>
-        <v-container style="padding-top: 0;" grid-list-md fluid >
-          <v-layout style="justify-content: flex-start;width: 100%;margin: 0;" row wrap>
-            <v-flex class="img-cell" :key="img" v-for="img in formData.feedImg">
-              <v-card>
-                <v-img class="feed-img" @click="changeImg" :src="img" aspect-ratio="1"></v-img>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
-    </v-form>
+          <EmojiWordPicker :pick="pick"></EmojiWordPicker>
+        </v-menu>
+        <v-menu offset-y transition="slide-y-transition">
+          <v-btn flat icon color="blue-grey" slot="activator">
+            <v-icon>mdi-emoticon-outline</v-icon>
+          </v-btn>
+          <EmojiPicker :pick="pick"></EmojiPicker>
+        </v-menu>
+        <v-btn flat icon color="blue-grey" @click="openImgInput">
+          <v-icon>mdi-camera-image</v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn @click="clear" flat>取 消</v-btn>
+        <v-btn  color="info" @click="send" style="margin-right: 11px;">发 表</v-btn>
+      </v-card-actions>
+      <v-container style="padding-top: 0;" grid-list-lg fluid v-show="formData.feedImg.length > 0">
+        <v-layout style="justify-content: flex-start;flex-wrap: wrap;align-content: flex-start;width: 100%;margin: 0;" row wrap>
+          <v-flex class="img-cell" :key="index" v-for="(img, index) in formData.feedImg">
+            <div class="img-minus" @click="deleteImg(index)">
+              <v-icon dark small>mdi-minus</v-icon>
+            </div>
+            <v-card>
+              <v-card-media>
+                <v-img class="feed-img" @click="changeImg(index)" :src="img" aspect-ratio="1"></v-img>
+              </v-card-media>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card>
     <form style="display: none;" id="imgForm" method="post" enctype="multipart/form-data" action="图片上传">
       <input @change="imgUpload" type="file" id="imageInput" accept="image/*">
     </form>
@@ -59,7 +62,6 @@
       <div class="feed-loading"></div>
     </template>
     <FeedItem v-else v-for="feed in feeds" :key="feed._id" :feed="feed"></FeedItem>
-
   </div>
 </template>
 
@@ -76,19 +78,21 @@ export default {
       feeds: [],
       loading: true,
       valid: false,
+      imgIndex: null,
       formData: {
         feedContent: '',
         feedImg: [
-          'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg',
-          'http://localhost:3000/public/images/db75e90932d9492ed79bb8c1f26373c2.png',
-          'http://localhost:3000/public/images/97e6e102adec260b5bdb71e6dab73c16.jpg',
-          'http://localhost:3000/public/images/81d8bb753daff4765be3b1bfcf8d987b.jpeg',
-          'http://localhost:3000/public/images/4654a20de6ed536dfa374d405f39ae5a.jpg',
-          'http://localhost:3000/public/images/ea674d14ae732ad0f10da91f5ce9039a.jpg',
-          'http://localhost:3000/public/images/97e6e102adec260b5bdb71e6dab73c16.jpg',
-          'http://localhost:3000/public/images/81d8bb753daff4765be3b1bfcf8d987b.jpeg',
-          'http://localhost:3000/public/images/4654a20de6ed536dfa374d405f39ae5a.jpg',
+          // 'http://localhost:3000/public/images/2534ebc30e3790b0c8a50688ecb92a9f.png',
+          // 'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg',
+          // 'http://localhost:3000/public/images/db75e90932d9492ed79bb8c1f26373c2.png',
+          // 'http://localhost:3000/public/images/97e6e102adec260b5bdb71e6dab73c16.jpg',
+          // 'http://localhost:3000/public/images/81d8bb753daff4765be3b1bfcf8d987b.jpeg',
+          // 'http://localhost:3000/public/images/4654a20de6ed536dfa374d405f39ae5a.jpg',
+          // 'http://localhost:3000/public/images/ea674d14ae732ad0f10da91f5ce9039a.jpg',
+          // 'http://localhost:3000/public/images/2534ebc30e3790b0c8a50688ecb92a9f.png',
+          // 'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg',
         ],
+        topic: '',
         feed_status: false
       },
       rules: {
@@ -113,6 +117,7 @@ export default {
     }
   },
   methods: {
+    // 获取动态信息
     fetchData () {
       this.loading = true
       this.api.getFeeds((resp) => {
@@ -121,11 +126,29 @@ export default {
         this.$progress.finish()
       })
     },
+    // 发表动态
     send () {
-
+      this.api.addFeed((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return
+        }
+        // 1.将发表内容清空
+        this.clear()
+        // 2.重新fetch data
+        this.fetchData()
+        // 3.提示发表成功
+        let snack = {
+          content: '发表成功。',
+          color: 'SUCCESS',
+          y: 'bottom'
+        }
+        this.$bus.emit('snack', snack)
+      }, this.formData)
     },
     clear () {
       this.$refs.feedForm.reset()
+      this.formData.feedImg = []
     },
     pick (val) {
       this.formData.feedContent += val
@@ -133,6 +156,7 @@ export default {
     openImgInput (data) {
       // 最多只能有九幅图片
       if (this.formData.feedImg.length >= 9) {
+        this.imgIndex = null
         // snak 弹窗。
         let snack = {
           content: '最多只能选择九张照片',
@@ -144,8 +168,14 @@ export default {
       }
       document.getElementById('imageInput').click()
     },
-    changeImg () {
+    // 更换当前图片
+    changeImg (index) {
+      this.imgIndex = index
       document.getElementById('imageInput').click()
+    },
+    // 删除当前图片
+    deleteImg (index) {
+      this.formData.feedImg.splice(index, 1)
     },
     // 题图上传
     imgUpload (data) {
@@ -161,7 +191,11 @@ export default {
         }
         // 添加图片URL
         // 判断是新增还是更换已经上传的图片
-        this.formData.feedImg.push(res.data.path)
+        if (this.imgIndex != null) {
+          this.$set(this.formData.feedImg, this.imgIndex, res.data.path)
+        } else {
+          this.formData.feedImg.push(res.data.path)  
+        }
       }, files)
     },
   }
@@ -174,10 +208,26 @@ export default {
     max-width: 620px;
   }
   .img-cell {
+    position: relative;
     max-width: 180px;
     max-height: 180px;
   }
   .feed-img {
+    cursor: pointer;
+  }
+  .img-minus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50% !important;
+    background-color: red;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    z-index: 10;
+
     cursor: pointer;
   }
   .feed{

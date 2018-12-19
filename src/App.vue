@@ -6,6 +6,7 @@
     <prompt-dialog></prompt-dialog>
     <confirm-dialog></confirm-dialog>
     <snack-bar></snack-bar>
+    <fancy-box></fancy-box>
   </div>
 </template>
 

@@ -47,6 +47,10 @@ export default {
     let res = await http.post(`/columns`, data)
     callback(res.data)
   },
+  addFeed: async (callback, data = {feedContent: null, feedImg: null, topic: null, feed_status: null}) => {
+    let res = await http.post(`/feeds`, data)
+    callback(res.data)
+  },
   getFeeds: async (callback, query) => {
     let res = await http.fetch('/feeds', query)
     callback(res.data)

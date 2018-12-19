@@ -2,7 +2,7 @@
   <div class="maxbox">
     <v-container grid-list-md fluid >
       <v-layout style="justify-content: flex-start;width: 100%;margin: 0;" row wrap>
-        <v-flex class="img-cell" v-for="img in imgs">
+        <v-flex class="img-cell" v-for="img in imgs" :key="img">
           <v-card>
             <v-img class="feed-img" @click="changeImg" :src="img" aspect-ratio="1"></v-img>
           </v-card>

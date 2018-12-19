@@ -28,6 +28,8 @@ import utils from '@/utils/utils.js'
 import Placeholder from '@/components/common/Placeholder'
 // 加载 进度条插件
 import Progressbar from '@/plugin/progressbar'
+// 灯箱插件
+import FancyBox from '@/plugin/FancyBox'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
 import FormConfirmDialog from '@/components/common/FormConfirmDialog'
 import PromptDialog from '@/components/common/PromptDialog'
@@ -66,6 +68,7 @@ Vue.use(Vuetify, {
 })
 
 Vue.use(Progressbar)
+Vue.use(FancyBox)
 Vue.use(Waves)
 Vue.use(bus)
 
