@@ -3,14 +3,18 @@
   <div class="feed-show-item" :class="{ private: feed.isPrivate }">
     <div class="feed-item-bar" :class="{ private: feed.isPrivate }">
       <icon class="ellipsis" :class="{private: feed.isPrivate }" name="ellipsis-h"/></div>
-    <div class="feed-item-left"></div>
+    <div class="feed-item-left">
+      <v-avatar :tile="tile" :size="avatarSize" color="grey lighten-4">
+        <img :src="feed.creater.user_avatar" alt="avatar">
+      </v-avatar>
+    </div>
     <div class="feed-item-right">
       <div class="feed-right-header">
-        <div class="feed-auth-name">{{ feed.name }}</div>
-        <div class="feed-time">{{ feed.time }}</div>
+        <div class="feed-auth-name">{{ feed.creater.nick_name }}</div>
+        <div class="feed-time">{{ utils.dateFmt(new Date(feed.update_time), 'MM-dd hh:mm') }}</div>
       </div>
       <div class="feed-right-centent" :class="{ private: feed.isPrivate,open: isFold }">
-        {{ feed.words }}
+        {{ feed.content }}
       </div>
       <div class="feed-right-footer" :class="{ private: feed.isPrivate }">
         <template v-if="feed.isPrivate">
@@ -22,7 +26,7 @@
           <div class="feed-footer-bar">
             <div class="feed-footer-zen">
               <div class="feed-footer-icon" @click="toggleThumbs()"><icon class="thumbs" :class="{up: isThumbs}" name="regular/thumbs-up"/></div>
-              <div class="feed-footer-number">{{ feed.thumbs }}</div>
+              <div class="feed-footer-number">{{ feed.thumbs_count }}</div>
             </div>
             <div class="feed-footer-btn" @click="toggleReplie()">回复</div>
           </div>
@@ -38,14 +42,14 @@
               </div>
             </div>
           </template>
-          <div class="feed-replies-look" v-if="feed.replies">
+          <div class="feed-replies-look" v-if="feed.comments_count">
             <template v-if="feedId">
               <div class="feed-footer-btn inline" @click="toggleReplieArea()">隐藏回复
                 <icon class="chevron up" name="chevron-up"/>
               </div>
             </template>
             <template v-else>
-              <div class="feed-footer-btn inline" @click="toggleReplieArea()">查看 {{ feed.replies }} 条回复
+              <div class="feed-footer-btn inline" @click="toggleReplieArea()">查看 {{ feed.comments_count }} 条回复
                 <icon class="chevron" name="chevron-down"/>
               </div>
             </template>
@@ -130,7 +134,7 @@ export default {
     box-shadow: 0 1px 1px -2px rgba(0,0,0,.2), 0 3px 2px 0 rgba(0,0,0,.14), 0 1px 1px 0 rgba(0,0,0,.12);
     margin-bottom: 30px;
   }
-  .feed-item-left {
+  /*.feed-item-left {
     width: 45px;
     height: 45px;
     min-width: 45px;
@@ -139,7 +143,7 @@ export default {
     background-color: #afafaf;
     border-radius: 50%;
     cursor: pointer;
-  }
+  }*/
   .feed-item-right {
     display: flex;
     flex-direction: column;

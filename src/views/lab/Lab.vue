@@ -12,6 +12,7 @@
       <v-btn @click="currentTab = 'LightBox'" color="info">灯箱</v-btn>
       <v-btn @click="currentTab = 'MyLightBox'" color="info">我的灯箱</v-btn>
       <v-btn @click="currentTab = 'VueBadges'" color="info">Badges</v-btn>
+      <v-btn @click="currentTab = 'FeedCardTest'" color="info">FeedCard</v-btn>
     </div>
     <compontent :is="currentTab" :img="'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg'"></compontent>
   </v-layout>
@@ -30,6 +31,8 @@ import GetCursor from '@/views/lab/children/GetCursor.vue'
 import LightBox from '@/views/lab/children/LightBox.vue'
 import MyLightBox from '@/views/lab/children/MyLightBox.vue'
 import VueBadges from '@/views/lab/children/VueBadges.vue'
+import FeedCardTest from '@/views/lab/children/FeedCardTest.vue'
+
 
 export default {
   data () {
@@ -40,7 +43,7 @@ export default {
   created () {
     this.$progress.finish()
   },
-  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges }
+  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges, FeedCardTest }
 }
 </script>
 

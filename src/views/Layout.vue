@@ -1,7 +1,7 @@
 <template>
   <div class="normal">
     <div class="content">
-      <div class="layout">
+      <div class="mylayout">
         <HeadBar></HeadBar>
         <div class="layout-body">
           <router-view/>
@@ -83,7 +83,7 @@ export default {
     padding: 0 55px 55px 55px;
     justify-content: center;
   }
-  .layout{
+  .mylayout{
     z-index: 1;
     display: flex;
     flex-direction: column;

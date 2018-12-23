@@ -7,6 +7,7 @@
         <v-textarea
           v-model="formData.feedContent"
           :rules="rules.feedContent"
+          name="feedContent"
           auto-grow
           outline
           label="动态"
@@ -62,6 +63,7 @@
       <div class="feed-loading"></div>
     </template>
     <FeedItem v-else v-for="feed in feeds" :key="feed._id" :feed="feed"></FeedItem>
+    <h5>暂无更多动态</h5>
   </div>
 </template>
 
@@ -101,6 +103,7 @@ export default {
             if (!v) {
               return "动态内容不能为空！"
             }
+            return true
           }
         ],
       }
@@ -120,9 +123,13 @@ export default {
     // 获取动态信息
     fetchData () {
       this.loading = true
-      this.api.getFeeds((resp) => {
+      this.api.getFeeds((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return
+        }
         this.loading = false
-        this.feeds = resp
+        this.feeds = res.data
         this.$progress.finish()
       })
     },
@@ -151,7 +158,7 @@ export default {
       this.formData.feedImg = []
     },
     pick (val) {
-      this.formData.feedContent += val
+      this.formData.feedContent = this.utils.insertSomething('feedContent', this.formData.feedContent, val)
     },
     openImgInput (data) {
       // 最多只能有九幅图片

@@ -39,6 +39,25 @@ export default {
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
       return fmt;
   },
+  // 在光标处输入文本
+  insertSomething(inputName, inputVal ,val) {
+    let textArea = document.getElementById(inputName);
+    let startPos = textArea.selectionStart,
+    endPos = textArea.selectionEnd,
+    cursorPos = startPos,
+    tmpStr = textArea.value
+    if (val === null) {
+        return;
+    }
+    // move cursor:
+    setTimeout(() => {
+      cursorPos += val.length
+      textArea.selectionStart = textArea.selectionEnd = cursorPos
+      textArea.focus()
+    }, 10)
+    // insert:
+    return tmpStr.substring(0, startPos) + val + tmpStr.substring(endPos, tmpStr.length)
+  },
   /**
    * 字符串md5加密
    */
