@@ -59,8 +59,8 @@ export default {
     let res = await http.fetch('/feeds', query)
     callback(res.data)
   },
-  getFeedComments: async (callback, feedId) => {
-    let res = await http.fetch(`/feeds/${feedId}/comments`)
+  getFeedComments: async (callback, query) => {
+    let res = await http.fetch(`/feeds/${query.feed_id}/comments`, query)
     callback(res.data)
   },
   getBooks: async (callback, query) => {
