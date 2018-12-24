@@ -5,12 +5,12 @@
       <icon class="ellipsis" :class="{private: feed.isPrivate }" name="ellipsis-h"/></div>
     <div class="feed-item-left">
       <v-avatar :tile="tile" :size="avatarSize" color="grey lighten-4">
-        <img :src="feed.creater.user_avatar" alt="avatar">
+        <img :src="feed.user.user_avatar" alt="avatar">
       </v-avatar>
     </div>
     <div class="feed-item-right">
       <div class="feed-right-header">
-        <div class="feed-auth-name">{{ feed.creater.nick_name }}</div>
+        <div class="feed-auth-name">{{ feed.user.nick_name }}</div>
         <div class="feed-time">{{ utils.dateFmt(new Date(feed.update_time), 'MM-dd hh:mm') }}</div>
       </div>
       <div class="feed-right-centent" :class="{ private: feed.isPrivate,open: isFold }">

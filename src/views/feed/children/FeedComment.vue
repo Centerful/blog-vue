@@ -1,3 +1,4 @@
+<!-- feed下每条评论 -->
 <template>
   <v-flex xs12>
     <v-layout row align-start>
@@ -15,7 +16,6 @@
               <v-flex subheading font-weight-bold style="cursor: pointer;">{{ comment.reply_user.nick_name }}</v-flex>
             </template>
             <date-str :datetime="comment.update_time"></date-str>
-            <!-- <v-flex body-1 style="margin: 0 10px;" caption>{{ utils.dateFmt(new Date(comment.update_time), 'MM-dd hh:mm') }}</v-flex> -->
           </v-flex>
           <v-flex body-1 xs12 class="text-xs-left">{{ comment.content }}</v-flex>
           <v-flex xs12>
@@ -24,7 +24,7 @@
             </v-btn>
           </v-flex>
           <v-flex xs12 style="width: 100%;" >
-            <FeedReply :reply_id="comment._id" v-model="isReply"></FeedReply>
+            <FeedReply :reply="reply" v-model="isReply"></FeedReply>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -38,11 +38,21 @@ import Thumbs from '@/components/common/Thumbs.vue'
 import DateStr from '@/components/common/DateStr.vue'
 
 export default {
-  props:['comment'],
+  props:['comment', 'feed_id'],
   data: () => ({
     isReply: false
   }),
-  methods: {
+  computed: {
+    reply () {
+      return {
+        seq_id: this.comment._id,
+        feed_id: this.feed_id,
+        reply_id: this.comment._id,
+        reply_user: this.comment.user._id,
+        // 直接回复feed的没有origin，回复comment的都有。
+        origin: this.comment.origin || this.comment._id,
+      }
+    }
   },
   components: { FeedReply, Thumbs, DateStr }
 }

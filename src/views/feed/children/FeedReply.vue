@@ -1,13 +1,13 @@
+<!-- feed的回复,评论的回复 -->
 <template>
-  <div v-show="value">
-    <template v-if="inReply">
-      <v-progress-circular
-        indeterminate
-        :size="24"
-        :width="2"
-        color="primary"
-      ></v-progress-circular>
-    </template>
+  <v-flex v-if="value" style="text-align: center;">
+    <v-progress-circular v-if="inReply"
+      indeterminate
+      :size="24"
+      :width="2"
+      color="primary"
+      class="ma-2"
+    ></v-progress-circular>
     <template v-else>
       <v-layout row align-start>
         <v-flex ma-3 style="max-width: 32px;">
@@ -16,7 +16,7 @@
           </v-avatar>
         </v-flex>
         <v-flex>
-          <v-text-field :id="reply_id" :rules="reply_content_rule" v-model="reply_content" placeholder="添加回复..." autofocus></v-text-field>
+          <v-text-field :id="reply.seq_id" :rules="reply_content_rule" v-model="reply_content" placeholder="添加回复..." autofocus></v-text-field>
         </v-flex>
       </v-layout>
       <v-card-actions class="pa-1">
@@ -34,10 +34,10 @@
         </v-menu>
         <v-spacer></v-spacer>
         <v-btn flat @click="cancel">取消</v-btn>
-        <v-btn color="info" @click="reply">回复</v-btn>
+        <v-btn color="info" @click="toReply">回复</v-btn>
       </v-card-actions>
     </template>
-  </div>
+  </v-flex>
 </template>
 
 <script>
@@ -50,10 +50,7 @@ export default {
       type: Boolean,
       default: false
     },
-    reply_id: {
-      type: String,
-      required: true
-    }
+    reply: Object
   },
   data: () => ({
     reply_content: '',
@@ -85,18 +82,31 @@ export default {
       this.reply_content = ''
       this.$emit('update', false)
     },
-    reply () {
-      // 回复动态 TODO
-      // this.api.reply()
+    // 对feed或评论进行回复
+    toReply () {
       this.inReply = true
-      setTimeout(() => {
+      // 新增评论，feed_id
+      this.api.addComment((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return
+        }
+        // 发布成功后
         this.inReply = false
         this.reply_content = ''
+        // 调用unshift事件，在评论中添加自己的评论 ,, TODO 因为只能返回全部的comment,这里先取最后一个。
+        this.$bus.emit(`feedUnshiftComment${this.reply.feed_id}`, res.data.comments[res.data.comments.length-1])
         this.$emit('update', false)
-      }, 2200)
+      }, {
+        feed_id: this.reply.feed_id,
+        origin: this.reply.origin,
+        reply: this.reply.reply_id,
+        reply_user: this.reply.reply_user,
+        content: this.reply_content
+      })
     },
     pick (val) {
-      this.reply_content = this.utils.insertSomething(this.reply_id, this.reply_content, val)
+      this.reply_content = this.utils.insertSomething(this.reply.seq_id, this.reply_content, val)
     }
   }
 }

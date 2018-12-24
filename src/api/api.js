@@ -51,6 +51,10 @@ export default {
     let res = await http.post(`/feeds`, data)
     callback(res.data)
   },
+  addComment: async (callback, data = {feed_id: null, origin: null, reply: null, reply_user: null, content: null}) => {
+    let res = await http.post(`/feeds/${data.feed_id}/comments`, data)
+    callback(res.data)
+  },
   getFeeds: async (callback, query) => {
     let res = await http.fetch('/feeds', query)
     callback(res.data)
