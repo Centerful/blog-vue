@@ -1,15 +1,14 @@
 <!-- feed发送区域 -->
 <template>
-  <v-card class="feed-form">
+  <v-card :color="theme.card_color[theme_style]" class="feed-form">
     <v-form ref="feedForm" v-model="valid">
       <v-card-title style="padding-bottom: 0">
         <v-textarea
+          :dark='locked'
           v-model="feedContent"
           :rules="feedContentRule"
           id="feedSend"
           auto-grow
-          outline
-          label="动态"
           placeholder="这一刻的想法..."
           rows="1"
         ></v-textarea>
@@ -17,23 +16,29 @@
     </v-form>
     <v-card-actions style="padding-top: 0">
       <v-menu style="margin-left: 8px;" offset-y transition="slide-y-transition">
-        <v-btn flat color="blue-grey" slot="activator">
+        <v-btn flat :color="theme.btn_color[theme_style]" slot="activator">
           颜文字
         </v-btn>
         <EmojiWordPicker :pick="pickEmoji"></EmojiWordPicker>
       </v-menu>
       <v-menu offset-y transition="slide-y-transition">
-        <v-btn flat icon color="blue-grey" slot="activator">
+        <v-btn flat icon :color="theme.btn_color[theme_style]" slot="activator">
           <v-icon>mdi-emoticon-outline</v-icon>
         </v-btn>
         <EmojiPicker :pick="pickEmoji"></EmojiPicker>
       </v-menu>
-      <v-btn flat icon color="blue-grey" @click="addImg">
+      <v-btn flat icon :color="theme.btn_color[theme_style]" @click="addImg">
         <v-icon>mdi-camera-image</v-icon>
       </v-btn>
+      <v-tooltip bottom>
+        <v-btn slot="activator" flat icon :color="theme.btn_color[theme_style]" @click="toggleLock">
+          <v-icon>{{theme.lock_icon[theme_style]}}</v-icon>
+        </v-btn>
+        <span>{{theme.lock_word[theme_style]}}</span>
+      </v-tooltip>
       <v-spacer></v-spacer>
-      <v-btn @click="clear" flat>取 消</v-btn>
-      <v-btn  color="info" @click="send" style="margin-right: 11px;">发 表</v-btn>
+      <v-btn :dark='locked' @click="clear" flat>取 消</v-btn>
+      <v-btn :color="theme.send_btn_color[theme_style]" @click="send" style="margin-right: 11px;">发 表</v-btn>
     </v-card-actions>
     <!-- feed图片展示区域 -->
     <FeedImage ref="imgContainer" v-model="feedImg"></FeedImage>
@@ -48,10 +53,10 @@ import EmojiPicker from '@/components/common/EmojiPicker.vue'
 export default {
   data: () => ({
     valid: false,
+    locked: false,
     feedContent: '',
     feedImg: [],
     topic: '',
-    feed_status: false,
     feedContentRule: [
       v => {
         if (!v) {
@@ -60,7 +65,38 @@ export default {
         return true
       }
     ],
+    theme: {
+      card_color: {
+        private: 'grey darken-2',
+        light: 'white'
+      },
+      btn_color: {
+        private: 'grey lighten-3',
+        light: 'blue-grey'
+      },
+      send_btn_color: {
+        private: 'grey lighten-4',
+        light: 'info'
+      },
+      lock_icon: {
+        private: 'mdi-lock',
+        light: 'mdi-lock-open'
+      },
+      lock_word: {
+        private: '仅自己可见',
+        light: '所有人可见'
+      }
+    },
   }),
+  computed: {
+    theme_style () {
+      if (this.locked) {
+        return 'private'
+      } else {
+        return 'light'
+      }
+    }
+  },
   components: {
     FeedImage, EmojiWordPicker, EmojiPicker
   },
@@ -87,7 +123,7 @@ export default {
         feedContent: this.feedContent,
         feedImg: this.feedImg,
         topic: this.topic,
-        feed_status: this.feed_status
+        feed_status: this.locked ? 'PRIVATE' : 'NORMAL'
       })
     },
     clear () {
@@ -99,6 +135,9 @@ export default {
     },
     addImg (data) {
       this.$refs.imgContainer.addImg()
+    },
+    toggleLock () {
+      this.locked = !this.locked
     }
   }
 }

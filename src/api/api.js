@@ -51,16 +51,16 @@ export default {
     let res = await http.post(`/feeds`, data)
     callback(res.data)
   },
-  addComment: async (callback, data = {feed_id: null, origin: null, reply: null, reply_user: null, content: null}) => {
-    let res = await http.post(`/feeds/${data.feed_id}/comments`, data)
+  addComment: async (callback, data = {relation: null, relation_type: null, origin: null, reply: null, reply_user: null, content: null}) => {
+    let res = await http.post(`/comments`, data)
     callback(res.data)
   },
   getFeeds: async (callback, query) => {
     let res = await http.fetch('/feeds', query)
     callback(res.data)
   },
-  getFeedComments: async (callback, query) => {
-    let res = await http.fetch(`/feeds/${query.feed_id}/comments`, query)
+  getComments: async (callback, query) => {
+    let res = await http.fetch(`/comments`, query)
     callback(res.data)
   },
   getBooks: async (callback, query) => {
@@ -115,6 +115,17 @@ export default {
     let res = await http.patch(`/books/${data.book_id}/rename`, data)
     callback(res.data)
   },
+
+  addThumb: async (callback, data = {relation: null, relation_type: null}) => {
+    let res = await http.post(`/thumbs`, data)
+    callback(res.data)
+  },
+  deleteThumb: async (callback, data = {relation: null, relation_type: null} ) => {
+    let res = await http.delete(`/thumbs`, data)
+    callback(res.data)
+  },
+
+
   imgUpload: async (callback, files) => {
     if (!files || files.length < 1) {
       callback({ code: 1, message: '请选择上传图片' })

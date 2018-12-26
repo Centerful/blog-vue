@@ -1,11 +1,16 @@
 <!-- 每条feed -->
 <template>
-  <v-card style="margin: 3px;">
+  <v-card :color="theme.card_color[theme_style]" style="margin: 3px;" :style="{color: theme.font_color[theme_style]}">
     <v-layout row align-start>
+      <feed-card-btn
+        :type="feed.feed_status" 
+        @public="public"
+        @del="del"
+        style="position: absolute;right: 0;top: 0;"></feed-card-btn>
       <!-- 左侧头像区域 -->
       <v-flex style="max-width: 80px;">
         <v-card-title>
-          <v-avatar class="elevation-1" style="cursor: pointer;">
+          <v-avatar class="elevation-1" style="cursor: pointer;user-select: none;">
             <img :src="feed.user.user_avatar" alt="avatar">
           </v-avatar>
         </v-card-title>
@@ -14,7 +19,7 @@
       <v-flex>
         <v-layout column align-start py-3 pr-4>
           <!-- 显示名称 -->
-          <v-flex xs12 subheading font-weight-bold style="cursor: pointer;">
+          <v-flex xs12 subheading font-weight-bold style="cursor: pointer;user-select: none;">
             {{ feed.user.nick_name }}
           </v-flex>
           <!-- 显示动态时间 -->
@@ -24,12 +29,12 @@
           <!-- 视频，图像展示 TODO -->
           <FeedImage v-if="feed.images" ref="imgContainer" :readOnly="true" v-model="feed.images"></FeedImage>
           <!-- 展开/收起动态内容 -->
-          <v-flex xs12 text-xs-center v-show="feed.isPrivate" style="width: 100%;">
+          <v-flex xs12 text-xs-center v-show="false" style="width: 100%;">
             <span class="readmore" @click="">Read more</span>
           </v-flex>
           <!-- 点赞，回复按钮 -->
           <v-flex xs12>
-            <thumbs v-model="feed.isThumbs" :thumbs_count="feed.thumbs_count"></thumbs><v-btn @click="isReply = !isReply" class="ma-1" flat icon :color="isReply ? 'blue' : 'grey darken-1'">
+            <thumbs v-model="feed.isThumb" :thumb="thumb" ></thumbs><v-btn @click="isReply = !isReply" class="ma-1" flat icon :color="theme.btn_color[theme_style][isReply]">
               <v-icon :size="20">mdi-message-reply-text</v-icon>
             </v-btn>
           </v-flex>
@@ -51,27 +56,83 @@
 import FeedImage from '@/views/feed/children/FeedImage.vue'
 import FeedReply from '@/views/feed/children/FeedReply.vue'
 import CommentArea from '@/views/feed/children/CommentArea.vue'
+import FeedCardBtn from '@/views/feed/children/FeedCardBtn.vue'
 import Thumbs from '@/components/common/Thumbs.vue'
 import DateStr from '@/components/common/DateStr.vue'
 
 export default {
-  props: ['feed'],
+  props: {
+    value: {
+      type: String,
+      required: true
+    },
+    feed: Object
+  },
+  model: {
+    value: 'value',
+    event: 'update'
+  },
   data: () => ({
-    isReply: false
+    isReply: false,
+    theme: {
+      card_color: {
+        private: 'grey darken-2',
+        light: 'white'
+      },
+      font_color: {
+        private: 'white',
+        light: 'black'
+      },
+      btn_color: {
+        private: {
+          true: 'red',
+          false: 'grey lighten-3'
+        },
+        light: {
+          true: 'blue',
+          false: 'grey darken-1'
+        }
+      }
+    }
   }),
   methods: {
     readmore () {
+      console.log('显示详细信息')
     },
+    public () {
+      console.log('设为公开动态')
+      this.$emit('update', 'NORMAL')
+    },
+    del () {
+      console.log('删除动态')
+    }
   },
   computed: {
+    theme_style () {
+      if (this.feed.feed_status === 'PRIVATE') {
+        return 'private'
+      } else {
+        return 'light'
+      }
+    },
     reply () {
       return {
         seq_id: this.feed._id,
-        feed_id: this.feed._id
+        relation: this.feed._id,
+        relation_type: 'FEED',
+        theme_style: this.feed.feed_status === 'PRIVATE' ? 'dark' : 'light'
+      }
+    },
+    thumb () {
+      return {
+        relation: this.feed._id,
+        relation_type: 'FEED',
+        thumbs_count: this.feed.thumbs_count,
+        theme_style: this.feed.feed_status === 'PRIVATE' ? 'dark' : 'light'
       }
     }
   },
-  components: { FeedImage, FeedReply, CommentArea, Thumbs, DateStr }
+  components: { FeedImage, FeedReply, CommentArea, FeedCardBtn, Thumbs, DateStr }
 }  
 </script>
 

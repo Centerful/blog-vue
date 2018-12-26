@@ -4,17 +4,20 @@
     <FeedSend @sendout="fetchData"></FeedSend>
     <div class="feed-split">
     </div>
-    <template v-if="loading">
-      <div class="feed-loading"></div>
-      <div class="feed-loading"></div>
-      <div class="feed-loading"></div>
-      <div class="feed-loading"></div>
-    </template>
-    <template v-else>
-      <FeedCard class="ma-2" v-for="feed in feeds" :key="feed._id" :feed="feed" style="width: 80%;max-width: 620px;"></FeedCard>
-    </template>
+    <FeedCard class="ma-2" v-model="feed.feed_status" v-for="feed in feeds" :key="feed._id" :feed="feed" style="width: 80%;max-width: 620px;"></FeedCard>
     <v-flex ma-3>
-      <h5>暂无更多动态</h5>
+      <v-btn @click="loadmore" v-show="more && !loading" :ripple="false" flat small color="grey darken-2">
+        查看更多动态
+      </v-btn>
+      <h5 v-show="!more && !loading">暂无更多动态</h5>
+      <v-progress-circular
+        v-show="loading"
+        indeterminate
+        :size="24"
+        :width="2"
+        color="primary"
+        class="ma-3"
+      ></v-progress-circular>
     </v-flex>
   </div>
 </template>
@@ -29,6 +32,7 @@ export default {
     return {
       feeds: [],
       loading: true,
+      more: true
     }
   },
   components: {
@@ -53,6 +57,25 @@ export default {
         this.loading = false
         this.feeds = res.data
         this.$progress.finish()
+      })
+    },
+    loadmore () {
+      this.loading = true
+      this.api.getFeeds((res) => {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return
+        }
+        this.loading = false
+        debugger
+        if (!res.data || res.data.length <= 0) {
+          this.more = false
+          return 
+        }
+        for (let e in res.data)
+          this.feeds.push(res.data[e])
+      }, {
+        _id: this.feeds[this.feeds.length - 1]._id
       })
     }
   }

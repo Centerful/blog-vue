@@ -64,7 +64,7 @@ export default {
   }),
   mounted () {
     // 每个feed都是不同的unshift事件。
-    this.$bus.on(`feedUnshiftComment${this.feed_id}`, this.unshiftComments)
+    this.$bus.on(`unshiftComment${this.feed_id}`, this.unshiftComments)
   },
   methods: {
     // 打开评论区
@@ -90,18 +90,18 @@ export default {
       this.firstFetch = false
       this.fetching = true
 
-      this.api.getFeedComments((res) => {
+      this.api.getComments((res) => {
         if (res.code != 0) {
           this.$bus.emit('prompt', res.message)
           return
         }
-        this.comments = res.data.comments
+        this.comments = res.data
         // 加载完成后，取消滚动条，显示评论
         this.fetching = false
         this.commentFlag = true
       }, {
-        feed_id: this.feed_id,
-        comment_id: null
+        relation: this.feed_id,
+        start_id: null
       })
     },
     // append新增的值
@@ -109,18 +109,18 @@ export default {
       if (!this.comments || this.comments.length <= 0) return
 
       this.fetching = true
-      let comment_id = this.comments[this.comments.length - 1]._id
-      this.api.getFeedComments((res) => {
+      let start_id = this.comments[this.comments.length - 1]._id
+      this.api.getComments((res) => {
         if (res.code != 0) {
           this.$bus.emit('prompt', res.message)
           return
         }
-        for (let e in res.data.comments)
-          this.comments.push(res.data.comments[e])
+        for (let e in res.data)
+          this.comments.push(res.data[e])
         this.fetching = false
       }, {
-        feed_id: this.feed_id,
-        comment_id: comment_id
+        relation: this.feed_id,
+        start_id: start_id
       })
     }
   },

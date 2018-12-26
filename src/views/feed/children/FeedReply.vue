@@ -1,4 +1,4 @@
-<!-- feed的回复,评论的回复 -->
+<!-- blog的回复,feed的回复,评论的回复 -->
 <template>
   <v-flex v-if="value" style="text-align: center;">
     <v-progress-circular v-if="inReply"
@@ -50,7 +50,23 @@ export default {
       type: Boolean,
       default: false
     },
-    reply: Object
+    reply: {
+      seq_id: {
+        type: String,
+        required: true
+      },
+      relation: {
+        type: String,
+        required: true
+      },
+      relation_type: {
+        type: String,
+        required: true
+      },
+      reply_id: String,
+      reply_user: String,
+      origin: String
+    }
   },
   data: () => ({
     reply_content: '',
@@ -82,10 +98,10 @@ export default {
       this.reply_content = ''
       this.$emit('update', false)
     },
-    // 对feed或评论进行回复
+    // 对feed或评论或blog进行回复
     toReply () {
       this.inReply = true
-      // 新增评论，feed_id
+      // 新增评论
       this.api.addComment((res) => {
         if (res.code != 0) {
           this.$bus.emit('prompt', res.message)
@@ -94,11 +110,12 @@ export default {
         // 发布成功后
         this.inReply = false
         this.reply_content = ''
-        // 调用unshift事件，在评论中添加自己的评论 ,, TODO 因为只能返回全部的comment,这里先取最后一个。
-        this.$bus.emit(`feedUnshiftComment${this.reply.feed_id}`, res.data.comments[res.data.comments.length-1])
+        // 调用unshift事件，在评论中添加自己的评论
+        this.$bus.emit(`unshiftComment${this.reply.relation}`, res.data)
         this.$emit('update', false)
       }, {
-        feed_id: this.reply.feed_id,
+        relation: this.reply.relation,
+        relation_type: this.reply.relation_type,
         origin: this.reply.origin,
         reply: this.reply.reply_id,
         reply_user: this.reply.reply_user,

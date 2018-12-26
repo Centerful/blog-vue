@@ -3,7 +3,7 @@
   <v-flex xs12>
     <v-layout row align-start>
       <v-flex style="max-width: 64px;">
-        <v-avatar class="ma-3 elevation-1" :size="32" style="cursor: pointer;">
+        <v-avatar class="ma-3 elevation-1" :size="32" style="cursor: pointer;user-select: none;">
           <img :src="comment.user.user_avatar" alt="avatar">
         </v-avatar>
       </v-flex>
@@ -19,7 +19,7 @@
           </v-flex>
           <v-flex body-1 xs12 class="text-xs-left">{{ comment.content }}</v-flex>
           <v-flex xs12>
-            <thumbs v-model="comment.isThumbs" :thumbs_count="comment.thumbs_count"></thumbs><v-btn class="ma-1" @click="isReply = !isReply" flat icon :color="isReply ? 'blue' : 'grey darken-1'">
+            <thumbs v-model="comment.isThumb" :thumb="thumb"></thumbs><v-btn class="ma-1" @click="isReply = !isReply" flat icon :color="isReply ? 'blue' : 'grey darken-1'">
               <v-icon :size="20">mdi-message-reply-text</v-icon>
             </v-btn>
           </v-flex>
@@ -46,11 +46,19 @@ export default {
     reply () {
       return {
         seq_id: this.comment._id,
-        feed_id: this.feed_id,
+        relation: this.feed_id,
+        relation_type: 'COMMENT',
         reply_id: this.comment._id,
         reply_user: this.comment.user._id,
         // 直接回复feed的没有origin，回复comment的都有。
         origin: this.comment.origin || this.comment._id,
+      }
+    },
+    thumb () {
+      return {
+        relation: this.comment._id,
+        relation_type: 'COMMENT',
+        thumbs_count: this.comment.thumbs_count,
       }
     }
   },
