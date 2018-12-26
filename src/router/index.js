@@ -9,6 +9,7 @@ import Edit from '@/views/edit/Edit.vue'
 import Layout from '@/views/Layout.vue'
 import Login from '@/views/login/Login.vue'
 import BlogContent from '@/views/blog/BlogContent.vue'
+import BlogContents from '@/views/blog/BlogContents.vue'
 
 
 import Lab from '@/views/lab/Lab.vue'
@@ -31,6 +32,7 @@ export default new Router({
         { path: 'columns/open/', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
         { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
+        { path: 'blog/:_id', name: 'BlogContents', component: BlogContents },
         { path: 'feed', name: 'Feed', component: Feed },
         { path: 'lab', name: 'lab', component: Lab }
       ],

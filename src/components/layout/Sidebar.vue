@@ -8,7 +8,7 @@
     </router-link></div>
     <div class="blog-btn btn"><router-link to="/blog">
       <v-tooltip class="tip-btn" right nudge-right="5">
-        <v-icon slot="activator">mdi-book-open-variant</v-icon>
+        <v-icon slot="activator">mdi-book-open-page-variant</v-icon>
         <span>博客</span>
       </v-tooltip>
     </router-link></div>
@@ -20,7 +20,6 @@
     </router-link></div>
     <div class="edit-btn btn"><router-link to="/edit">
       <v-tooltip class="tip-btn" right nudge-right="5">
-        <!-- <v-icon slot="activator">mdi-pencil</v-icon> -->
         <v-icon slot="activator">mdi-circle-edit-outline</v-icon>
         <span>编辑</span>
       </v-tooltip>

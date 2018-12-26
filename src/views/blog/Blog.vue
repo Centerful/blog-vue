@@ -5,20 +5,32 @@
     <placeholder/>
     <div class="search" v-if="search"></div>
     <div class="blog-items">
+      <!-- 目前还是使用progress吧，等后面使用骨架屏技术后在弄这些fake
       <template v-if="loading">
-        <BlogItemLoad></BlogItemLoad>
-        <BlogItemLoad></BlogItemLoad>
-        <BlogItemLoad></BlogItemLoad>
-      </template>
-      <BlogItem v-for="blog in blogs" :key="blog._id" v-bind="blog"></BlogItem>
-      <div class="loading" v-if="!loading"><icon name="spinner" pulse/></div>
+          <BlogItemLoad></BlogItemLoad>
+          <BlogItemLoad></BlogItemLoad>
+          <BlogItemLoad></BlogItemLoad> 
+      </template>-->
+      
+      <BlogDisplayLayer v-if="!loading" :blogs="blogs"></BlogDisplayLayer>
+      <v-flex style="text-align: center;" ma-3>
+        <v-btn @click="loadmore" v-show="more && !loading" :ripple="false" flat small color="grey darken-2">
+          查看更多博客
+        </v-btn>
+        <h5 v-show="!more && !loading">暂无更多动态</h5>
+        <v-progress-circular v-if="loading"
+          indeterminate
+          :size="24"
+          color="info"
+          class="ma-2"
+        ></v-progress-circular>
+      </v-flex>
     </div>
   </div>
 </template>
 
 <script>
-import BlogItem from '@/views/blog/children/BlogItem.vue'
-import BlogItemLoad from '@/views/blog/children/BlogItemLoad.vue'
+import BlogDisplayLayer from '@/views/blog/children/BlogDisplayLayer'
 
 export default {
   name: 'blog',
@@ -26,11 +38,12 @@ export default {
     return {
       blogs: [],
       loading: true,
+      more: true,
       search: true
     }
   },
   components: {
-    BlogItem, BlogItemLoad
+    BlogDisplayLayer
   },
   watch: {
     // 如果路由有变化，会再次执行该方法
@@ -40,6 +53,9 @@ export default {
     }
   },
   methods: {
+    loadmore () {
+      this.more = false
+    },
     fetchData () {
       this.loading = true
       this.api.getPublishs((res) => {
@@ -58,7 +74,7 @@ export default {
 
 <style scoped>
 .blog{
-  -webkit-font-smoothing: antialiased;
+  /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   display: -webkit-box;
@@ -69,12 +85,6 @@ export default {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 100%;
-}
-.blog-items {
-  /*height: auto;
-  min-height: 500px;
-  transition: height 3.5s ease-out;*/
-  width: 100%;
+  width: 100%; */
 }
 </style>
