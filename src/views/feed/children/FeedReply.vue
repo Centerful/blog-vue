@@ -5,7 +5,7 @@
       indeterminate
       :size="24"
       :width="2"
-      color="primary"
+      :color="theme.progress[theme_style]"
       class="ma-2"
     ></v-progress-circular>
     <template v-else>
@@ -16,25 +16,31 @@
           </v-avatar>
         </v-flex>
         <v-flex>
-          <v-text-field :id="reply.seq_id" :rules="reply_content_rule" v-model="reply_content" placeholder="添加回复..." autofocus></v-text-field>
+          <v-text-field 
+            :id="reply.seq_id" 
+            :rules="reply_content_rule" 
+            v-model="reply_content" 
+            :dark="theme_style === 'dark'"
+            autofocus
+            placeholder="添加回复..."></v-text-field>
         </v-flex>
       </v-layout>
       <v-card-actions class="pa-1">
         <v-menu style="margin-left: 8px;" offset-y transition="slide-y-transition">
-          <v-btn flat color="blue-grey" slot="activator">
+          <v-btn flat :color="theme.btn[theme_style]" slot="activator">
             颜文字
           </v-btn>
           <EmojiWordPicker :pick="pick"></EmojiWordPicker>
         </v-menu>
         <v-menu offset-y transition="slide-y-transition">
-          <v-btn flat icon color="blue-grey" slot="activator">
+          <v-btn flat icon :color="theme.btn[theme_style]" slot="activator">
             <v-icon>mdi-emoticon-outline</v-icon>
           </v-btn>
           <EmojiPicker :pick="pick"></EmojiPicker>
         </v-menu>
         <v-spacer></v-spacer>
-        <v-btn flat @click="cancel">取消</v-btn>
-        <v-btn color="info" @click="toReply">回复</v-btn>
+        <v-btn :dark="theme_style === 'dark'" flat @click="cancel">取消</v-btn>
+        <v-btn :color="theme.reply_btn[theme_style]" @click="toReply">回复</v-btn>
       </v-card-actions>
     </template>
   </v-flex>
@@ -66,6 +72,12 @@ export default {
       reply_id: String,
       reply_user: String,
       origin: String
+    },
+    // blog的评论准备也使用reply组件，所以theme样式不与feed强绑定，不是private而是dark模式。
+    theme_style: {
+      type: String,
+      default: 'light',
+      validator: (val) => {return ['light', 'dark'].indexOf(val.toLowerCase()) + 1}
     }
   },
   data: () => ({
@@ -79,6 +91,20 @@ export default {
         return true
       }
     ],
+    theme: {
+      btn: {
+        dark: 'grey lighten-3',
+        light: 'blue-grey'
+      },
+      reply_btn: {
+        dark: 'grey lighten-4',
+        light: 'info'
+      },
+      progress: {
+        light: 'primary',
+        dark: 'white'
+      }
+    }
   }),
   computed: {
     user_avatar () {

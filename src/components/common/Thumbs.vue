@@ -1,6 +1,6 @@
 <template>
   <v-flex d-inline-block mr-1>
-    <v-btn flat class="ma-1" icon @click="toThumb()" :color="btn_color[thumb.theme_style][value]">
+    <v-btn flat class="ma-1" icon @click="toThumb()" :color="btn[theme_style][value]">
       <v-icon :size="20">mdi-thumb-up</v-icon>
     </v-btn><span style="cursor: default;user-select: none;" class="thumb-count caption" v-show="thumbCount">{{thumbCount}}</span>
   </v-flex>
@@ -26,12 +26,12 @@ export default {
         type:Number,
         required: true
       },
-      // 由于thumbs是通用组件，所以theme样式不与feed强绑定，不是private而是dark模式。
-      theme_style: {
-        type: String,
-        default: 'light',
-        validator: (val) => {return ['light', 'dark'].indexOf(val.toLowerCase()) !== -1}
-      }
+    },
+    // 由于thumbs是通用组件，所以theme样式不与feed强绑定，不是private而是dark模式。
+    theme_style: {
+      type: String,
+      default: 'light',
+      validator: (val) => {return ['light', 'dark'].indexOf(val.toLowerCase()) + 1}
     }
   },
   model: {
@@ -40,7 +40,7 @@ export default {
   },
   data: () => ({
     myThumb: 0,
-    btn_color: {
+    btn: {
       dark: {
         true: 'red',
         false: 'grey lighten-3'

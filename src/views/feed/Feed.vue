@@ -4,7 +4,15 @@
     <FeedSend @sendout="fetchData"></FeedSend>
     <div class="feed-split">
     </div>
-    <FeedCard class="ma-2" v-model="feed.feed_status" v-for="feed in feeds" :key="feed._id" :feed="feed" style="width: 80%;max-width: 620px;"></FeedCard>
+    <FeedCard 
+      class="ma-2" 
+      v-model="feed.feed_status" 
+      v-for="feed in feeds" 
+      :key="feed._id" 
+      :feed="feed" 
+      style="width: 80%;max-width: 620px;"
+      @delFeed="delFeed"
+      ></FeedCard>
     <v-flex ma-3>
       <v-btn @click="loadmore" v-show="more && !loading" :ripple="false" flat small color="grey darken-2">
         查看更多动态
@@ -46,6 +54,17 @@ export default {
     }
   },
   methods: {
+    delFeed (feed_id) {
+      let index = null
+      this.feeds.find((e, i) => {
+        console.log(this)
+        if (e._id === feed_id) {
+          index = i
+          return e
+        }
+      })
+      this.feeds.splice(index, 1)
+    },
     // 获取动态信息
     fetchData () {
       this.loading = true
@@ -67,7 +86,6 @@ export default {
           return
         }
         this.loading = false
-        debugger
         if (!res.data || res.data.length <= 0) {
           this.more = false
           return 

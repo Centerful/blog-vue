@@ -47,12 +47,26 @@ export default {
     let res = await http.post(`/columns`, data)
     callback(res.data)
   },
+
   addFeed: async (callback, data = {feedContent: null, feedImg: null, topic: null, feed_status: null}) => {
     let res = await http.post(`/feeds`, data)
     callback(res.data)
   },
+  deleteFeed: async (callback, feed_id) => {
+    let res = await http.delete(`/feeds/${feed_id}`)
+    callback(res.data)
+  },
+  feedPublic: async (callback, feed_id) => {
+    let res = await http.patch(`/feeds/${feed_id}/public`)
+    callback(res.data)
+  },
+
   addComment: async (callback, data = {relation: null, relation_type: null, origin: null, reply: null, reply_user: null, content: null}) => {
     let res = await http.post(`/comments`, data)
+    callback(res.data)
+  },
+  deleteComment: async (callback, comment_id) => {
+    let res = await http.delete(`/comments/${comment_id}`)
     callback(res.data)
   },
   getFeeds: async (callback, query) => {

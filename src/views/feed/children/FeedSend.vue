@@ -1,6 +1,6 @@
 <!-- feed发送区域 -->
 <template>
-  <v-card :color="theme.card_color[theme_style]" class="feed-form">
+  <v-card :color="theme.card[theme_style]" class="feed-form">
     <v-form ref="feedForm" v-model="valid">
       <v-card-title style="padding-bottom: 0">
         <v-textarea
@@ -16,29 +16,29 @@
     </v-form>
     <v-card-actions style="padding-top: 0">
       <v-menu style="margin-left: 8px;" offset-y transition="slide-y-transition">
-        <v-btn flat :color="theme.btn_color[theme_style]" slot="activator">
+        <v-btn flat :color="theme.btn[theme_style]" slot="activator">
           颜文字
         </v-btn>
         <EmojiWordPicker :pick="pickEmoji"></EmojiWordPicker>
       </v-menu>
       <v-menu offset-y transition="slide-y-transition">
-        <v-btn flat icon :color="theme.btn_color[theme_style]" slot="activator">
+        <v-btn flat icon :color="theme.btn[theme_style]" slot="activator">
           <v-icon>mdi-emoticon-outline</v-icon>
         </v-btn>
         <EmojiPicker :pick="pickEmoji"></EmojiPicker>
       </v-menu>
-      <v-btn flat icon :color="theme.btn_color[theme_style]" @click="addImg">
+      <v-btn flat icon :color="theme.btn[theme_style]" @click="addImg">
         <v-icon>mdi-camera-image</v-icon>
       </v-btn>
       <v-tooltip bottom>
-        <v-btn slot="activator" flat icon :color="theme.btn_color[theme_style]" @click="toggleLock">
+        <v-btn slot="activator" flat icon :color="theme.btn[theme_style]" @click="toggleLock">
           <v-icon>{{theme.lock_icon[theme_style]}}</v-icon>
         </v-btn>
         <span>{{theme.lock_word[theme_style]}}</span>
       </v-tooltip>
       <v-spacer></v-spacer>
       <v-btn :dark='locked' @click="clear" flat>取 消</v-btn>
-      <v-btn :color="theme.send_btn_color[theme_style]" @click="send" style="margin-right: 11px;">发 表</v-btn>
+      <v-btn :color="theme.send_btn[theme_style]" @click="send" style="margin-right: 11px;">发 表</v-btn>
     </v-card-actions>
     <!-- feed图片展示区域 -->
     <FeedImage ref="imgContainer" v-model="feedImg"></FeedImage>
@@ -66,15 +66,15 @@ export default {
       }
     ],
     theme: {
-      card_color: {
+      card: {
         private: 'grey darken-2',
         light: 'white'
       },
-      btn_color: {
+      btn: {
         private: 'grey lighten-3',
         light: 'blue-grey'
       },
-      send_btn_color: {
+      send_btn: {
         private: 'grey lighten-4',
         light: 'info'
       },
