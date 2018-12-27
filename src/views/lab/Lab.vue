@@ -1,18 +1,19 @@
 <template>
   <v-layout class="lab" align-center justify-center column>
     <div class="bars">
-      <v-btn @click="currentTab = 'GroundGlass'" color="info">毛玻璃效果</v-btn>
-      <v-btn @click="currentTab = 'EmojiPicker'" color="info">eomji picker</v-btn>
-      <v-btn @click="currentTab = 'EmojiWordPicker'" color="info">颜文字</v-btn>
-      <v-btn @click="currentTab = 'ListMenu'" color="info">v-list测试</v-btn>
-      <v-btn @click="currentTab = 'FlexLayout'" color="info">Flex布局</v-btn>
-      <v-btn @click="currentTab = 'CardHover'" color="info">CardHover</v-btn>
-      <v-btn @click="currentTab = 'VueArray'" color="info">Vue数组</v-btn>
-      <v-btn @click="currentTab = 'GetCursor'" color="info">获得文本域光标</v-btn>
-      <v-btn @click="currentTab = 'LightBox'" color="info">灯箱</v-btn>
-      <v-btn @click="currentTab = 'MyLightBox'" color="info">我的灯箱</v-btn>
-      <v-btn @click="currentTab = 'VueBadges'" color="info">Badges</v-btn>
-      <v-btn @click="currentTab = 'FeedCardTest'" color="info">FeedCard</v-btn>
+      <v-btn @click="currentTab = 'GroundGlass'">毛玻璃效果</v-btn>
+      <v-btn @click="currentTab = 'EmojiPicker'">eomji picker</v-btn>
+      <v-btn @click="currentTab = 'EmojiWordPicker'">颜文字</v-btn>
+      <v-btn @click="currentTab = 'ListMenu'">v-list测试</v-btn>
+      <v-btn @click="currentTab = 'FlexLayout'">Flex布局</v-btn>
+      <v-btn @click="currentTab = 'CardHover'">CardHover</v-btn>
+      <v-btn @click="currentTab = 'VueArray'">Vue数组</v-btn>
+      <v-btn @click="currentTab = 'GetCursor'">获得文本域光标</v-btn>
+      <v-btn @click="currentTab = 'LightBox'">灯箱</v-btn>
+      <v-btn @click="currentTab = 'MyLightBox'">我的灯箱</v-btn>
+      <v-btn @click="currentTab = 'VueBadges'">Badges</v-btn>
+      <v-btn @click="currentTab = 'FeedCardTest'">FeedCard</v-btn>
+      <v-btn @click="currentTab = 'RenderTest'">Render函数</v-btn>
     </div>
     <compontent :is="currentTab" :img="'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg'"></compontent>
   </v-layout>
@@ -32,7 +33,7 @@ import LightBox from '@/views/lab/children/LightBox.vue'
 import MyLightBox from '@/views/lab/children/MyLightBox.vue'
 import VueBadges from '@/views/lab/children/VueBadges.vue'
 import FeedCardTest from '@/views/lab/children/FeedCardTest.vue'
-
+import RenderTest from '@/views/lab/children/RenderTest.vue'
 
 export default {
   data () {
@@ -43,7 +44,7 @@ export default {
   created () {
     this.$progress.finish()
   },
-  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges, FeedCardTest }
+  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges, FeedCardTest, RenderTest }
 }
 </script>
 

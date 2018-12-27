@@ -25,9 +25,7 @@
             </v-layout>
             <v-divider class="mx-3"></v-divider>
             <v-flex ma-3 ml-4 body-1>
-              <date-str :tooltip="true" :display="'d-inline'"  :datetime="blog.publish_time"></date-str>
-              <span>字数： {{ blogWords }}</span>
-              <span>浏览： {{ blog.reads }}</span>
+              <span class="ma-2">文章编辑于：<date-str margin="ma-0" :tooltip="true" fontSize="body-1" direction="bottom" display="d-inline"  :datetime="blog.publish_time"></date-str></span><span class="ma-1">字数：{{ blogWords }}</span><span class="ma-1">浏览：{{ blog.reads }}</span>
             </v-flex>
           </v-layout>
         </v-card>
@@ -78,5 +76,4 @@ export default {
 </script>
 
 <style>
-  
 </style>
