@@ -14,8 +14,8 @@
         <v-flex body-1>
           <p class="blog_content">{{ blog.content }}</p>
         </v-flex>
-        <v-flex v-if="blog.tags" my-2>
-          <v-icon class="mx-1" small>mdi-tag</v-icon><v-chip label color="teal lighten-1" text-color="white" small v-for="tag in blog.tags">{{tag}}</v-chip>
+        <v-flex v-if="blog.tags.length" my-2>
+          <v-icon class="mx-1" small>mdi-tag</v-icon><v-chip color="teal lighten-1" text-color="white" small v-for="tag in blog.tags">{{tag}}</v-chip>
         </v-flex>
       </v-layout>
     </v-flex>

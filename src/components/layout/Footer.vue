@@ -26,5 +26,6 @@ export default {
     margin: 0 5px;
     cursor: pointer;
     font-style: italic;
+    text-decoration: underline;
   }
 </style>

@@ -9,7 +9,7 @@ import Edit from '@/views/edit/Edit.vue'
 import Layout from '@/views/Layout.vue'
 import Login from '@/views/login/Login.vue'
 import BlogContent from '@/views/blog/BlogContent.vue'
-import BlogContents from '@/views/blog/BlogContents.vue'
+import BlogContents from '@/views/blog/content/BlogContents.vue'
 
 
 import Lab from '@/views/lab/Lab.vue'

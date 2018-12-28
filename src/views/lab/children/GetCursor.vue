@@ -23,7 +23,6 @@ export default {
   }),
   methods: {
     insertText () {
-      debugger;
       console.log(this.$refs.tinput)
       console.log(this.$refs.tinput.selectionStart)
       this._insertSomething('tinput', 'Hello World!')

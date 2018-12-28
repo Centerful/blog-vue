@@ -55,7 +55,7 @@
         </div> -->
         <!-- 水印样式 -->
         <div class="blog-tags">
-          <a v-for="tag in blog.tags" :key="tag._id" class="blog-tag">{{ tag.name }}</a>
+          <a v-for="tag in blog.tags" class="blog-tag">{{ tag }}</a>
         </div>
         <!--  -->
         <div class="blog-column">
