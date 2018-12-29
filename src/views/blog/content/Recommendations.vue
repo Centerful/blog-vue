@@ -1,5 +1,5 @@
 <template>
-  <v-layout column mt-5 pt-3 pb-4 style="background-color: #EEEEEE;">
+  <v-layout v-if="recommendations.length" column mt-5 pt-3 pb-4 style="background-color: #EEEEEE;">
     <v-flex style="margin: 0 10%;" font-weight-bold>推荐阅读</v-flex>
     <v-divider style="margin-left: 9%;margin-right: 9%;" class="mt-2 mb-4"></v-divider>
     <v-flex style="overflow: hidden;height: 255px;position: relative;padding: 0 2px;">
@@ -15,15 +15,7 @@
       </v-flex>
       <v-layout id="recommendation-scroll" row nowrap style="overflow-x: auto;padding-bottom:20px;padding-top: 5px;">
         <div v-scroll:#recommendation-scroll="onScroll" style="display: inline-flex;padding: 0 10px">
-        <!-- 左侧占位 -->
-        <!-- <v-flex v-scroll:#recommendation-scroll="onScroll">
-          <div style="width: 10px;height: 1px;"></div>
-        </v-flex> -->
-        <recommendation-card v-for="ele in recommendations" :key="ele" :recommendation="ele"></recommendation-card>
-        <!-- 右侧占位 -->
-        <!-- <v-flex>
-          <div style="width: 10px;height: 1px;"></div>
-        </v-flex> -->
+          <recommendation-card v-for="ele in recommendations" :key="ele._id" :recommendation="ele"></recommendation-card>
         </div>
       </v-layout>
     </v-flex>
@@ -33,13 +25,19 @@
 <script>
 import RecommendationCard from '@/views/blog/content/RecommendationCard.vue'
 export default {
+  props: {
+    blog_id: {
+      type: String,
+      required: true
+    }
+  },
   data: () => ({
-    recommendations: [1,2,3,4,5,6,7,8,9,10,11],
+    recommendations: [],
     left_btn: false,
     right_btn: true,
     fetching: false,
     // scroll在滚动时的偏差值计算，这里是正常屏幕下的，浏览器不同宽度偏差值都不同。
-    scrollDeviation: 12, 
+    scrollDeviation: 28, 
     more: false
   }),
   mounted () {
@@ -48,6 +46,13 @@ export default {
   computed: {
     recommendScroll () {
       return document.getElementById('recommendation-scroll')
+    },
+    lastDate () {
+      if (this.recommendations && this.recommendations.length > 0) {
+        return this.recommendations[this.recommendations.length - 1].publish.publish_time
+      } else {
+        return null
+      }
     }
   },
   methods: {
@@ -55,15 +60,21 @@ export default {
       if (this.fetching) return
       // 防止重复调用fetchData方法 采用Throttle策略，fetchData时不能再次相应请求
       this.fetching = true
-      // 获取数据 this.api.getBlogRecommendations
-      // 成功后根据响应会写
-      this.fetching = false
-      this.more = true
-      // 如果fetch后返回null或是空数组，则
-      // if () {
-      //   this.more = false
-      //   this.right_btn = false
-      // }
+      this.api.getRecommendations((res)=> {
+        if (res.code != 0) {
+          this.$bus.emit('prompt', res.message)
+          return 
+        }
+        this.fetching = false
+        for (let e in res.data.recommendations)
+          this.recommendations.push(res.data.recommendations[e])
+        this.more = res.data.more
+        if (!this.more) 
+          this.right_btn = false
+      }, {
+        publish_time: this.lastDate,
+        _id: this.blog_id
+      })
     },
     onScroll (e) {
       // 滚动到最左侧 left_btn隐藏,否则显示left_btn
@@ -89,31 +100,26 @@ export default {
     },
     // 滚动条向左滚动
     left_btn_click () {
-      this._leftSmoothScroll(this.recommendScroll.clientWidth + this.scrollDeviation)
+      this.smoothScroll(-(this.recommendScroll.clientWidth - 2.5 * this.scrollDeviation))
     },
     right_btn_click () {
-      this._rightSmoothScroll(this.recommendScroll.clientWidth - this.scrollDeviation)
+      this.smoothScroll(this.recommendScroll.clientWidth - this.scrollDeviation)
     },
-    _leftSmoothScroll (scrollLength) {
+    smoothScroll (scrollLength) {
       if (scrollLength == 0) return
-      let targetLength = Math.max(this.recommendScroll.scrollLeft - scrollLength, 0)
-      let stepLength = Math.ceil(scrollLength / 20)
-      let frontward = null
-      frontward = setInterval(() => {
-        if (this.recommendScroll.scrollLeft <= targetLength) clearInterval(frontward)
-          this.recommendScroll.scrollLeft -= stepLength
+      let targetLength = Math.min(this.recommendScroll.scrollLeft + scrollLength, this.recommendScroll.scrollWidth)
+      let step = 50
+      let stepLength = Math.floor(scrollLength / step)
+      let remainder = scrollLength % step
+      let backward = setInterval(() => {
+        if (step <= 0) {
+          this.recommendScroll.scrollLeft += remainder
+          clearInterval(backward)
+        }
+        --step
+        this.recommendScroll.scrollLeft += stepLength
       }, 10)
-    },
-    _rightSmoothScroll (scrollLength) {
-      if (scrollLength == 0) return
-      let targetLength = Math.min(this.recommendScroll.scrollLeft + scrollLength, this.recommendScroll.scrollLeft.scrollWidth)
-      let stepLength = Math.ceil(scrollLength / 20)
-      let backward = null
-      backward = setInterval(() => {
-        if (this.recommendScroll.scrollLeft >= targetLength) clearInterval(backward)
-          this.recommendScroll.scrollLeft += stepLength
-      }, 10)
-    },
+    }
   },
   components: { RecommendationCard }
 }

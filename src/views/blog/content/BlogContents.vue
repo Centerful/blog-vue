@@ -42,7 +42,7 @@
         <v-icon class="mx-1" small>mdi-tag</v-icon><v-chip small color="teal lighten-1" text-color="white" v-for="tag in blog.tags" :key="tag">{{tag}}</v-chip>
       </v-flex>
       <!-- 收录专栏 -->
-      <v-flex v-if="blog.column">
+      <v-flex v-if="blog.column" mb-5>
         <v-flex style="font-size: 18px;cursor: default;" font-weight-bold>文章收录于以下专栏</v-flex>
         <v-divider class="my-2"></v-divider>
         <v-layout align-start style="align-self: baseline;" >
@@ -60,7 +60,7 @@
     </v-layout>
     <!-- 推荐阅读 -->
     <v-flex>
-      <recommendations></recommendations>
+      <recommendations :blog_id="blog._id"></recommendations>
     </v-flex>
   </v-container>
 </template>
@@ -76,8 +76,11 @@ export default {
     blog: {},
     loading: true
   }),
-  created () {
-    this.fetchData()
+  watch: {
+    '$route': {
+      handler: 'fetchData',
+      immediate: true // 立马执行一次,相当于created中调用一次.
+    }
   },
   computed: {
     blogWords () {
@@ -99,6 +102,8 @@ export default {
           return 
         }
         this.blog = res.data
+        // editorId设置为blog_id是为了，在动态路由切换时，Editormd子组件根据key也动态刷新
+        this.editorId = this.blog._id
         this.loading = false
         this.$progress.finish()
       }, this.$route.params._id)

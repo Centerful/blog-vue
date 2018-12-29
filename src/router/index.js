@@ -31,8 +31,8 @@ export default new Router({
         { path: 'columns/:_id', name: 'ColumnContent', component: ColumnContent },
         { path: 'columns/open/', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
-        { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
         { path: 'blog/:_id', name: 'BlogContents', component: BlogContents },
+        { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
         { path: 'feed', name: 'Feed', component: Feed },
         { path: 'lab', name: 'lab', component: Lab }
       ],
@@ -50,5 +50,9 @@ export default new Router({
       name: 'Login',
       component: Login
     }
-  ]
+  ],
+  // 当router发生变化后，让滚动条置顶
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })

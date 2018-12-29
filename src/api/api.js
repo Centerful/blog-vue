@@ -31,6 +31,10 @@ export default {
     let res = await http.delete(`/blogs/${blogId}`)
     callback(res.data)
   },
+  getRecommendations: async (callback, data) => {
+    let res = await http.fetch(`/recommendations`, data)
+    callback(res.data)
+  },
   getColumns: async (callback, query) => {
     let res = await http.fetch('/columns', query)
     callback(res.data)
