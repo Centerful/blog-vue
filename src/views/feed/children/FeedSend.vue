@@ -21,16 +21,16 @@
         </v-btn>
         <EmojiWordPicker :pick="pickEmoji"></EmojiWordPicker>
       </v-menu>
-      <v-menu offset-y transition="slide-y-transition">
+      <v-menu style="margin-left: 8px;" offset-y transition="slide-y-transition">
         <v-btn flat icon :color="theme.btn[theme_style]" slot="activator">
           <v-icon>mdi-emoticon-outline</v-icon>
         </v-btn>
         <EmojiPicker :pick="pickEmoji"></EmojiPicker>
       </v-menu>
-      <v-btn flat icon :color="theme.btn[theme_style]" @click="addImg">
+      <v-btn style="margin-left: 8px;" flat icon :color="theme.btn[theme_style]" @click="addImg">
         <v-icon>mdi-camera-image</v-icon>
       </v-btn>
-      <v-tooltip bottom>
+      <v-tooltip style="margin-left: 8px;" bottom>
         <v-btn slot="activator" flat icon :color="theme.btn[theme_style]" @click="toggleLock">
           <v-icon>{{theme.lock_icon[theme_style]}}</v-icon>
         </v-btn>

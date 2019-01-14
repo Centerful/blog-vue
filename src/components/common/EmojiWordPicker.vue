@@ -83,6 +83,7 @@ export default {
 <style scoped>
   .emoji-panel {
     width: 400px;
+    z-index: 999;
   }
   .emoji {
     overflow-x: hidden;

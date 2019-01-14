@@ -1,5 +1,5 @@
 <template>
-  <div :id="id">
+  <div :id="id" style="font-family: inherit;color: black;">
     <link href="static/editor.md/css/editormd.min.css" rel="stylesheet">
     <textarea v-html="blogContent" style="display:none;"></textarea>
   </div>
@@ -67,7 +67,10 @@ export default {
           onpreviewing () {
             this.isPreview = true
             $('.editormd-preview-container').css('padding', '20px 5px 50px 5px')
+            $('.editormd-preview-container').css('fontFamily', 'inherit').css('color', '#000')
+
             $('.editormd-preview').css('position', 'relative')
+            $('.editormd-preview').css('fontFamily', 'inherit')
           },
           onpreviewed () {
             this.isPreview = false

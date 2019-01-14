@@ -25,7 +25,7 @@
             </v-layout>
             <v-divider class="mx-3"></v-divider>
             <v-flex ma-3 ml-4 body-1>
-              <span class="ma-2">文章编辑于：<date-str margin="ma-0" :tooltip="true" fontSize="body-1" direction="bottom" display="d-inline" :datetime="publishTime"></date-str></span><span class="ma-1">字数：{{ blogWords }}</span><span class="ma-1">浏览：{{ blog.reads }}</span>
+              <span class="ma-2">文章编辑于：<date-str :key="blog._id" margin="ma-0" :tooltip="true" fontSize="body-1" direction="bottom" display="d-inline" :datetime="publishTime"></date-str></span><span class="ma-1">字数：{{ blogWords }}</span><span class="ma-1">浏览：{{ blog.reads }}</span>
             </v-flex>
           </v-layout>
         </v-card>
@@ -35,11 +35,16 @@
       <v-divider class="my-2"></v-divider>
       <!-- 博文内容 -->
       <v-flex pa-1>
-        <Editormd type="html" :blogContent="blog.content" :ref="editorId" :key="editorId" :id="editorId"></Editormd>
+        <!-- editorId设置为blog_id是为了，在动态路由切换时，Editormd子组件根据key也动态刷新 -->
+        <Editormd type="html" :blogContent="blog.content" :ref="editorId" :key="blog._id" :id="editorId"></Editormd>
       </v-flex>
       <!-- 标签 -->
       <v-flex v-if="blog.tags.length" mt-4 mb-5>
         <v-icon class="mx-1" small>mdi-tag</v-icon><v-chip small color="teal lighten-1" text-color="white" v-for="tag in blog.tags" :key="tag">{{tag}}</v-chip>
+      </v-flex>
+      <!-- func_btn -->
+      <v-flex>
+        <blog-content-btn :blogParams="blogParams"></blog-content-btn>  
       </v-flex>
       <!-- 收录专栏 -->
       <v-flex v-if="blog.column" mb-5>
@@ -60,7 +65,8 @@
     </v-layout>
     <!-- 推荐阅读 -->
     <v-flex>
-      <recommendations :blog_id="blog._id"></recommendations>
+      <!-- 加入key是为了路由在切换时此子组件的内容也重新加载 -->
+      <recommendations :key="blog._id" :blog_id="blog._id"></recommendations>
     </v-flex>
   </v-container>
 </template>
@@ -68,6 +74,7 @@
 <script>
 import Editormd from '@/views/edit/children/Editormd.vue'
 import DateStr from '@/components/common/DateStr.vue'
+import BlogContentBtn from '@/views/blog/content/BlogContentBtn.vue'
 import recommendations from '@/views/blog/content/Recommendations.vue'
 
 export default {
@@ -88,6 +95,15 @@ export default {
     },
     publishTime () {
       return this.blog.republish_time || this.blog.publish_time
+    },
+    blogParams () {
+      return {
+        _id: this.blog._id,
+        isThumb: this.blog.isThumb,
+        blog_title: this.blog.title,
+        thumbs_count: this.blog.thumbs_count,
+        comments_count: this.blog.comments_count
+      }
     }
   },
   methods: {
@@ -102,14 +118,12 @@ export default {
           return 
         }
         this.blog = res.data
-        // editorId设置为blog_id是为了，在动态路由切换时，Editormd子组件根据key也动态刷新
-        this.editorId = this.blog._id
         this.loading = false
         this.$progress.finish()
       }, this.$route.params._id)
     }
   },
-  components: { DateStr, Editormd, recommendations }
+  components: { DateStr, BlogContentBtn, Editormd, recommendations }
 }
 </script>
 

@@ -25,7 +25,7 @@
     </span>
     <ul :style="{ height:subHeight + 'px' }">
       <li v-if="dir.book_type.toLowerCase() == 'book'">
-        <span v-ripple style="cursor: pointer;" @click="addBlog" class="e-create-blog">
+        <span v-ripple style="cursor: pointer;" @click="addFile(dir._id)" class="e-create-blog">
           <span class="e-row">
             <span class="e-icon">
               <v-icon>mdi-plus</v-icon>
@@ -35,8 +35,13 @@
           <span class="e-btn"></span>
         </span>
       </li>
-      <file @deleteToTrash="deleteToTrash" @reversionToBook="reversionToBook"  @cleanblog="cleanBlog" v-for="file in files" :key="file._id" :file="file"></file>
-      <form-confirm-dialog ref="formDialog" v-model="renameDialog" :confirm="rename" title="文集重命名">
+      <file v-for="file in files" :key="file._id" :file="file"></file>
+      <!-- 重命名文集 -->
+      <form-confirm-dialog 
+        ref="formDialog" 
+        v-model="renameDialog" 
+        :confirm="() => bookRename({ book_id: dir._id, book_name: renameVal })" 
+        title="文集重命名">
         <v-text-field 
           v-model="renameVal"
           label="文集名称"
@@ -50,6 +55,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import file from '@/views/edit/children/File.vue'
 export default {
   props: ['dir'],
@@ -60,35 +66,29 @@ export default {
       isHover: false,
       fold: true,
       subHeight: 0,
-      files: [],
       dirOptions: [
         {code: 'rename', title: '重命名'},
         {code: 'delete', title: '删除文集'}
       ]
     }
   },
-  components: { file },
-  mounted () {
-    if (this.dir.book_type.toLowerCase() == 'trash') {
-      this.$bus.on('blogToTrash', this.blogToTrash)
+  computed: {
+    files () {
+      return this.dir.files
     }
   },
+  components: { file },
   methods: {
+    ...mapActions('edit', ['fetchFiles', 'addFile', 'deleteBook', 'bookRename']),
     // 打开关闭文集.
-    toggleFold () {
+    async toggleFold () {
       this.fold = !this.fold
       if (!this.fold) {
-        // 展开
-        this.api.getBookBlogs((res) => {
-          if (res.code != 0) {
-            this.$bus.emit('prompt', res.message)
-            // 将文集设置为未打开状态.
-            this.fold = !this.fold
-            return 
-          }
-          // 插入blogs信息.
-          this.files = res.data.sort(this.utils.compare('blog_order'))
-        }, this.dir._id)
+        let code = await this.fetchFiles(this.dir._id)
+        // 如果出现错误则不展开
+        if (code) {
+          this.fold = !this.fold
+        }
       } else {
         // 收缩
         this.autoHeight()
@@ -102,54 +102,6 @@ export default {
         this.subHeight = (this.files.length + 1) * 44
       }
     },
-    // 添加博客
-    addBlog () {
-      let blogInfo = {
-        title: this.utils.getYMD(),
-        books_id: this.dir._id,
-        blog_order: (this.files.length || 0)  + 1
-      }
-      this.api.addBlog((res) => {
-        // 将新增blog添加进files中.
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        this.files.push(res.data)
-      }, blogInfo)
-    },
-    // 删除博客到垃圾桶中
-    deleteToTrash (_id) {
-      let blog = this._deleteFile(_id)
-      this.$bus.emit('blogToTrash', blog)
-    },
-    // 添加进垃圾桶中。
-    blogToTrash (blog) {
-      blog.blog_status = 'DELETE'
-      this.files.push(blog)
-    },
-    // 从垃圾桶中删除博客
-    cleanBlog (_id) {
-      this._deleteFile(_id)
-    },
-    // 从垃圾箱中删除博客
-    reversionToBook (data) {
-      this._deleteFile(data.blog_id)
-      this.$bus.emit('trashToBlog', data)
-    },
-    _deleteFile (_id) {
-      // 找到对应file数据
-      let blog = this.files.filter((ele, index) => {
-        if (_id == ele._id) {
-          ele.index = index
-          return true
-        }
-        return false
-      })[0]
-      // 删除
-      this.files.splice(blog.index, 1)
-      return blog
-    },
     // 文集的操作
     dirOps (code) {
       switch (code) {
@@ -158,50 +110,31 @@ export default {
           // 将错误提示框，写成common组件，注册bus的事件。
           // common组件中props为title，content的参数校验修改下，可以传入null。   
           this.renameDialog = true
+          this.renameVal = this.dir.book_name
           break
         case 'delete':
-          if (!this.files || this.files.length === 0) {
-            let deleteObj = {
-              title: '删除确认',
-              content: `是否删除文集：“${this.dir.book_name}”， 删除后文集将无法恢复！`,
-              confirmColor: 'red',
-              confirm: this.deleteBook // 传递confirm时callback函数。
-            }
-            this.$bus.emit('confirm', deleteObj)
-          } else {
-            // snak 弹窗。
-            let snack = {
-              content: '请先删除文集中的博客！'
-            }
-            this.$bus.emit('snack', snack)
-          }
+          this._delete()
           break
       }
     },
-    // 重命名文集
-    rename () {
-      this.api.bookRename((res) => {
-        // 将新增blog添加进files中.
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        this.dir.book_name = this.renameVal
-        this.$refs.formDialog.clearForm() // 清空Dialog中的表单
-      }, {book_id: this.dir._id, book_name: this.renameVal})
-    },
     // 删除文集
-    deleteBook () {
-      this.api.deleteBook((res) => {
-        // 将新增blog添加进files中.
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
+    _delete () {
+      if (!this.files || this.files.length === 0) {
+        let deleteObj = {
+          title: '删除确认',
+          content: `是否删除文集：“${this.dir.book_name}”， 删除后文集将无法恢复！`,
+          confirmColor: 'red',
+          confirm: () => this.deleteBook(this.dir._id)
         }
-        // 通知sidebar删除当前book
-        this.$bus.emit("deleteBook", this.dir._id)
-      }, this.dir._id)
-    }
+        this.$bus.emit('confirm', deleteObj)
+      } else {
+        // snak 弹窗。
+        let snack = {
+          content: '请先删除文集中的博客！'
+        }
+        this.$bus.emit('snack', snack)
+      }
+    },
   },
   watch: {
     // 当文集的files发送变化后自动变更高度

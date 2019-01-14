@@ -8,7 +8,6 @@ import Feed from '@/views/feed/Feed.vue'
 import Edit from '@/views/edit/Edit.vue'
 import Layout from '@/views/Layout.vue'
 import Login from '@/views/login/Login.vue'
-import BlogContent from '@/views/blog/BlogContent.vue'
 import BlogContents from '@/views/blog/content/BlogContents.vue'
 
 
@@ -32,7 +31,6 @@ export default new Router({
         { path: 'columns/open/', name: 'ColumnOpen', component: ColumnOpen },
         { path: 'blog', name: 'Blog', component: Blog },
         { path: 'blog/:_id', name: 'BlogContents', component: BlogContents },
-        { path: 'blog/:_id', name: 'BlogContent', component: BlogContent },
         { path: 'feed', name: 'Feed', component: Feed },
         { path: 'lab', name: 'lab', component: Lab }
       ],

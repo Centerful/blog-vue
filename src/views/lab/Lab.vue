@@ -14,6 +14,7 @@
       <v-btn @click="currentTab = 'VueBadges'">Badges</v-btn>
       <v-btn @click="currentTab = 'FeedCardTest'">FeedCard</v-btn>
       <v-btn @click="currentTab = 'RenderTest'">Render函数</v-btn>
+      <v-btn @click="currentTab = 'comments'">BLOG评论</v-btn>
     </div>
     <compontent :is="currentTab" :img="'http://localhost:3000/public/images/433fb74ff8299e1d11ac07e3ffbcb237.jpeg'"></compontent>
   </v-layout>
@@ -34,6 +35,7 @@ import MyLightBox from '@/views/lab/children/MyLightBox.vue'
 import VueBadges from '@/views/lab/children/VueBadges.vue'
 import FeedCardTest from '@/views/lab/children/FeedCardTest.vue'
 import RenderTest from '@/views/lab/children/RenderTest.vue'
+import comments from '@/views/lab/children/Comments.vue'
 
 export default {
   data () {
@@ -44,7 +46,7 @@ export default {
   created () {
     this.$progress.finish()
   },
-  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges, FeedCardTest, RenderTest }
+  components: { GroundGlass, EmojiPicker, EmojiWordPicker, ListMenu, FlexLayout, CardHover, VueArray, GetCursor, LightBox, MyLightBox, VueBadges, FeedCardTest, RenderTest, comments }
 }
 </script>
 

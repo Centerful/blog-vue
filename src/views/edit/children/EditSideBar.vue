@@ -56,12 +56,13 @@
       </div>
     </div>
   
-    <form-confirm-dialog v-model="addBook" :confirm="toAddBook" title="添加文集">
+    <form-confirm-dialog v-model="addBook" :confirm="_toAddBook" title="添加文集">
       <v-text-field 
         v-model="book_name" 
         label="文集名称" 
         :rules="[v => !!v || '名称不能为空']" 
         required 
+        :autoClear="true"
         autofocus>
       </v-text-field>
     </form-confirm-dialog>
@@ -69,12 +70,12 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import Dir from '@/views/edit/children/Dir.vue'
 export default {
   name: 'EditSideBar',
   data () {
     return {
-      dirs: [],
       isSearch: false,
       isHover: false,
       isOpen: false,
@@ -88,54 +89,21 @@ export default {
       ]
     }
   },
-  created () {
-    this.eventListener()
+  computed: {
+    ...mapState('edit', {
+      dirs: 'dirs'
+    })
   },
   watch: {
     // 如果路由有变化，会再次执行该方法
     '$route': {
-      handler: 'fetchData',
+      handler: 'fetchBooks',
       immediate: true // 立马执行一次,相当于created中调用一次.
     }
   },
   components: { Dir },
   methods: {
-    // 添加事件,对外暴露事件
-    eventListener () {
-      this.$bus.on('titleInput', this.titleInput)
-      this.$bus.on('trashToBlog', this.trashToBlog)
-      this.$bus.on("deleteBook", this.deleteBook)
-    },
-    titleInput (dir) {
-      this.$refs[dir.book_id][0].files.find((file) => {
-        if (file._id == dir.file_id) {
-          file.title = dir.title
-        }
-      })
-    },
-    // 文件添加垃圾箱中删除的博客
-    trashToBlog (data) {
-      this.$refs[data.book_id][0].files.push(data.file)
-    },
-    // 删除博客
-    deleteBook (book_id) {
-      let idx;
-      this.dirs.find((ele, index) => {
-        if (ele._id == book_id) {
-          idx = index
-        }
-      })
-      this.dirs.splice(idx, 1)
-    },
-    fetchData () {
-      this.api.getBooks((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        this.dirs = res.data.sort(this.utils.compare('book_order'))
-      })
-    },
+    ...mapActions('edit', ['fetchBooks', 'toAddBook']),
     closeSearch () {
       console.log('closeSearch')
       this.isSearch = !this.isSearch
@@ -148,19 +116,8 @@ export default {
           break;
       }
     },
-    toAddBook () {
-      this.api.addBook((res) => {
-        if (res.code == 1) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        // 在垃圾桶前插入一条
-        let trash = this.dirs.pop()
-        this.dirs.push(res.data)
-        this.dirs.push(trash)
-        this.book_name = null
-        this.addBook = false
-      }, {book_name: this.book_name})
+    _toAddBook () {
+      this.toAddBook({ book_name: this.book_name })
     },
     back () {
       this.$router.go(-1)

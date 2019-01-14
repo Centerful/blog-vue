@@ -1,10 +1,6 @@
 <template>
   <div class="edit-container">
     <div class="edit-wapper">
-      <!-- <div v-if="blog.blog_img">
-        <img class="edit-img" :src="blog.blog_img">
-      </div> -->
-      <!-- <div v-else class="edit-picture">添加题图</div> -->
       <v-card class="edit-picture"
         @mouseover="editIconShow = true" 
         @mouseout="editIconShow = false" raised>
@@ -17,10 +13,10 @@
             </div>
           </transition>
           <form id="imgForm" method="post" enctype="multipart/form-data" action="图片上传">
-            <input style="display: none;" @change="imgUpload" type="file" id="imageInput" accept="image/*">
+            <input style="display: none;" @change="blogImgUpload('imageInput')" type="file" id="imageInput" accept="image/*">
           </form>
       </v-card>
-      <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)" v-model="blog.title" @input="titleInput">
+      <input class="edit-title" type="text" placeholder="请输入标题(最多30个字)" v-model="blogTitle">
       <div class="edit-title-split"></div>
       <div class="edit-content">
         <Editormd @writed="writed" :ref="editorId" :key="editorId" :id="editorId"></Editormd>
@@ -31,6 +27,7 @@
 </template>
 
 <script>
+import {mapState, mapMutations, mapActions} from 'vuex'
 import Editormd from '@/views/edit/children/Editormd.vue'
 export default {
   name: 'editContent',
@@ -39,106 +36,43 @@ export default {
     return {
       editIconShow: false,
       editorId: 'editorId',
-      blog: {
-        title: null,
-        blog_img: null,
-        content: null
-      },
-      dir: {
-        file_id: null,
-        book_id: null
-      },
-      titleFlag: true,
       // MD编辑器发生变更后,触发$emit传递.
       write: false
     }
   },
-  watch: {
-  },
-  created () {
-    this.eventListener()
+  computed: {
+    ...mapState('edit', ['blog']),
+    // 表单中使用vuex的state不是很优美，需要写set方法调用commit进行state更新
+    blogTitle: {
+      get () {
+        return this.blog.title
+      },
+      set (val) {
+        this.write = true
+        this.updateTitle(val)
+      }
+    }
   },
   mounted () {
     setInterval(() => {
       this.loop()
     }, 3000)
   },
+  // 由于blog数据存放在vuex上，销毁时vuex中的数据不会消失，所以需要主动清理。
+  destroyed () {
+    this.cleanRemainBlogInfo()
+  },
   methods: {
-    // 添加事件,对外暴露事件
-    eventListener () {
-      this.$bus.on('getBlog', this.getBlog)
-    },
-    // 题图上传
-    imgUpload (data) {
-      let files = document.getElementById('imageInput').files
-      if (!files || files.length < 1) {
-        return
-      }
-      //测试。
-      /*console.log(this.blog.blog_img)
-      this.blog.blog_img = '/static/img/article-59521bcf81138.jpg'
-      return */
-      this.api.imgUpload((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return
-        }
-        //  替换图片URL
-        this.blog.blog_img = res.data.path
-        // 保存博客
-        this.saveBlog()
-      }, files)
-    },
+    ...mapMutations('edit', ['updateTitle', 'updateContent', 'cleanRemainBlogInfo']),
+    ...mapActions('edit', ['blogImgUpload', 'saveBlog']),
     // 点击题图后开打input-文件选择框
     openImgInput (data) {
       document.getElementById('imageInput').click()
     },
-    // 
+    // 写入
     writed (content) {
-      this.blog.content = content
+      this.updateContent(content)
       this.write = true
-    },
-    titleInput () {
-      // 开打博客时不用保存。
-      if (this.titleFlag) {
-        this.titleFlag = !this.titleFlag
-        return
-      }
-      this.write = true
-      /*
-       * 我们需要修改指定dir.vue实例中file.title的值.
-       * 因此我们要将事件传递到EditSideBar.vue中,然后通过this.$ref('dir._id')找到对应的dir.vue实例.
-       * 然后 
-       * let file = this.$refs(dir.books_id).files.filter((file) => {
-       *   if (file._id = dir.file_id)
-       *     file.title = dir.title
-       * })
-       *
-       * 如果使用vuex-将数据存储在一个对象中.则直接修改对象中BooksTree的数据即可.
-       */
-      this.$bus.emit('titleInput', {
-        file_id: this.dir.file_id,
-        book_id: this.dir.book_id,
-        title: this.blog.title
-      })
-    },
-    // 事件定义
-    // 开打某个blog时触发
-    getBlog (data) {
-      if (this.dir.file_id === data.file_id && this.dir.book_id === data.book_id) {
-        return
-      }
-      this.dir = data
-      this.api.getBlog((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        // 添加题图与title
-        this.blog = res.data
-        // 添加博客内容
-        this.$bus.emit('setBlogContent', this.blog.content)
-      }, this.dir.file_id)
     },
     /**
      * 自动保存博客信息.
@@ -147,18 +81,14 @@ export default {
      */
     loop () {
       if (this.write) {
-        this.saveBlog()
+        this._saveBlog()
       }
     },
-    saveBlog () {
-      this.blog._id = this.dir.file_id
-      this.api.updateBlog((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-        } else {
-        }
+    async _saveBlog () {
+      let res = await this.saveBlog()
+      if (res) {
         this.write = false
-      }, this.blog)
+      }
     }
   }
 

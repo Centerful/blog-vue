@@ -30,7 +30,9 @@
           <!-- 显示动态时间 -->
           <date-str  :margin="''" :datetime="feed.update_time"></date-str>
           <!-- 动态内容 -->
-          <v-flex xs12 my-2 body-1 class="text-xs-left">{{ feed.content }}</v-flex>
+          <v-flex xs12 my-2 body-1 class="text-xs-left">
+            <pre>{{ feed.content }}</pre>
+          </v-flex>
           <!-- 视频，图像展示 TODO -->
           <FeedImage v-if="feed.images" ref="imgContainer" :readOnly="true" v-model="feed.images"></FeedImage>
           <!-- 展开/收起动态内容 -->
@@ -150,6 +152,9 @@ export default {
     }
   },
   computed: {
+    content () {
+      return this.utils.enterReplace(this.feed.content)
+    },
     theme_style () {
       if (this.feed.feed_status === 'PRIVATE') {
         return 'private'

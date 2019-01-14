@@ -45,8 +45,8 @@ export default {
 
 <style scoped>
   .blog_content {
-    text-overflow: ellipsis;
-    word-break: break-all;
+    /*text-overflow: ellipsis;
+    word-break: break-all;*/
     overflow: hidden;
     max-height: 96px;
     min-height: 96px;

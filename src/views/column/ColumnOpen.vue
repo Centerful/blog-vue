@@ -20,7 +20,7 @@
             </div>
           </transition>
           <form id="imgForm" method="post" enctype="multipart/form-data" action="图片上传">
-            <input style="display: none;" @change="imgUpload" type="file" id="imageInput" accept="image/*">
+            <input style="display: none;" @change="_imgUpload" type="file" id="imageInput" accept="image/*">
           </form>
       </v-card>
       <!-- 表单是 Material Design风格-->
@@ -163,21 +163,14 @@ export default {
       document.getElementById('imageInput').click()
     },
     // 题图上传
-    imgUpload (data) {
-      let files = document.getElementById('imageInput').files
-      if (!files || files.length < 1) {
+    async _imgUpload (data) {
+      let res = await this.$common.imageUpload('imageInput')
+      if (res.code != 0) {
+        this.$bus.emit('prompt', res.message)
         return
       }
-      this.api.imgUpload((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return
-        }
-        //  替换图片URL
-        this.formData.column_img = res.data.path
-        // 保存博客
-        // 
-      }, files)
+      //  替换图片URL
+      this.formData.column_img = res.data.path
     },
     // 返回路由的上一级
     back () {

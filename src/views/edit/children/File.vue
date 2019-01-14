@@ -1,9 +1,8 @@
 <template>
   <li>
-    <span v-ripple style="cursor: pointer;" @click="getBlog" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
+    <span v-ripple style="cursor: pointer;" @click="getBlog(file._id)" class="e-create-blog" @mouseover="isHover = true" @mouseout="isHover = false">
       <span class="e-row">
         <span class="e-icon">
-          <!-- <icon name="file" :style="{color: '#666'}"/> -->
           <v-icon>mdi-file</v-icon>
         </span>
         <span class="e-name">{{ file.title }}</span>
@@ -19,7 +18,7 @@
         </v-list>
       </v-menu>
     </span>
-    <form-confirm-dialog v-model="reversionDialog" :autoClear="true" :confirm="reversion" title="恢复博客">
+    <form-confirm-dialog v-model="reversionDialog" :autoClear="true" :confirm="() => removeToBook({ dir_id: bookSelect, file_id: file._id })" title="恢复博客">
       <v-card-text>
         {{ reversionContent }}
         <v-select
@@ -34,12 +33,13 @@
         ></v-select>
       </v-card-text>
     </form-confirm-dialog>
-    <publish-blog-dialog v-model="publishDialog" :blog_id="file._id" :confirm="publish">
+    <publish-blog-dialog v-model="publishDialog" :blog_id="file._id" :confirm="_toPublish">
     </publish-blog-dialog>
   </li>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import PublishBlogDialog from '@/views/edit/children/PublishBlogDialog.vue'
 export default {
   props: ['file'],
@@ -75,123 +75,78 @@ export default {
   },
   components: { PublishBlogDialog },
   methods: {
-    getBlog () {
-      this.$bus.emit('getBlog', {
-        file_id: this.file._id,
-        book_id: this.file.book
-      })
-    },
+    ...mapActions('edit', 
+      ['deleteToTrash', 'cleanBlog', 'toPublish', 'cancelPublish', 'removeToBook', 'getBlog']),
     blogOps (code) {
       switch (code) {
         case 'publish':
-          this.publishDialog = true
-          break
-        case 'delete':
-          let deleteObj = {
-            title: '删除确认',
-            content: `是否删除博客：“${this.file.title}”，删除后博客被移动到垃圾桶！`,
-            confirmColor: 'red',
-            confirm: this.deleteToTrash // 传递confirm时callback函数。
-          }
-          this.$bus.emit('confirm', deleteObj)
-          break
-        case 'reversion':
-          // 获得文集数据
-          this.api.getBooks((res) => {
-            if (res.code != 0) {
-              this.$bus.emit('prompt', res.message)
-              return 
-            }
-            this.books = res.data
-          }, {only_book: true})
-          this.reversionContent = `博客“${this.file.title}”恢复至：`
-          this.reversionDialog = true
-          break
-        case 'clean':
-          let clean = {
-            title: '删除确认',
-            content: `是否从垃圾桶中删除博客：“${this.file.title}”，删除后博客无法再恢复！`,
-            confirmColor: 'red',
-            confirm: this.cleanBlog
-          }
-          this.$bus.emit('confirm', clean)
-          break
         case 'updatePublish':
           this.publishDialog = true
           break
+        case 'delete':
+          this._delete()
+          break
+        case 'reversion':
+          this._reversion()
+          break
+        case 'clean':
+          this._clean()
+          break
         case 'cancelPublish':
-          let cancelObj = {
-            title: '取消发布',
-            content: `是否取消发布博客：“${this.file.title}”，取消发布后博客从专栏上撤回，通过发布功能可以再次发布博客。`,
-            confirmColor: 'red',
-            confirm: this.cancelPublish // 传递confirm时callback函数。
-          }
-          this.$bus.emit('confirm', cancelObj)
+          this._cancelPublish()
           break
         case 'history':
           // TODO
-
           break
       }
     },
-    deleteToTrash () {
-      this.api.deleteToTrash((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-      // 通知dir，将当前blog移动到trash中。
-      this.$emit('deleteToTrash', this.file._id)
-      }, this.file._id)
-    },
-    // 从垃圾桶中删除博客
-    cleanBlog () {
-      this.api.cleanBlog((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        this.$emit('cleanblog', this.file._id)
-      }, this.file._id)
-    },
-    // 发布或更新博客
-    publish (val) {
-      let data = val
-      data.blog_id = this.file._id
-      this.api.publish((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        this.file.blog_status = 'PUBLISH'
-      }, data)
-    },
-    // 取消发布
-    cancelPublish () {
-      this.api.cancelPublish((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        this.file.blog_status = 'DRAFT'
-      }, this.file._id)
+    _delete () {
+      let deleteObj = {
+        title: '删除确认',
+        content: `是否删除博客：“${this.file.title}”，删除后博客被移动到垃圾桶！`,
+        confirmColor: 'red',
+        // 将博客移动到垃圾桶中
+        confirm: () => this.deleteToTrash({ dir_id: this.file.book, file_id: this.file._id }) 
+      }
+      this.$bus.emit('confirm', deleteObj)
     },
     // 恢复到指定文集
-    reversion () {
-      // 在异步方法外边将form表单数据拉取出。可以将formdialog设置为自动清空。
-      let data = { blog_id: this.file._id, book_id: this.bookSelect }
-      this.api.reversion((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return 
-        }
-        // 通知垃圾桶删除当前博客，通知文集添加博客。
-        data.file = this.file
-        data.file.blog_order = res.data.blog_order
-        data.file.blog_status = 'DRAFT'
-        this.$emit('reversionToBook', data)
-      }, data)
-    }
+    async _reversion () {
+      // 获得文集数据
+      let res = await this.$blog.getBooks({ only_book: true })
+      if (res.code != 0) {
+        this.$bus.emit('prompt', res.message)
+        return 
+      }
+      this.books = res.data
+      this.reversionContent = `博客“${this.file.title}”恢复至：`
+      this.reversionDialog = true
+    },
+    // 从垃圾桶中删除博客
+    _clean () {
+      let clean = {
+        title: '删除确认',
+        content: `是否从垃圾桶中删除博客：“${this.file.title}”，删除后博客无法再恢复！`,
+        confirmColor: 'red',
+        // 从垃圾桶中删除博客
+        confirm: () => this.cleanBlog(this.file._id)
+      }
+      this.$bus.emit('confirm', clean)
+    },
+    _cancelPublish () {
+      let cancelObj = {
+        title: '取消发布',
+        content: `是否取消发布博客：“${this.file.title}”，取消发布后博客从专栏上撤回，通过发布功能可以再次发布博客。`,
+        confirmColor: 'red',
+        // 取消发布
+        confirm: () => this.cancelPublish({ dir_id: this.file.book, file_id: this.file._id })
+      }
+      this.$bus.emit('confirm', cancelObj)
+    },
+    // 发布或更新博客
+    _toPublish (val) {
+      this.toPublish({ ...val, blog_id: this.file._id, dir_id: this.file.book, file_id: this.file._id })
+    },
   }
 }
 </script>

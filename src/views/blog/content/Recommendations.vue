@@ -2,7 +2,7 @@
   <v-layout v-if="recommendations.length" column mt-5 pt-3 pb-4 style="background-color: #EEEEEE;">
     <v-flex style="margin: 0 10%;" font-weight-bold>推荐阅读</v-flex>
     <v-divider style="margin-left: 9%;margin-right: 9%;" class="mt-2 mb-4"></v-divider>
-    <v-flex style="overflow: hidden;height: 255px;position: relative;padding: 0 2px;">
+    <v-flex style="overflow: hidden;height: 279px;position: relative;padding: 0 2px;">
       <v-flex class="fab left" v-show="left_btn">
         <v-btn @click="left_btn_click" fab small class="mb-3">
           <v-icon>mdi-chevron-left</v-icon>

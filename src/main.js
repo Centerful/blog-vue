@@ -6,6 +6,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 // 引入material design ui库
 import Vuetify from 'vuetify'
 // 引入自定义stylus
@@ -20,6 +21,8 @@ import Icon from 'vue-awesome/components/Icon'
 import api_mock from '@/api/api-mock.js'
 // 连接服务器端的api
 import api from '@/api/api.js'
+import blog from '@/api/blog.js'
+import common from '@/api/common.js'
 // 引入自己写的工具类.
 import utils from '@/utils/utils.js'
 
@@ -44,6 +47,9 @@ Vue.config.productionTip = false
 
 // 配置api,api_mock
 Vue.prototype.api = api
+Vue.prototype.$blog = blog
+Vue.prototype.$common = common
+
 Vue.prototype.utils = utils
 
 /* eslint-disable no-new */
@@ -75,6 +81,7 @@ Vue.use(bus)
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
   /*
   下面的代码与上面的代码显示效果一致.

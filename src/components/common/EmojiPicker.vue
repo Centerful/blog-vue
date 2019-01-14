@@ -114,6 +114,7 @@ export default {
 <style scoped>
   .emoji-panel {
     width: 300px;
+    z-index: 999;
   }
   .emoji {
     max-height: 200px;

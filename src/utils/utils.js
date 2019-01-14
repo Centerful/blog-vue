@@ -1,3 +1,4 @@
+// let reg = new RegExp("\r\n", "g")
 export default {
   /**
    * sort的比较函数
@@ -12,6 +13,16 @@ export default {
       return o1[attr] - o2[attr]
     }
   },
+  randomColor (theme = 'dark') {
+    // 'yellow',
+    let arr = ['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green', 'light-green', 'lime', 'amber', 'orange', 'deep-orange', 'brown', 'blue-grey', 'grey']
+    return arr[Math.floor(Math.random() * 100 + 1) % arr.length]
+    // return arr[Math.floor(Math.random() * 100 + 1) % arr.length] + ` ${theme}-` + (Math.floor(Math.random() * 100 + 1) % 4 + 1)
+  },
+  // enterReplace (str) {
+  //   if (!str) return str
+  //   return str.replace(reg, "<br/>")
+  // },
   /**
    * 获得年月日字符串:2017-01-01
    */
@@ -39,6 +50,7 @@ export default {
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
       return fmt;
   },
+
   // 在光标处输入文本
   insertSomething(inputName, inputVal ,val) {
     let textArea = document.getElementById(inputName);

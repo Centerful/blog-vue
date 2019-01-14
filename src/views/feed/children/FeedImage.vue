@@ -96,27 +96,21 @@ export default {
       this.$emit('update', this.imgArr)
     },
     // 题图上传
-    _imgUpload (data) {
-      let files = document.getElementById(this._id).files
-      if (!files || files.length < 1) {
+    async _imgUpload (data) {
+      let res = await this.$common.imageUpload(this._id)
+      if (res.code != 0) {
+        this.$bus.emit('prompt', res.message)
         return
       }
-      // 图片上传
-      this.api.imgUpload((res) => {
-        if (res.code != 0) {
-          this.$bus.emit('prompt', res.message)
-          return
-        }
-        // 判断是新增还是更换已经上传的图片
-        this.imgArr = this.value
-        if (this.imgIndex != null) {
-          this.$set(this.imgArr, this.imgIndex, res.data.path)
-          this.imgIndex = null
-        } else {
-          this.imgArr.push(res.data.path)  
-        }
-        this.$emit('update', this.imgArr)
-      }, files)
+      // 判断是新增还是更换已经上传的图片
+      this.imgArr = this.value
+      if (this.imgIndex != null) {
+        this.$set(this.imgArr, this.imgIndex, res.data.path)
+        this.imgIndex = null
+      } else {
+        this.imgArr.push(res.data.path)  
+      }
+      this.$emit('update', this.imgArr)
     },
   }
 }
