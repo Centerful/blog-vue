@@ -103,7 +103,7 @@ export default {
         return Math.ceil(seconds/day) + '天前'
       if (seconds >= week && seconds < month)
         return Math.ceil(seconds/week) + '周前'
-      if (years > 0) 
+      if (months > 11) 
         return (now.getFullYear() - time.getFullYear()) + '年前'
       else 
         return months + '月前'

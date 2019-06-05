@@ -14,14 +14,14 @@
         <!-- 评论展示区 -->
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
+            <v-layout style="min-height: 400px;" wrap>
               
             </v-layout>
           </v-container>
         </v-card-text>
         <!-- 评论回复区 -->
+        <v-flex><v-divider></v-divider></v-flex>
         <v-layout pa-2 column>
-          <v-flex><v-divider></v-divider></v-flex>
           <v-flex mx-3>
             <v-textarea
               v-model="replyWord"
@@ -81,13 +81,19 @@ export default {
   },
   watch: {
     '$route': {
-      handler: 'fetchData',
+      handler: '_fetchData',
       immediate: true // 立马执行一次,相当于created中调用一次.
     }
   },
   methods: {
+    _fetchData () {
+      this.comments = {}
+      // 加载完成后，取消滚动条，显示评论
+      this.fetching = false
+      this.commentFlag = true
+    },
     fetchData () {
-      this.api.getComments((res) => {
+      this.$comment.getComments((res) => {
         if (res.code != 0) {
           this.$bus.emit('prompt', res.message)
           return

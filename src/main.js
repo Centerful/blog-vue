@@ -22,6 +22,7 @@ import api_mock from '@/api/api-mock.js'
 // 连接服务器端的api
 import api from '@/api/api.js'
 import blog from '@/api/blog.js'
+import comment from '@/api/comment.js'
 import common from '@/api/common.js'
 // 引入自己写的工具类.
 import utils from '@/utils/utils.js'
@@ -48,6 +49,7 @@ Vue.config.productionTip = false
 // 配置api,api_mock
 Vue.prototype.api = api
 Vue.prototype.$blog = blog
+Vue.prototype.$comment = comment
 Vue.prototype.$common = common
 
 Vue.prototype.utils = utils
